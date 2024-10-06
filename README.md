@@ -6,4 +6,5 @@
 
 ### Dimitriu Corina (ML, IAO2)
 -- Email: corina.dimitriu.01@gmail.com  
--- Discord ID: Corina Dimitriu#9289
+-- Discord ID: Corina Dimitriu#9289  
+--------------------------------------------------------------

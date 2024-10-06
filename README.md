@@ -11,3 +11,7 @@
 ### Iaţu Antonio (Back/Front, SD1)
 -- Email: antonio.iatu@yahoo.com  
 -- Discord ID: Iatu Antonio#6458  
+
+### Carcea Diana (Front/UX, ISS1)
+-- Email: dianacarcea5@gmail.com
+-- Discord ID: Diana Carcea#5902

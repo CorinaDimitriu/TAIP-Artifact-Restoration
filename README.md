@@ -14,7 +14,7 @@
 
 ### Carcea Diana (Front/UX, ISS1)
 -- Email: dianacarcea5@gmail.com  
--- Discord ID: Diana Carcea#5902
+-- Discord ID: dianacarcea
 
 ### Carcea Răzvan (Back/Front, ISS1)
 -- Email: bivocar@gmail.com  

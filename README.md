@@ -8,11 +8,11 @@
 
 ### Dimitriu Corina (ML/DevOps, IAO2)
 -- Email: corina.dimitriu.01@gmail.com  
--- Discord ID: Corina Dimitriu#9289  
+-- Discord ID: corinadimitriu  
 
 ### Iaţu Antonio (Back/Front, SD1)
 -- Email: antonio.iatu@yahoo.com  
--- Discord ID: Iatu Antonio#6458  
+-- Discord ID: antonio.iatu 
 
 ### Carcea Diana (Front/UX, ISS1)
 -- Email: dianacarcea5@gmail.com  

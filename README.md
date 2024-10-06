@@ -1,4 +1,6 @@
-# TAIP-Artifact-Restoration -- Filling the Void
+# TAIP-Artifact-Restoration
+
+## Project name: Filling the Void
 
 ## Coordinator(s): Adrian Iftene
 

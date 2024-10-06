@@ -1,4 +1,4 @@
-# TAIP-Artifact-Restoration
+# TAIP-Artifact-Restoration -- Filling the Void
 
 ## Coordinator(s): Adrian Iftene
 
@@ -13,5 +13,5 @@
 -- Discord ID: Iatu Antonio#6458  
 
 ### Carcea Diana (Front/UX, ISS1)
--- Email: dianacarcea5@gmail.com
+-- Email: dianacarcea5@gmail.com  
 -- Discord ID: Diana Carcea#5902

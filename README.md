@@ -23,6 +23,6 @@
 -- Discord ID: carcea_razvan
 
 
-Trello: https://trello.com/b/6Br86jmq/artifact-restoration-planning
-Moodboard: https://www.canva.com/design/DAGSy-oUWxU/PaFUCzCRoZi3dUDqdmn_hw/edit
+Trello: https://trello.com/b/6Br86jmq/artifact-restoration-planning  
+Moodboard: https://www.canva.com/design/DAGSy-oUWxU/PaFUCzCRoZi3dUDqdmn_hw/edit  
 User Stories & Journey & Persona: https://docs.google.com/document/d/1SZBrxNS9YINVcwU5zbjuHyhFcnij63oVCwlwYEkqYOk/edit

@@ -26,3 +26,7 @@
 Trello: https://trello.com/b/6Br86jmq/artifact-restoration-planning  
 Moodboard: https://www.canva.com/design/DAGSy-oUWxU/PaFUCzCRoZi3dUDqdmn_hw/edit  
 User Stories & Journey & Persona: https://docs.google.com/document/d/1SZBrxNS9YINVcwU5zbjuHyhFcnij63oVCwlwYEkqYOk/edit
+
+#### Research Work:
+-- ML oriented: https://docs.google.com/document/d/11PNjBHO3lh7st6EEaVL7d92HrHU3imaO580NzF7mQO0/edit?usp=sharing / https://docs.google.com/document/d/1q4sg3XKTbh0q_lEjh7Ogo4-Tu61tjaLYInie0S6fFbk/edit?usp=sharing  
+-- application oriented: https://docs.google.com/document/d/1pjrD3HF6PcxjBuz9ogo0sI-JAvjkoo_lRqj8Ie1cUL4/edit?usp=sharing

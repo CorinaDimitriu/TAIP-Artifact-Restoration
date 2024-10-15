@@ -34,3 +34,4 @@ User Stories & Journey & Persona: https://docs.google.com/document/d/1SZBrxNS9YI
 #### Diagrame (in lucru): 
 https://drive.google.com/drive/folders/1zH7rsNQE_yzS3OVGUH5p0OzrYJvd2k7g
 #### Urmeaza un document cu detalierea folosirii tool-urilor de AI: 
+https://docs.google.com/document/d/1kgQj1O7AfJunPXCLVfFNNjgtBfjmb6n1IUvCRMt4r40/edit?usp=sharing

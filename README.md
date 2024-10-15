@@ -30,3 +30,7 @@ User Stories & Journey & Persona: https://docs.google.com/document/d/1SZBrxNS9YI
 #### Research Work:
 -- ML oriented: https://docs.google.com/document/d/11PNjBHO3lh7st6EEaVL7d92HrHU3imaO580NzF7mQO0/edit?usp=sharing / https://docs.google.com/document/d/1q4sg3XKTbh0q_lEjh7Ogo4-Tu61tjaLYInie0S6fFbk/edit?usp=sharing  
 -- application oriented: https://docs.google.com/document/d/1pjrD3HF6PcxjBuz9ogo0sI-JAvjkoo_lRqj8Ie1cUL4/edit?usp=sharing
+
+#### Diagrame (in lucru): 
+https://drive.google.com/drive/folders/1zH7rsNQE_yzS3OVGUH5p0OzrYJvd2k7g
+#### Urmeaza un document cu detalierea folosirii tool-urilor de AI: 

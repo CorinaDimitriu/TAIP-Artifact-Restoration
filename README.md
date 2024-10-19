@@ -9,3 +9,4 @@
 4. Install all the dependencies at **FillTheVoid/pom.xml** by using maven.
 5. Create a PostgresSql database according to **FillTheVoid/src/main/resources/application.yml** file.
 6. Try to run. (:
+7. Access swagger http://localhost:8080/swagger-ui/index.html

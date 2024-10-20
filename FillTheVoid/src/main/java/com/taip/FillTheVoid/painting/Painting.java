@@ -4,6 +4,7 @@ import com.taip.FillTheVoid.gallery.Gallery;
 import com.taip.FillTheVoid.user.Owner;
 import jakarta.persistence.*;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -18,6 +19,8 @@ public class Painting {
     private String description;
     private String author;
     private int noVisualizations;
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
 
     @ElementCollection
     private List<String> comments = new ArrayList<>();
@@ -32,12 +35,13 @@ public class Painting {
 
     public Painting() {}
 
-    public Painting(Owner owner, String paintingName, String description, String author, int noVisualizations) {
+    public Painting(Owner owner, String paintingName, String description, String author, int noVisualizations, LocalDateTime createdAt) {
         this.owner = owner;
         this.paintingName = paintingName;
         this.description = description;
         this.author = author;
         this.noVisualizations = noVisualizations;
+        this.createdAt = createdAt;
     }
 
     public Long getId() {
@@ -130,5 +134,13 @@ public class Painting {
 
     public void setOwner(Owner owner) {
         this.owner = owner;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
     }
 }

@@ -1,8 +1,9 @@
 package com.taip.FillTheVoid.badge;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
+import com.taip.FillTheVoid.user.User;
+import jakarta.persistence.*;
+
+import java.time.LocalDateTime;
 
 @Entity
 public class Badge {
@@ -16,16 +17,24 @@ public class Badge {
     private String type;
     private Integer value;
 
+    @Column(nullable = false)
+    private LocalDateTime createdAt;
+
+    @ManyToOne
+    @JoinColumn(name = "user_id")
+    private User user;
 
 
     public Badge() {}
 
-    public Badge(String name, String description, String imageUrl, String type, Integer value) {
+    public Badge(String name, String description, String imageUrl, String type, Integer value, LocalDateTime createdAt, User user) {
         this.name = name;
         this.description = description;
         this.imageUrl = imageUrl;
         this.type = type;
         this.value = value;
+        this.createdAt = createdAt;
+        this.user = user;
     }
 
     public String getId() {
@@ -74,6 +83,22 @@ public class Badge {
 
     public void setValue(Integer value) {
         this.value = value;
+    }
+
+    public LocalDateTime getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(LocalDateTime createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
     }
 
     public void collectBadge() {

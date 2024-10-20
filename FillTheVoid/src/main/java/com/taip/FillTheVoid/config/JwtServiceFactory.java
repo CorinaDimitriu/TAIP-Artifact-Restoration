@@ -1,8 +1,12 @@
 package com.taip.FillTheVoid.config;
 
-public class JwtServiceFactory {
+public abstract class JwtServiceFactory {
 
-    public static JwtService createJwtService() {
-        return new JwtService();
+    public JwtService instantiateJwtService() {
+
+        JwtService jwtService = createJwtService();
+        return jwtService;
     }
+
+    public abstract JwtService createJwtService();
 }

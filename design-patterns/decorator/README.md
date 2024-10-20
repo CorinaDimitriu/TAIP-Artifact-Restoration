@@ -34,7 +34,7 @@ Acest email este stocat în interiorul obiectului Notifier și poate fi utilizat
   1. **Extensibilitate**:  \
      Se pot adăuga noi funcționalități fără a modifica clasele existente. Se pot crea noi decoratori în funcție de cerințe.
   2. **Compoziție**: \
-     Permite combinarea diferitelor comportamente. Se pot combina mai multi decoratori pentru a obține o funcționalitate complexe fără a crea clase mari și complicate.
+     Permite combinarea diferitelor comportamente. Se pot combina mai multi decoratori pentru a obține o funcționalitate mai complexa fără a crea clase mari și complicate.
   3. **Separarea Responsabilităților**:  \
      Responsabilitățile sunt distribuite între clase, ceea ce face codul mai ușor de întreținut și de înțeles.
 

@@ -10,19 +10,21 @@ import lombok.AllArgsConstructor;
 public class BadgeService {
 
     private final BadgeRepository badgeRepository;
-    private final INotifier iNotifier = new BadgeDecorator(
+    private final INotifier notifier = new BadgeDecorator(
             new Notifier("user@gmail.com")
     );
+
+    public void receiveNotificationBadge(String email) {
+
+        notifier.send("Badge received!");
+
+    }
 
     public Badge getLastBadgeByEmail(String email) {
 
         return badgeRepository.findLatestBadgeByUserEmail(email).get();
     }
 
-    public void receiveNotificationBadge(String email) {
 
-
-
-    }
 
 }

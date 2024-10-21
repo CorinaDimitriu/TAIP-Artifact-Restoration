@@ -10,7 +10,6 @@ public class ByDateIterator<T> implements Iterator<T>{
     private final List<Painting> paintings;
     private int currentPosition = 0;
 
-
     public ByDateIterator(List<Painting> paintings) {
 
         this.paintings = new ArrayList<>(paintings);

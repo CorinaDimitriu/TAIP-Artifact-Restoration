@@ -41,8 +41,13 @@ Acest email este stocat în interiorul obiectului Notifier și poate fi utilizat
    ![Screenshot from 2024-10-21 00-56-26](https://github.com/user-attachments/assets/8e2da947-e739-42ad-a6ec-234d531f0305)
    
    ![Screenshot from 2024-10-21 00-56-49](https://github.com/user-attachments/assets/b7d77901-0e7b-4b6f-aad2-ba5ba543e4b7)
+   
    ![Screenshot from 2024-10-21 00-57-05](https://github.com/user-attachments/assets/6e5f2d73-9b0c-41ba-9400-dacdf677be83)
+   
    ![Screenshot from 2024-10-21 00-57-56](https://github.com/user-attachments/assets/e9aa15d9-c2bb-4a95-be15-c822b264e29f)
+   
+   ![Screenshot from 2024-10-21 08-32-15](https://github.com/user-attachments/assets/e291cb96-4cfd-4b04-bd66-05238f8233b8)
+
    ![Screenshot from 2024-10-21 01-00-16](https://github.com/user-attachments/assets/119f6276-2191-4674-ada9-108a9d8e1e42)
 
 

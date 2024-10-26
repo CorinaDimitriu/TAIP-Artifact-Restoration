@@ -1,6 +1,6 @@
-package com.taip.FillTheVoid.painting;
+package com.taip.FillTheVoid.painting.iterator;
 
-import java.util.List;
+import com.taip.FillTheVoid.painting.Painting;
 
 public interface Iterator <T> {
 

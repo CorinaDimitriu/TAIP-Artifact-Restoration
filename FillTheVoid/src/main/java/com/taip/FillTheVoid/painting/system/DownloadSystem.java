@@ -1,4 +1,4 @@
-package com.taip.FillTheVoid.painting;
+package com.taip.FillTheVoid.painting.system;
 
 public class DownloadSystem {
     public DownloadSystem() {

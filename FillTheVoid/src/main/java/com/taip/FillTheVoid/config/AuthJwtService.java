@@ -1,9 +1,7 @@
 package com.taip.FillTheVoid.config;
 
 
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -24,15 +22,23 @@ public class AuthJwtService implements JwtService{
         return extractClaim(token, Claims::getSubject);
     }
 
-    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
-        final Claims claims = extractAllClaims(token);
-        return claimsResolver.apply(claims);
+    public boolean isTokenValid(String token, UserDetails userDetails) {
+
+        final String username = extractSubject(token);
+        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
     }
 
     public String generateToken(UserDetails userDetails) {
 
         return generateToken(new HashMap<>(), userDetails);
     }
+
+    public <T> T extractClaim(String token, Function<Claims, T> claimsResolver) {
+        final Claims claims = extractAllClaims(token);
+        return claimsResolver.apply(claims);
+    }
+
+
 
     public String generateToken(
             Map<String, Object> extraClaims,
@@ -50,17 +56,11 @@ public class AuthJwtService implements JwtService{
 
     private Claims extractAllClaims(String token) {
         return Jwts
-            .parserBuilder()
-            .setSigningKey(getSignInKey())
-            .build()
-            .parseClaimsJws(token)
-            .getBody();
-    }
-
-    public boolean isTokenValid(String token, UserDetails userDetails) {
-
-        final String username = extractSubject(token);
-        return (username.equals(userDetails.getUsername()) && !isTokenExpired(token));
+                .parserBuilder()
+                .setSigningKey(getSignInKey())
+                .build()
+                .parseClaimsJws(token)
+                .getBody();
     }
 
     private boolean isTokenExpired(String token) {

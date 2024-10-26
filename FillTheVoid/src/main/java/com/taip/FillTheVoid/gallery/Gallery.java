@@ -1,23 +1,31 @@
 package com.taip.FillTheVoid.gallery;
 
 import com.taip.FillTheVoid.painting.Painting;
-import com.taip.FillTheVoid.user.Owner;
+import com.taip.FillTheVoid.user.Owner.Owner;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
 
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
+@Builder
+@AllArgsConstructor
 public class Gallery {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
     private String galleryName;
     private String description;
 
-    @ManyToOne
-    @JoinColumn(name = "owner_id")  // Creează relația cu Owner
+    @NotNull(message = "Owner cannot be null")
+    @ManyToOne(optional = false)
+    @JoinColumn(name = "owner_id", nullable = false)  // Creează relația cu Owner
     private Owner owner;
 
 
@@ -32,60 +40,4 @@ public class Gallery {
         this.description = description;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
-    public String getGalleryName() {
-        return galleryName;
-    }
-
-    public void setGalleryName(String galleryName) {
-        this.galleryName = galleryName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public List<Painting> getPaintings() {
-        return paintings;
-    }
-
-    public void setPaintings(List<Painting> paintings) {
-        this.paintings = paintings;
-    }
-
-    // Methods
-    public void addPainting(Painting painting) {
-        this.paintings.add(painting);
-    }
-
-    public void removePainting(Painting painting) {
-        this.paintings.remove(painting);
-    }
-
-    public void updateName(String galleryName) {
-        this.galleryName = galleryName;
-    }
-
-    public void updateDescription(String description) {
-        this.description = description;
-    }
 }

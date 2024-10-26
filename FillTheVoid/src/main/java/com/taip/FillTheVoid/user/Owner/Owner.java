@@ -1,21 +1,26 @@
-package com.taip.FillTheVoid.user;
+package com.taip.FillTheVoid.user.Owner;
 
 import com.taip.FillTheVoid.gallery.Gallery;
 import com.taip.FillTheVoid.painting.Painting;
+import com.taip.FillTheVoid.user.Role;
+import com.taip.FillTheVoid.user.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.util.List;
 
+@Getter
+@Setter
 @Entity
 public class Owner extends User {
 
     @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Painting> paintings;
 
-    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)  // corectat mappedBy la "owner"
+    @OneToMany(mappedBy = "owner", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Gallery> galleries;
 
     public Owner() {
@@ -28,19 +33,4 @@ public class Owner extends User {
         this.galleries = galleries;
     }
 
-    public List<Painting> getPaintings() {
-        return paintings;
-    }
-
-    public void setPaintings(List<Painting> paintings) {
-        this.paintings = paintings;
-    }
-
-    public List<Gallery> getGalleries() {
-        return galleries;
-    }
-
-    public void setGalleries(List<Gallery> galleries) {
-        this.galleries = galleries;
-    }
 }

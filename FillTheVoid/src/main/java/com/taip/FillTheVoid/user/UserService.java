@@ -1,8 +1,10 @@
 package com.taip.FillTheVoid.user;
 
+import com.taip.FillTheVoid.user.Owner.Owner;
 import lombok.AllArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Optional;
 
 @Service
 @AllArgsConstructor
@@ -11,7 +13,15 @@ public class UserService {
     private final UserRepository repository;
 
     public User getUserByEmail(String email) {
-        return this.repository.findByEmail(email).get();
+
+
+        Optional<User> user = repository.findByEmail(email);
+
+        if (user.isEmpty()) {
+            throw new IllegalStateException("Utilizatorul nu există cu acest email");
+        }
+
+        return user.get();
     }
 
 }

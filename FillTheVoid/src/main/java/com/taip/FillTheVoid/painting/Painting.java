@@ -1,19 +1,23 @@
 package com.taip.FillTheVoid.painting;
 
 import com.taip.FillTheVoid.gallery.Gallery;
-import com.taip.FillTheVoid.user.Owner;
+import com.taip.FillTheVoid.user.Owner.Owner;
 import jakarta.persistence.*;
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+@Data
 @Entity
 public class Painting {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Integer id;
 
     private String paintingName;
     private String description;
@@ -21,6 +25,9 @@ public class Painting {
     private int noVisualizations;
     @Column(nullable = false)
     private LocalDateTime createdAt;
+
+    @Column(name = "image")
+    private byte[] image;
 
     @ElementCollection
     private List<String> comments = new ArrayList<>();
@@ -35,69 +42,17 @@ public class Painting {
 
     public Painting() {}
 
-    public Painting(Owner owner, String paintingName, String description, String author, int noVisualizations, LocalDateTime createdAt) {
+    public Painting(Owner owner, Gallery gallery, String paintingName, String description, String author, int noVisualizations, LocalDateTime createdAt, byte[] image, List<String> comments) {
+
         this.owner = owner;
+        this.gallery = gallery;
         this.paintingName = paintingName;
         this.description = description;
         this.author = author;
         this.noVisualizations = noVisualizations;
         this.createdAt = createdAt;
-    }
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public String getPaintingName() {
-        return paintingName;
-    }
-
-    public void setPaintingName(String paintingName) {
-        this.paintingName = paintingName;
-    }
-
-    public String getDescription() {
-        return description;
-    }
-
-    public void setDescription(String description) {
-        this.description = description;
-    }
-
-    public String getAuthor() {
-        return author;
-    }
-
-    public void setAuthor(String author) {
-        this.author = author;
-    }
-
-    public int getNoVisualizations() {
-        return noVisualizations;
-    }
-
-    public void setNoVisualizations(int noVisualizations) {
-        this.noVisualizations = noVisualizations;
-    }
-
-    public List<String> getComments() {
-        return comments;
-    }
-
-    public void setComments(List<String> comments) {
+        this.image = image;
         this.comments = comments;
-    }
-
-    public void updatePaintingName(String paintingName) {
-        this.paintingName = paintingName;
-    }
-
-    public void updateDescription(String description) {
-        this.description = description;
     }
 
     public void automaticallyGenerateDescription() {
@@ -120,27 +75,4 @@ public class Painting {
         this.comments.remove(comment);
     }
 
-    public Gallery getGallery() {
-        return gallery;
-    }
-
-    public void setGallery(Gallery gallery) {
-        this.gallery = gallery;
-    }
-
-    public Owner getOwner() {
-        return owner;
-    }
-
-    public void setOwner(Owner owner) {
-        this.owner = owner;
-    }
-
-    public LocalDateTime getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(LocalDateTime createdAt) {
-        this.createdAt = createdAt;
-    }
 }

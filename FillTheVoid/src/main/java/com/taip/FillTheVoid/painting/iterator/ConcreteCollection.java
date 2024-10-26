@@ -1,4 +1,6 @@
-package com.taip.FillTheVoid.painting;
+package com.taip.FillTheVoid.painting.iterator;
+
+import com.taip.FillTheVoid.painting.Painting;
 
 import java.util.ArrayList;
 import java.util.List;

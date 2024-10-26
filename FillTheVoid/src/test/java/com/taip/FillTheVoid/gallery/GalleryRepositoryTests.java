@@ -1,13 +1,8 @@
-package com.taip.FillTheVoid.repository;
+package com.taip.FillTheVoid.gallery;
 
-import com.taip.FillTheVoid.gallery.Gallery;
-import com.taip.FillTheVoid.gallery.GalleryRepository;
 import com.taip.FillTheVoid.user.Owner.Owner;
 import com.taip.FillTheVoid.user.Owner.OwnerRepository;
 import com.taip.FillTheVoid.user.Role;
-import com.taip.FillTheVoid.user.User;
-import com.taip.FillTheVoid.user.UserRepository;
-import com.taip.FillTheVoid.user.UserService;
 import jakarta.validation.ConstraintViolationException;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -17,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.jdbc.EmbeddedDatabaseConnection;
 import org.springframework.boot.test.autoconfigure.jdbc.AutoConfigureTestDatabase;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.context.annotation.Import;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
 import java.util.ArrayList;

@@ -1,5 +1,8 @@
 # Verificarea repository-ului (gestionarea accesului la date) asociat cu entitatea Gallery
 
+[GalleryRepositoryTests.java](../../../FillTheVoid/src/test/java/com/taip/FillTheVoid/gallery/GalleryRepositoryTests.java)
+
+
 Ele acoperă operațiuni de bază cum ar fi salvarea, gestionarea erorilor și căutarea, \
 asigurându-se că interacțiunile cu baza de date sunt conforme cu așteptările. Prin testarea acestor \
 metode, se garantează că aplicația se comportă corect la nivelul cel mai apropiat cu baza de date.

@@ -71,7 +71,7 @@ corectă a operațiilor de citire, actualizare și ștergere pentru entitățile
 
 ![image](https://github.com/user-attachments/assets/a12f5581-bac9-4e26-b2e9-d0069a767238)
 
-### Poza 1: rulăm testele noi create și ne așteptăm să eșueze
+### Poza 3: rulăm testele noi create și ne așteptăm să eșueze
 
 ![image](https://github.com/user-attachments/assets/a2db63fc-296e-4254-a7c8-68e1d3b1c6f0)
 
@@ -89,5 +89,5 @@ doar a câmpurilor galleryName și description.
 Aici sunt adăugate noi metode personalizate de acces la baza de date pentru entitatea Gallery, mai exact findAllByOwner(Owner owner), \
 updateGalleryNameAndDescription(Gallery gallery, String newName, String newDescription), deleteGallery(Gallery gallery)
 
-### Poza 2: rulăm toate testele din nou și verificăm dacă acum trec
+### Poza 4: rulăm toate testele din nou și verificăm dacă acum trec
 ![image](https://github.com/user-attachments/assets/5d556eef-f85f-4d02-ae58-ce57717311b3)

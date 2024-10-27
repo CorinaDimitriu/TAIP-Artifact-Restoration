@@ -20,10 +20,11 @@ public class Gallery {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer id;
+    @NotNull(message = "Gallery name cannot be null")
     private String galleryName;
     private String description;
 
-    @NotNull(message = "Owner cannot be null")
+    @NotNull(message = "Gallery owner cannot be null")
     @ManyToOne(optional = false)
     @JoinColumn(name = "owner_id", nullable = false)  // Creează relația cu Owner
     private Owner owner;

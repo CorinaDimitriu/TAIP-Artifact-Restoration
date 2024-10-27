@@ -3,6 +3,7 @@ package com.taip.FillTheVoid.painting;
 import com.taip.FillTheVoid.gallery.Gallery;
 import com.taip.FillTheVoid.user.Owner.Owner;
 import jakarta.persistence.*;
+import lombok.Builder;
 import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;

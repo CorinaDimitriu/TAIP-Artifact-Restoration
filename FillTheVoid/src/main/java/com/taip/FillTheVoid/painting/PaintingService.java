@@ -38,7 +38,7 @@ public class PaintingService {
         }
         else {
 
-            Gallery gallery = galleryService.getGalleryByName(galleryName);
+            Gallery gallery = galleryService.getGalleryByNameAndOwner(galleryName, owner);
             painting = new Painting(owner, gallery, paintingName, description, author, 0, currentDateTime, image, new ArrayList<>());
         }
 

@@ -34,18 +34,18 @@ dacă o galerie poate fi găsită în baza de date pe baza numelui și a proprie
 
 Fișierele funcționale relevante pentru a trece testele sunt:
 
-[Gallery.java](FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/Gallery.java)
+[Gallery.java](TAIP-Artifact-Restoration/FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/Gallery.java)
 
 Fișierul care definește clasa de entitate Gallery. Aici este definită structura entității, 
 cu toate atributele, constrângerile și relațiile necesare (de exemplu, relația cu Owner).
 
-[GalleryRepository.java](FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryRepository.java)
+[GalleryRepository.java](TAIP-Artifact-Restoration/FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryRepository.java)
 
 Interfața de tip Repository care extinde JpaRepository. Aici ar trebui să fie definite metodele utilizate în teste, inclusiv save și findByNameAndOwner.
 
-[Owner.java](FillTheVoid/src/main/java/com/taip/FillTheVoid/user/Owner/Owner.java)
+[Owner.java](TAIP-Artifact-Restoration/FillTheVoid/src/main/java/com/taip/FillTheVoid/user/Owner/Owner.java)
 
-[OwnerRepository.java](FillTheVoid/src/main/java/com/taip/FillTheVoid/user/Owner/OwnerRepository.java)
+[OwnerRepository.java](TAIP-Artifact-Restoration/FillTheVoid/src/main/java/com/taip/FillTheVoid/user/Owner/OwnerRepository.java)
 
 Entitatea Owner, care este asociată cu galeria. Această clasă ar trebui să definească structura proprietarului galeriei.
 
@@ -79,12 +79,12 @@ corectă a operațiilor de citire, actualizare și ștergere pentru entitățile
 
 Fișierele funcționale relevante pentru a trece testele sunt:
 
-[GalleryProjection.java](FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryProjection.java)
+[GalleryProjection.java](TAIP-Artifact-Restoration/FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryProjection.java)
 
 Aceasta este o interfață folosită pentru a defini proiecții asupra entităților JPA, permițând extragerea 
 doar a câmpurilor galleryName și description.
 
-[GalleryRepository.java](FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryRepository.java)
+[GalleryRepository.java](TAIP-Artifact-Restoration/FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryRepository.java)
 
 Aici sunt adăugate noi metode personalizate de acces la baza de date pentru entitatea Gallery, mai exact findAllByOwner(Owner owner), \
 updateGalleryNameAndDescription(Gallery gallery, String newName, String newDescription), deleteGallery(Gallery gallery)

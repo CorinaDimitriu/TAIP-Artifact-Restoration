@@ -16,6 +16,7 @@ import theLasSupper from '../paintings/the-las-supper.jpg';
 import Loading from './Loading';
 import MuseumBackground from "./MuseumBackground";
 import Painting from "./Painting";
+// import CameraMovement from './CameraMovement';
 import CameraController from './CameraController';
 
 const paintingUrls = [
@@ -48,6 +49,8 @@ const CameraRoom: React.FC = () => {
     const [targetPosition, setTargetPosition] = useState<Vector3 | null>(null);
     const [targetAngle, setTargetAngle] = useState<number | null>(null);
     const [isDetailView, setIsDetailView] = useState(false);
+    const [cameraPosition, setCameraPosition] = useState<Vector3>(new Vector3(0, 2, 16));
+
 
     const paintingTitles = [
         'Girl with a Pearl Earring',
@@ -57,6 +60,17 @@ const CameraRoom: React.FC = () => {
         'The Starry Night',
         'Bal du Moulin de la Galette',
         'Self-Portrait with Bandaged Ear',
+        'The Scream',
+        'The Last Supper',
+        'Girl with a Pearl Earring',
+        'Mona Lisa',
+        'The Birth of Venus',
+        'The Kiss',
+        'The Starry Night',
+        'Bal du Moulin de la Galette',
+        'Self-Portrait with Bandaged Ear',
+        'The Scream',
+        'The Last Supper',
         'The Scream',
         'The Last Supper',
     ];
@@ -101,25 +115,32 @@ const CameraRoom: React.FC = () => {
         return [0, index < leftWallPaintings.length ? 0 : Math.PI, 0];
     });
 
-    useEffect(() => {
-        const handleWheel = () => {
-            if (isDetailView) {
-                setIsDetailView(false);
-            }
-        };
-        window.addEventListener('wheel', handleWheel);
-        return () => {
-            window.removeEventListener('wheel', handleWheel);
-        };
-    }, [isDetailView]);
+    // useEffect(() => {
+    //     const handleWheel = () => {
+    //         if (isDetailView) {
+    //             setIsDetailView(false);
+    //         }
+    //     };
+    //     window.addEventListener('wheel', handleWheel);
+    //     return () => {
+    //         window.removeEventListener('wheel', handleWheel);
+    //     };
+    // }, [isDetailView]);
 
+    const roomBounds = {
+        minX: -roomResize / 2 + 12,
+        maxX: roomResize / 2 -12,
+        minZ: -roomSize / 2 + 1,
+        maxZ: roomSize / 2 - 1,
+    };
 
     return (
-        <Canvas camera={{ position: [0, 2, 14], fov: 20 }} style={{ height: '100vh' }}>
-            <CameraController targetPosition={targetPosition} targetAngle={targetAngle} isDetailView={isDetailView} setCameraPosition={setTargetPosition} />
+        <Canvas camera={{ position: [0, 0, 14], fov: 20 }} style={{ height: '100vh' }}>
             <ambientLight intensity={2} />
             <pointLight position={[10, 10, 10]} intensity={1} />
             <MuseumBackground wallLength={roomResize} />
+            <CameraController roomBounds={roomBounds} />
+
             <Suspense fallback={<Loading />}>
                 {paintingUrls.map((url, index) => (
                     <Painting
@@ -131,18 +152,21 @@ const CameraRoom: React.FC = () => {
                         onClick={(position, angle) => {
                             setTargetPosition(position);
                             setTargetAngle(angle);
-                            setIsDetailView(true);
+                            // setIsDetailView(true);
                         }}
                     />
                 ))}
             </Suspense>
-            <OrbitControls
-                enablePan={true}
-                enableZoom={true}
-                zoomSpeed={4}
-                maxPolarAngle={Math.PI * 0.8}
-                target={isDetailView ? targetPosition || new Vector3(0, dFloorPainting, 0) : new Vector3(0, dFloorPainting, 0)} // Menține ținta când nu ești în modul detaliat
-            />
+
+            {/*<OrbitControls*/}
+            {/*    enablePan={true}*/}
+            {/*    enableZoom={true}*/}
+            {/*    zoomSpeed={4}*/}
+            {/*    maxPolarAngle={Math.PI  / 2}*/}
+            {/*    minPolarAngle={Math.PI / 2}*/}
+            {/*    // maxDistance={roomSize / 2 - 1}*/}
+            {/*    target={isDetailView ? targetPosition || new Vector3(0, dFloorPainting, 0) : new Vector3(0, dFloorPainting, 0)}*/}
+            {/*/>*/}
         </Canvas>
     );
 };

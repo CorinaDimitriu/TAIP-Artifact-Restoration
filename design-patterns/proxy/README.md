@@ -1,4 +1,5 @@
 # Proxy design pattern 
+[Proxy](../../FillTheVoid/src/main/java/com/taip/FillTheVoid/config/proxy/)
 (Clasele JwtService.java, RealJwtService.java, JwtServiceProxy.java)
 
 ## JwtService (Interfață):

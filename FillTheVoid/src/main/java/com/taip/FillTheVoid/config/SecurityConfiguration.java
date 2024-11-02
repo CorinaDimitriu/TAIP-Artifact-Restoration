@@ -31,9 +31,7 @@ public class SecurityConfiguration {
             "/swagger-ui.html"
     };
 
-//    private final JwtAuthenticationFilter jwtAuthFilter;
     private final JwtAuthenticationFilter jwtAuthFilter;
-
     private final AuthenticationProvider authenticationProvider;
 
     @Bean

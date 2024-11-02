@@ -1,7 +1,6 @@
-package com.taip.FillTheVoid.config.proxy;
+package com.taip.FillTheVoid.config;
 
-import com.taip.FillTheVoid.config.AuthJwtServiceFactory;
-import com.taip.FillTheVoid.config.JwtServiceFactory;
+import com.taip.FillTheVoid.config.proxy.JwtService;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;

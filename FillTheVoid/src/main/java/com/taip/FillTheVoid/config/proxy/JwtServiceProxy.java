@@ -48,9 +48,4 @@ public class JwtServiceProxy implements JwtService {
 
         return true;
     }
-
-    private boolean hasPermission(UserDetails userDetails) {
-        return userDetails.getAuthorities().stream()
-                .anyMatch(grant -> grant.getAuthority().equals("ROLE_ADMIN"));
-    }
 }

@@ -3,7 +3,7 @@
 [JwtServiceAspect.java](FillTheVoid/src/main/java/com/taip/FillTheVoid/config/JwtServiceAspect.java)
 
 **JwtServiceAspect** este o implementare a programării orientate pe aspecte (AOP) în Spring, care adaugă funcționalitate \
-suplimentară metodelor din cadrul clasei **JwtServiceProxy** [Proxy](FillTheVoid/src/main/java/com/taip/FillTheVoid/config/proxy/). 
+suplimentară metodelor din cadrul clasei **JwtServiceProxy** [Proxy](../FillTheVoid/src/main/java/com/taip/FillTheVoid/config/proxy/). 
 
 ## Metodele Aspectului
 

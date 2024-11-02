@@ -1,5 +1,8 @@
 # Verificarea repository-ului (gestionarea accesului la date) asociat cu entitatea Gallery
 
+[GalleryRepositoryTests.java](../../../FillTheVoid/src/test/java/com/taip/FillTheVoid/gallery/GalleryRepositoryTests.java)
+
+
 Ele acoperă operațiuni de bază cum ar fi salvarea, gestionarea erorilor și căutarea, \
 asigurându-se că interacțiunile cu baza de date sunt conforme cu așteptările. Prin testarea acestor \
 metode, se garantează că aplicația se comportă corect la nivelul cel mai apropiat cu baza de date.
@@ -34,18 +37,18 @@ dacă o galerie poate fi găsită în baza de date pe baza numelui și a proprie
 
 Fișierele funcționale relevante pentru a trece testele sunt:
 
-[Gallery.java](FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/Gallery.java)
+[Gallery.java](../../../FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/Gallery.java)
 
 Fișierul care definește clasa de entitate Gallery. Aici este definită structura entității, 
 cu toate atributele, constrângerile și relațiile necesare (de exemplu, relația cu Owner).
 
-[GalleryRepository.java](FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryRepository.java)
+[GalleryRepository.java](../../../FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryRepository.java)
 
 Interfața de tip Repository care extinde JpaRepository. Aici ar trebui să fie definite metodele utilizate în teste, inclusiv save și findByNameAndOwner.
 
-[Owner.java](FillTheVoid/src/main/java/com/taip/FillTheVoid/user/Owner/Owner.java)
+[Owner.java](../../../FillTheVoid/src/main/java/com/taip/FillTheVoid/user/Owner/Owner.java)
 
-[OwnerRepository.java](FillTheVoid/src/main/java/com/taip/FillTheVoid/user/Owner/OwnerRepository.java)
+[OwnerRepository.java](../../../FillTheVoid/src/main/java/com/taip/FillTheVoid/user/Owner/OwnerRepository.java)
 
 Entitatea Owner, care este asociată cu galeria. Această clasă ar trebui să definească structura proprietarului galeriei.
 
@@ -71,7 +74,7 @@ corectă a operațiilor de citire, actualizare și ștergere pentru entitățile
 
 ![image](https://github.com/user-attachments/assets/a12f5581-bac9-4e26-b2e9-d0069a767238)
 
-### Poza 1: rulăm testele noi create și ne așteptăm să eșueze
+### Poza 3: rulăm testele noi create și ne așteptăm să eșueze
 
 ![image](https://github.com/user-attachments/assets/a2db63fc-296e-4254-a7c8-68e1d3b1c6f0)
 
@@ -79,15 +82,15 @@ corectă a operațiilor de citire, actualizare și ștergere pentru entitățile
 
 Fișierele funcționale relevante pentru a trece testele sunt:
 
-[GalleryProjection.java](FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryProjection.java)
+[GalleryProjection.java](../../../FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryProjection.java)
 
 Aceasta este o interfață folosită pentru a defini proiecții asupra entităților JPA, permițând extragerea 
 doar a câmpurilor galleryName și description.
 
-[GalleryRepository.java](FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryRepository.java)
+[GalleryRepository.java](../../../FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryRepository.java)
 
 Aici sunt adăugate noi metode personalizate de acces la baza de date pentru entitatea Gallery, mai exact findAllByOwner(Owner owner), \
 updateGalleryNameAndDescription(Gallery gallery, String newName, String newDescription), deleteGallery(Gallery gallery)
 
-### Poza 2: rulăm toate testele din nou și verificăm dacă acum trec
+### Poza 4: rulăm toate testele din nou și verificăm dacă acum trec
 ![image](https://github.com/user-attachments/assets/5d556eef-f85f-4d02-ae58-ce57717311b3)

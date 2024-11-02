@@ -1,5 +1,7 @@
 package com.taip.FillTheVoid.config;
 
+import com.taip.FillTheVoid.config.proxy.JwtService;
+
 public abstract class JwtServiceFactory {
 
     public JwtService instantiateJwtService() {

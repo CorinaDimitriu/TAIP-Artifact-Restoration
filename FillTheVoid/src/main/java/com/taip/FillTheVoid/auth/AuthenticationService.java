@@ -1,6 +1,7 @@
 package com.taip.FillTheVoid.auth;
 
-import com.taip.FillTheVoid.config.JwtService;
+//import com.taip.FillTheVoid.config.JwtService;
+import com.taip.FillTheVoid.config.proxy.JwtService;
 import com.taip.FillTheVoid.user.Owner.Owner;
 import com.taip.FillTheVoid.user.Owner.OwnerRepository;
 import com.taip.FillTheVoid.user.Role;

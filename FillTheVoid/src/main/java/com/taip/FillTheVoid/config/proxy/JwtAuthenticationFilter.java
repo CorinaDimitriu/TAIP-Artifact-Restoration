@@ -1,5 +1,9 @@
-package com.taip.FillTheVoid.config;
+package com.taip.FillTheVoid.config.proxy;
 
+import com.taip.FillTheVoid.config.AuthJwtServiceFactory;
+//import com.taip.FillTheVoid.config.JwtService;
+import com.taip.FillTheVoid.config.proxy.JwtService;
+import com.taip.FillTheVoid.config.JwtServiceFactory;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
@@ -17,25 +21,17 @@ import org.springframework.web.filter.OncePerRequestFilter;
 import java.io.IOException;
 
 @Component
+@RequiredArgsConstructor
 public class JwtAuthenticationFilter extends OncePerRequestFilter {
 
     private final JwtService authJwtService;
     private final UserDetailsService userDetailsService;
 
-    private JwtAuthenticationFilter(UserDetailsService userDetailsService) {
-        this.userDetailsService = userDetailsService;
-
-        JwtServiceFactory authJwtServiceFactory = new AuthJwtServiceFactory();
-        authJwtService = authJwtServiceFactory.instantiateJwtService();
-    }
-
-
     @Override
     protected void doFilterInternal(
-        @NonNull HttpServletRequest request,
-        @NonNull HttpServletResponse response,
-        @NonNull FilterChain filterChain
-
+            @NonNull HttpServletRequest request,
+            @NonNull HttpServletResponse response,
+            @NonNull FilterChain filterChain
     ) throws ServletException, IOException {
 
         final String authHeader = request.getHeader("Authorization");

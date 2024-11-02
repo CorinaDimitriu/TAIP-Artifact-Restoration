@@ -1,5 +1,6 @@
 package com.taip.FillTheVoid.config;
 
+import com.taip.FillTheVoid.config.proxy.JwtAuthenticationFilter;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -32,7 +33,9 @@ public class SecurityConfiguration {
             "/swagger-ui.html"
     };
 
+//    private final JwtAuthenticationFilter jwtAuthFilter;
     private final JwtAuthenticationFilter jwtAuthFilter;
+
     private final AuthenticationProvider authenticationProvider;
 
     @Bean

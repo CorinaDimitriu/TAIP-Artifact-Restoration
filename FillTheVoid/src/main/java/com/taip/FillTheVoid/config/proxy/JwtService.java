@@ -1,4 +1,4 @@
-package com.taip.FillTheVoid.config;
+package com.taip.FillTheVoid.config.proxy;
 
 
 import org.springframework.security.core.userdetails.UserDetails;

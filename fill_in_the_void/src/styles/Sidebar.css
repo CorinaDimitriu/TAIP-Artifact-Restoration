@@ -1,0 +1,29 @@
+.sidebar {
+    width: auto;
+    background-color: #f8f9fa;
+    padding: 30px 30px;
+    border-right: 1px solid #ddd;
+    height: auto;
+}
+
+
+.sidebar-list {
+    list-style-type: none;
+    align-items: center;
+    padding: 0 10px;
+    margin: 0;
+}
+
+.sidebar-item {
+    margin-bottom: 20px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #333;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-item:hover {
+    color: #ee1d1d;
+    text-decoration: none;
+}

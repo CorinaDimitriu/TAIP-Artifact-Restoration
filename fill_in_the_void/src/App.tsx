@@ -1,13 +1,14 @@
 import React from 'react';
 import './App.css';
-import CameraRoom from './components/objects/CameraRoom';
-import CameraWalk from "./components/objects/CameraWalk";
-import Room from "./components/objects/CameraWalk";
+import CameraRoom from './components/room/CameraRoom';
+import Restoration from "./components/pages/Restoration";
+import Home from "./components/pages/Home";
 
 function App() {
   return (
-    <div className="App">
-      <CameraRoom />
+    <div>
+      {/*<CameraRoom />*/}
+      <Home/>
     </div>
   );
 }

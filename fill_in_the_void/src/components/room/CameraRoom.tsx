@@ -1,6 +1,5 @@
-import React, { Suspense, useEffect, useState } from 'react';
+import React, { Suspense, useState } from 'react';
 import { Canvas  } from '@react-three/fiber';
-import { OrbitControls } from '@react-three/drei';
 import {  Vector3 } from 'three';
 
 import girlWithAPearlEarring from '../paintings/girl-with-a-pearl-earring.jpg';
@@ -16,7 +15,6 @@ import theLasSupper from '../paintings/the-las-supper.jpg';
 import Loading from './Loading';
 import MuseumBackground from "./MuseumBackground";
 import Painting from "./Painting";
-// import CameraMovement from './CameraMovement';
 import CameraController from './CameraController';
 
 const paintingUrls = [
@@ -48,8 +46,6 @@ const CameraRoom: React.FC = () => {
 
     const [targetPosition, setTargetPosition] = useState<Vector3 | null>(null);
     const [targetAngle, setTargetAngle] = useState<number | null>(null);
-    const [isDetailView, setIsDetailView] = useState(false);
-    const [cameraPosition, setCameraPosition] = useState<Vector3>(new Vector3(0, 2, 16));
 
 
     const paintingTitles = [
@@ -115,18 +111,6 @@ const CameraRoom: React.FC = () => {
         return [0, index < leftWallPaintings.length ? 0 : Math.PI, 0];
     });
 
-    // useEffect(() => {
-    //     const handleWheel = () => {
-    //         if (isDetailView) {
-    //             setIsDetailView(false);
-    //         }
-    //     };
-    //     window.addEventListener('wheel', handleWheel);
-    //     return () => {
-    //         window.removeEventListener('wheel', handleWheel);
-    //     };
-    // }, [isDetailView]);
-
     const roomBounds = {
         minX: -roomResize / 2 + 12,
         maxX: roomResize / 2 -12,
@@ -152,7 +136,6 @@ const CameraRoom: React.FC = () => {
                         onClick={(position, angle) => {
                             setTargetPosition(position);
                             setTargetAngle(angle);
-                            // setIsDetailView(true);
                         }}
                     />
                 ))}

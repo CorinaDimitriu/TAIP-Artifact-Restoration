@@ -28,6 +28,8 @@ public class GalleryService {
 
         galleryRepository.save(gallery);
 
+//        TODO unique name and owner
+
         return galleryName;
     }
 

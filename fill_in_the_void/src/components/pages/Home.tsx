@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useNavigate } from 'react-router-dom';
 import monaLisa from "../images/mona-lisa.jpg";
 
 import "../../styles/Home.css";
@@ -7,18 +8,30 @@ import Navbar from "../objects/Navbar";
 import Sidebar from "../objects/Sidebar";
 import DragAndDrop from "../objects/DragAndDrop";
 
-const Home: React.FC = () => {
+interface HomeProps {
+    setUploadedImage: (image: string | null) => void; // Define the prop type
+}
+
+const Home: React.FC<HomeProps> = ({ setUploadedImage }) => {
     const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
     const handleFileUpload = (file: File | null) => {
         setUploadedFile(file);
+        if (file) {
+            const reader = new FileReader();
+            reader.onloadend = () => {
+                setUploadedImage(reader.result as string); // Set the uploaded image
+            };
+            reader.readAsDataURL(file);
+        }
     };
 
+    const navigate = useNavigate();
     const handleNextStep = () => {
         if (!uploadedFile) {
             alert("Please upload a valid image file (PNG or JPG) before proceeding.");
         } else {
-            console.log("Proceeding to next step with:", uploadedFile);
+            navigate('/restoration');
         }
     };
 

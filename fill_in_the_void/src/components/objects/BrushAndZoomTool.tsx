@@ -1,15 +1,18 @@
 import React, { useState } from 'react';
 import { FaSearch, FaPaintBrush } from 'react-icons/fa';
+import { MdOutlineZoomOutMap } from "react-icons/md";
 import '../../styles/BrushAndZoomTool.css';
 
 interface BrushAndZoomToolProps {
     onBrushSizeChange: (size: number) => void;
+    zoomLevel: number; // New prop for zoom level
+    onZoomLevelChange: (level: number) => void; // New prop for updating zoom level
+    setActiveTool: (tool: 'brush' | 'zoom') => void; // New prop for setting active tool
 }
 
-const BrushAndZoomTool: React.FC<BrushAndZoomToolProps> = ({ onBrushSizeChange }) => {
+const BrushAndZoomTool: React.FC<BrushAndZoomToolProps> = ({ onBrushSizeChange, zoomLevel, onZoomLevelChange, setActiveTool }) => {
     const [brushSize, setBrushSize] = useState(10);
-    const [zoomLevel, setZoomLevel] = useState(1);
-    const [activeTool, setActiveTool] = useState<'brush' | 'zoom'>('brush');
+    const [activeTool, setActiveToolState] = useState<'brush' | 'zoom'>('brush');
 
     const handleBrushSizeChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         const newSize = Number(event.target.value);
@@ -18,11 +21,17 @@ const BrushAndZoomTool: React.FC<BrushAndZoomToolProps> = ({ onBrushSizeChange }
     };
 
     const handleZoomChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        setZoomLevel(Number(event.target.value));
+        const newZoomLevel = Number(event.target.value);
+        onZoomLevelChange(newZoomLevel); // Update zoom level in parent component
     };
 
     const handleToolChange = (tool: 'brush' | 'zoom') => {
-        setActiveTool(tool);
+        setActiveToolState(tool);
+        setActiveTool(tool); // Set the active tool in parent component
+    };
+
+    const resetZoom = () => {
+        onZoomLevelChange(1); // Reset to initial zoom level
     };
 
     return (
@@ -62,11 +71,13 @@ const BrushAndZoomTool: React.FC<BrushAndZoomToolProps> = ({ onBrushSizeChange }
                             min="0.1"
                             max="3"
                             step="0.1"
-                            value={zoomLevel}
+                            value={zoomLevel} // Controlled by parent component
                             onChange={handleZoomChange}
                             className="zoom-slider"
                         />
                     </div>
+                    <MdOutlineZoomOutMap style={{marginLeft: "10px", fontSize:"20px", cursor:"pointer"}} onClick={resetZoom}/>
+
                 </>
             )}
         </div>

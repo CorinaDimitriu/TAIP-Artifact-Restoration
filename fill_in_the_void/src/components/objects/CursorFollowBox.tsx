@@ -1,12 +1,10 @@
 import React from 'react';
 
 const CursorFollowBox: React.FC<{ isVisible: boolean; cursorPosition: { x: number; y: number }; brushSize: number }> = ({ isVisible, cursorPosition, brushSize }) => {
-    // Return null if the box should not be visible
     if (!isVisible) {
-        return null; // Correctly return null when not visible
+        return null;
     }
 
-    // Render the box when visible
     return (
         <div
             style={{

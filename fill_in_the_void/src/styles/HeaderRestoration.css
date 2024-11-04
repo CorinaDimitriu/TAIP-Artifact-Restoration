@@ -34,9 +34,9 @@
 }
 
 .download-button{
-    padding: 8px 20px;
+    padding: 8px 22px;
     border: 2px solid #3E3E3E;
-    background-color: grey;
+    background-color: #32a852;
     color: #fff;
     font-size: 0.9rem;
     font-weight: bold;
@@ -46,6 +46,6 @@
 }
 
 .download-button:hover{
-    background-color: #636363;
-    border-color: #696969;
+    background-color: #44c162;
+    border-color: #44c162;
 }

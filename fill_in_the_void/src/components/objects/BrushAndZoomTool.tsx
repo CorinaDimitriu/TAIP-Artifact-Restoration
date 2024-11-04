@@ -8,9 +8,10 @@ interface BrushAndZoomToolProps {
     zoomLevel: number; // New prop for zoom level
     onZoomLevelChange: (level: number) => void; // New prop for updating zoom level
     setActiveTool: (tool: 'brush' | 'zoom') => void; // New prop for setting active tool
+    setImagePosition: (position: { x: number; y: number }) => void;
 }
 
-const BrushAndZoomTool: React.FC<BrushAndZoomToolProps> = ({ onBrushSizeChange, zoomLevel, onZoomLevelChange, setActiveTool }) => {
+const BrushAndZoomTool: React.FC<BrushAndZoomToolProps> = ({ onBrushSizeChange, zoomLevel, onZoomLevelChange, setActiveTool, setImagePosition }) => {
     const [brushSize, setBrushSize] = useState(10);
     const [activeTool, setActiveToolState] = useState<'brush' | 'zoom'>('brush');
 
@@ -31,7 +32,8 @@ const BrushAndZoomTool: React.FC<BrushAndZoomToolProps> = ({ onBrushSizeChange, 
     };
 
     const resetZoom = () => {
-        onZoomLevelChange(1); // Reset to initial zoom level
+        onZoomLevelChange(1);
+        setImagePosition({ x: 0, y: 0 });
     };
 
     return (

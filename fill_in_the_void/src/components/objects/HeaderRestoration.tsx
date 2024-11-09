@@ -2,6 +2,7 @@ import React from "react";
 import "../../styles/HeaderRestoration.css";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
+import { IoArrowBackOutline } from "react-icons/io5";
 
 interface HeaderRestorationProps {
     onStartOver: () => void;
@@ -31,7 +32,7 @@ const HeaderRestoration: React.FC<HeaderRestorationProps> = ({ onStartOver,onDon
         <header className="header-restoration">
             <div className="actions-rest">
                 <button className="action-button" onClick={() => handleActions("Back")}>
-                    <IoIosArrowRoundBack style={{fontSize: "25px", marginRight: "6px"}}/>
+                    <IoArrowBackOutline  style={{fontSize: "18px", marginRight: "6px"}}/>
                     Back
                 </button>
                 <div style={{color: "white", fontSize: "1rem"}}>|</div>

@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "../../styles/Sidebar.css";
 import { useNavigate, useLocation } from "react-router-dom";
-
-const Sidebar: React.FC = () => {
+interface SidebarProps {
+    style?: React.CSSProperties;
+}
+const Sidebar: React.FC<SidebarProps> = ({ style }) => {
     const navigate = useNavigate();
     const location = useLocation(); // Hook-ul pentru a obține calea curentă
     const [selected, setSelected] = useState<string>('');
@@ -27,7 +29,7 @@ const Sidebar: React.FC = () => {
     };
 
     return (
-        <div className="sidebar">
+        <div className="sidebar" style={style}>
             <ul className="sidebar-list">
                 <div
                     className={`sidebar-item ${selected === 'restoration' ? 'active' : ''}`}

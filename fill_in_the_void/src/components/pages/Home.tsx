@@ -39,9 +39,9 @@ const Home: React.FC<HomeProps> = ({ setUploadedImage }) => {
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
             <Header />
             <Navbar />
-            <div style={{ display: "flex", flex: 1 }}>
+            <div className="content" style={{ display: "flex", flex: 1 }}>
                 <Sidebar />
-                <div style={{ display: "flex", flex: 1, padding: "30px 60px" }}>
+                <div style={{ display: "flex", flex: 1, padding: "30px 40px", paddingLeft:"20px"}}>
                     <div style={{ flex: "0 0 70%", paddingTop: "30px" }}>
                         <div className="text-main">
                             Image restoration has never been easier! Select a damaged area of the photograph, and

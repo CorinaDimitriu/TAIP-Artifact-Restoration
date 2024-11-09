@@ -1,9 +1,14 @@
 .sidebar {
-    width: auto;
+    position: fixed;
+    top: 100px;
+    left: 0;
+    width: 130px;
     background-color: #f8f9fa;
-    padding: 30px 30px;
+    padding: 30px 24px;
     border-right: 1px solid #ddd;
-    height: auto;
+    height: 100vh;
+    overflow-y: auto;
+    z-index: 999;
 }
 
 
@@ -21,6 +26,11 @@
     color: #333;
     cursor: pointer;
     transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.sidebar-item.active {
+    color: green;
+    font-weight: bold;
 }
 
 .sidebar-item:hover {

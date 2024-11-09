@@ -1,7 +1,9 @@
 .navbar {
+    position: sticky;
+    top: 61px;
     background-color: #3E3E3E;
     padding: 10px 20px;
-    border-bottom: 1px solid #ddd;
+    z-index: 999;
 }
 
 .navbar-list {

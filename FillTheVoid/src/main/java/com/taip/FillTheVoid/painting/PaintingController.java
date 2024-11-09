@@ -5,6 +5,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.core.io.ByteArrayResource;
 import org.springframework.http.CacheControl;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -19,14 +20,17 @@ public class PaintingController {
 
     private final PaintingService paintingService;
 
-    @PostMapping("/add")
+    @RequestMapping(
+            path = "/add",
+            method = RequestMethod.POST,
+            consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<String> addPainting(
             @RequestParam("email-user") String emailUser,
             @RequestParam("gallery-name") String galleryName,
             @RequestParam("painting-name") String paintingName,
             @RequestParam("painting-description") String description,
             @RequestParam("author") String author,
-            MultipartFile image)  throws Exception{
+            @RequestPart("image") MultipartFile image)  throws Exception{
 
 
         return ResponseEntity.ok(paintingService.addPainting(emailUser, galleryName, paintingName, description, author, image.getContentType(), image.getBytes()));

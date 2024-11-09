@@ -1,6 +1,4 @@
 package com.taip.FillTheVoid.restoration;
-
-
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -20,12 +18,11 @@ public class RestorationService {
         System.out.println("Here use pythonic code to restore and obtain new restoredImage");
         System.out.println(corners);
 
-        // TODO
+        // TODO restoredImage should be changed (in this example is returned same image)
         byte[] restoredImage = image;
 
         RestoredImage newRestoredImage = new RestoredImage(imageType, restoredImage);
 
         return newRestoredImage;
     }
-
 }

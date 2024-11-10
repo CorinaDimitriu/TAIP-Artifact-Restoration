@@ -1,7 +1,9 @@
-package com.taip.FillTheVoid.user;
+package com.taip.FillTheVoid.user.Visitor;
 
 import com.taip.FillTheVoid.gallery.Gallery;
 import com.taip.FillTheVoid.painting.Painting;
+import com.taip.FillTheVoid.user.Role;
+import com.taip.FillTheVoid.user.User;
 import jakarta.persistence.Entity;
 
 @Entity

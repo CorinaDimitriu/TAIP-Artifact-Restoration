@@ -14,7 +14,6 @@ public class UserService {
 
     public User getUserByEmail(String email) {
 
-
         Optional<User> user = repository.findByEmail(email);
 
         if (user.isEmpty()) {

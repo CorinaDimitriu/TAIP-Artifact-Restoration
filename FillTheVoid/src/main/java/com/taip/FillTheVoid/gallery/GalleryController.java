@@ -1,7 +1,5 @@
 package com.taip.FillTheVoid.gallery;
 
-import com.taip.FillTheVoid.auth.AuthenticationResponse;
-import com.taip.FillTheVoid.auth.RegisterRequest;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -25,7 +23,7 @@ public class GalleryController {
         return ResponseEntity.ok(galleryService.addGallery(emailUser, galleryName, description));
     }
 
-    @PostMapping("/findAllByOwner")
+    @GetMapping("/findAllByOwner")
     public ResponseEntity<List<GalleryProjection>> findGalleries(
             @RequestParam("email-user") String emailUser) {
 

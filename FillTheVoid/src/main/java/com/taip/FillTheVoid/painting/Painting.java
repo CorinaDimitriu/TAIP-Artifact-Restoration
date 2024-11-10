@@ -27,6 +27,7 @@ public class Painting {
     @Column(nullable = false)
     private LocalDateTime createdAt;
 
+    private String imageType;
     @Column(name = "image")
     private byte[] image;
 
@@ -43,7 +44,7 @@ public class Painting {
 
     public Painting() {}
 
-    public Painting(Owner owner, Gallery gallery, String paintingName, String description, String author, int noVisualizations, LocalDateTime createdAt, byte[] image, List<String> comments) {
+    public Painting(Owner owner, Gallery gallery, String paintingName, String description, String author, int noVisualizations, LocalDateTime createdAt, String imageType, byte[] image, List<String> comments) {
 
         this.owner = owner;
         this.gallery = gallery;
@@ -52,6 +53,7 @@ public class Painting {
         this.author = author;
         this.noVisualizations = noVisualizations;
         this.createdAt = createdAt;
+        this.imageType = imageType;
         this.image = image;
         this.comments = comments;
     }

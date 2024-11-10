@@ -7,10 +7,16 @@ import "../../styles/Album.css";
 
 const HeaderAlbum: React.FC = () => {
     const navigate = useNavigate();
-    const { albumTitle } = useParams();
+    const { albumId, albumTitle } = useParams();
+
 
     const goBack = () => {
         navigate("/all-albums");
+    };
+
+    const goTo3DView = () => {
+        // Navigare către CameraRoom folosind doar albumId
+        navigate(`/3d-view/${albumId}`);
     };
 
     return (
@@ -25,13 +31,13 @@ const HeaderAlbum: React.FC = () => {
             </div>
 
             <div className="header-buttons">
-                <button className="view-button" onClick={goBack}>
-                    <FaRegEye style={{ fontSize: "18px", marginRight: "6px" }} />
+                <button className="view-button" onClick={goTo3DView}>
+                    <FaRegEye style={{fontSize: "18px", marginRight: "6px"}}/>
                     3D View
                 </button>
 
                 <button className="menu-button">
-                    <IoMenu style={{ fontSize: "18px", paddingBottom: "0px" }} />
+                    <IoMenu style={{fontSize: "18px", paddingBottom: "0px"}}/>
                 </button>
             </div>
         </div>

@@ -19,6 +19,7 @@ function App() {
                 <Route path="/result" element={<Result/>}/>
                 <Route path="/all-albums" element={<AllAlbums/>}/>
                 <Route path="/album/:albumId/:albumTitle" element={<Album/>}></Route>
+                <Route path="/3d-view/:albumId" element={<CameraRoom />} />
             </Routes>
         </Router>
     );

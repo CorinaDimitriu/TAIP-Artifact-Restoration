@@ -1,21 +1,14 @@
 import React from "react";
-import Header from "../objects/Header";
-import Navbar from "../objects/Navbar";
 import Sidebar from "../objects/Sidebar";
 import "../../styles/Album.css";
 import "../../index.css";
-import {useLocation, useNavigate, useParams} from "react-router-dom";
+import {useLocation, useParams} from "react-router-dom";
 import monaLisa from "../images/mona-lisa.jpg";
-import bal from "../images/bal-du-moulin-de-la-galette.jpg"
-import { IoArrowBackOutline } from "react-icons/io5";
-import { FaRegEye } from "react-icons/fa";
-import { IoMenu } from "react-icons/io5";
 import HeaderAlbum from "../objects/HeaderAlbum";
 
 const albumDetails = {
     "1": [
         { image: monaLisa, title: "Mona Lisa" },
-        { image: bal, title: "Mona Lisa" },
         { image: monaLisa, title: "Mona Lisa" },
         { image: monaLisa, title: "Mona Lisa" },
         { image: monaLisa, title: "Mona Lisa" },
@@ -46,7 +39,7 @@ type AlbumDetails = typeof albumDetails;
 const Album: React.FC = () => {
     const location = useLocation();
     const { albumId } = useParams();
-    const images = albumDetails[albumId as keyof AlbumDetails] || []; // Accesăm corect obiectul
+    const images = albumDetails[albumId as keyof AlbumDetails] || [];
 
     return (
         <div style={{display: "flex", flexDirection: "column", minHeight: "100vh"}}>

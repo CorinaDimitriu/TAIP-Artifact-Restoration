@@ -1,10 +1,12 @@
-import React, { useState, useRef, useEffect } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import HeaderRestoration from "../objects/HeaderRestoration";
 import "../../styles/Restoration.css";
 import BrushAndZoomTool from "../objects/BrushAndZoomTool";
 import CursorFollowBox from "../objects/CursorFollowBox";
 import ProgressBar from "../objects/ProgressBar";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom";
+import axios from 'axios';
+
 
 interface RestorationProps {
     uploadedImage: string | null;
@@ -51,19 +53,25 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
     }, [imageToDisplay]);
 
     useEffect(() => {
-        const updateCanvasSize = () => {
-            const canvas = canvasRef.current;
-            const imageElement = document.querySelector(".image") as HTMLImageElement;
+        setTimeout(() => {
+            setIsCursorOverImage(false);
+            setIsCursorOverImage(true);
+        }, 10);
+    }, [imageToDisplay]);
 
-            if (canvas && imageElement) {
-                canvas.width = imageElement.clientWidth;
-                canvas.height = imageElement.clientHeight;
-            }
-        };
+    const updateCanvasSize = () => {
+        const canvas = canvasRef.current;
+        const imageElement = document.querySelector(".image") as HTMLImageElement;
 
+        if (canvas && imageElement && imageElement.complete) { // Verifică dacă imaginea este complet încărcată
+            canvas.width = imageElement.clientWidth;
+            canvas.height = imageElement.clientHeight;
+        }
+    };
+
+    useEffect(() => {
         updateCanvasSize();
 
-        // Recalculăm dimensiunea când fereastra se redimensionează
         window.addEventListener("resize", updateCanvasSize);
         return () => window.removeEventListener("resize", updateCanvasSize);
     }, [imageToDisplay, zoomLevel]);
@@ -96,14 +104,22 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
     };
 
     const handleMouseDownCanvas = (event: React.MouseEvent<HTMLCanvasElement>) => {
+        const canvas = canvasRef.current;
+        const imageElement = document.querySelector(".image") as HTMLImageElement;
+
+        if (!canvas || !imageElement || !imageElement.complete) {
+            return; // Ieși dacă imaginea nu este încărcată complet
+        }
+
         if (activeTool === 'brush') {
             isDrawing.current = true;
             drawSquare(event.clientX, event.clientY);
         } else if (activeTool === 'zoom') {
             setIsDragging(true);
-            setLastMousePosition({ x: event.clientX, y: event.clientY }); // Start dragging
+            setLastMousePosition({ x: event.clientX, y: event.clientY });
         }
     };
+
 
     const handleMouseUpCanvas = () => {
         setIsDragging(false);
@@ -113,6 +129,7 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
 
     // New event handlers for the image
     const handleMouseDownImage = (event: React.MouseEvent<HTMLImageElement>) => {
+        if (activeTool === 'brush') return;
         setIsDragging(true);
         setLastMousePosition({ x: event.clientX, y: event.clientY }); // Start dragging
         event.preventDefault(); // Prevent default image drag behavior
@@ -121,6 +138,7 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
     const handleMouseMoveImage = (event: React.MouseEvent<HTMLImageElement>) => {
         // Update the cursor position over the image for the brush tool
         setCursorPosition({ x: event.clientX, y: event.clientY });
+        if (activeTool !== 'zoom' || !isDragging || !lastMousePosition) return;
 
         // Handle dragging for image
         if (isDragging && lastMousePosition) {
@@ -137,8 +155,10 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
     };
 
     const handleMouseUpImage = () => {
-        setIsDragging(false);
-        setLastMousePosition(null); // Reset last position
+        if (activeTool === 'zoom') {
+            setIsDragging(false);
+            setLastMousePosition(null);
+        }
     };
 
     const handleDragStart = (event: React.DragEvent<HTMLImageElement>) => {
@@ -263,21 +283,82 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
         console.log("Canvas cleared, Bounding Box reset.");
     };
 
-    const handleDoneClick = () => {
+
+    const handleDoneClick = async () => {
         setShowProgressBar(true);
         setProgressPercentage(0);
 
-        const interval = setInterval(() => {
-            setProgressPercentage(prev => {
-                if (prev >= 100) {
-                    clearInterval(interval);
-                    setShowProgressBar(false);
-                    navigate('/result');
-                    return 100;
+        const uploadedImage = localStorage.getItem('restorationImage');
+
+        if (uploadedImage && boundingBox) {
+            try {
+
+                const formData = new FormData();
+
+                const response = await fetch(uploadedImage);
+                const file = await response.blob(); // Convert to Blob
+
+                // formData.append("corners", JSON.stringify(corners));
+
+                formData.append('corners', new Blob([JSON.stringify({
+                    leftUp: { x: boundingBox.leftUp.x, y: boundingBox.leftUp.y },
+                    rightUp: { x: boundingBox.rightUp.x, y: boundingBox.rightUp.y },
+                    leftDown: { x: boundingBox.leftDown.x, y: boundingBox.leftDown.y },
+                    rightDown: { x: boundingBox.rightDown.x, y: boundingBox.rightDown.y }
+                })], {
+                    type: "application/json"
+                }));
+
+                formData.append("image", file, 'test.png');
+
+                try {
+                    const response = await axios.post('http://localhost:8080/api/v1/restoration/restore', formData, {
+                        headers: {
+                            'Content-Type': 'multipart/form-data'
+                        },
+                        responseType: 'arraybuffer',
+                        maxContentLength: Infinity,
+                        maxBodyLength: Infinity,
+                        onUploadProgress: (progressEvent) => {
+                            if (progressEvent.total) {
+                                const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
+                                console.log(`Progress: ${progress}%`);
+                                setProgressPercentage(progress);
+                            }
+                        }
+                    });
+                    console.log("response-->");
+                    console.log(response.data)
+
+                    const uint8Array = new Uint8Array(response.data);
+                    let binary = '';
+                    for (let i = 0; i < uint8Array.length; i++) {
+                        binary += String.fromCharCode(uint8Array[i]);
+                    }
+                    const base64String = btoa(binary);
+
+                    console.log(base64String);
+                    localStorage.setItem('restoredImage', "data:image/png;base64,"+base64String);
+                    setProgressPercentage(100);
+
+                    setTimeout(() => {
+                        navigate('/result');
+                    }, 500);
+                    // navigate('/result');
+
+
+                } catch (error) {
+                    console.error('Error uploading file:', error);
                 }
-                return prev + 10; // Increase by 10%
-            });
-        }, 200); // Adjust time interval as needed
+
+            } catch (error) {
+                // Handle any network or other errors
+                console.error("Error while sending request:", error);
+            }
+        } else {
+            console.error("Missing uploaded image or bounding box data.");
+        }
+
     };
 
     return (
@@ -293,6 +374,7 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
                         onMouseDown={handleMouseDownImage} // Add mouse down event
                         onMouseMove={handleMouseMoveImage} // Add mouse move event
                         onMouseUp={handleMouseUpImage} // Add mouse up event
+                        onLoad={updateCanvasSize}
                         style={{
                             transform: `translate(${imagePosition.x}px, ${imagePosition.y}px) scale(${zoomLevel})`,
                             transformOrigin: '50% 50%',
@@ -319,11 +401,13 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
                     }}
                 />
 
+
                 <CursorFollowBox
-                    isVisible={isCursorOverImage && activeTool === 'brush' && !isDragging}
+                    isVisible={!isDragging}
                     cursorPosition={cursorPosition}
                     brushSize={brushSize}
                 />
+
             </div>
             <div style={{display: "flex", alignItems: "center", justifyContent: "center"}}>
                 <BrushAndZoomTool

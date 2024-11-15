@@ -5,12 +5,15 @@ import HeaderResult from "../objects/HeaderResult";
 
 const Result: React.FC = () => {
     const [beforeImage, setBeforeImage] = useState<string | null>(null);
+    const [afterImage, setAfterImage] = useState<string | null>(null);
 
     useEffect(() => {
         // Get the Before image from localStorage
         const savedBeforeImage = localStorage.getItem('restorationImage');
-        if (savedBeforeImage) {
+        const savedAfterImage = localStorage.getItem('restoredImage');
+        if (savedBeforeImage && savedAfterImage) {
             setBeforeImage(savedBeforeImage);
+            setAfterImage(savedAfterImage);
         }
     }, []);
 
@@ -28,8 +31,8 @@ const Result: React.FC = () => {
                 </div>
                 <div className="image-section">
                     <h2>After</h2>
-                    {beforeImage ? (
-                        <img src={beforeImage} alt="After" className="result-image"/>
+                    {afterImage ? (
+                        <img src={afterImage} alt="After" className="result-image"/>
                     ) : (
                         <p>No image available</p>
                     )}

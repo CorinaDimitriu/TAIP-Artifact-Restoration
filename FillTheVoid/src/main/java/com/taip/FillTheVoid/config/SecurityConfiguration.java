@@ -9,13 +9,15 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
+import org.springframework.web.servlet.config.annotation.CorsRegistry;
+import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @Configuration
 @EnableWebSecurity
 @RequiredArgsConstructor
-public class SecurityConfiguration {
+public class SecurityConfiguration implements WebMvcConfigurer {
 
     private static final String[] WHITE_LIST_URL = {"/api/v1/auth/**",
             "/api/v1/restoration/**",
@@ -53,6 +55,16 @@ public class SecurityConfiguration {
 
 
         return http.build();
+    }
+
+    @Override
+    public void addCorsMappings(CorsRegistry registry) {
+        // Permite CORS pentru frontend-ul de pe localhost:3000
+        registry.addMapping("/api/**")
+                .allowedOrigins("http://localhost:3000")  // Specifică frontend-ul
+                .allowedMethods("GET", "POST", "PUT", "DELETE")  // Permite metodele dorite
+                .allowedHeaders("*")  // Permite toate capetele
+                .allowCredentials(true);  // Permite trimiterea cookie-urilor (dacă este cazul)
     }
 
 }

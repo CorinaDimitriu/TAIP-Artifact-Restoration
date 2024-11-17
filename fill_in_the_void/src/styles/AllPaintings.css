@@ -1,0 +1,44 @@
+.paintings-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+    gap: 20px;
+    padding: 30px 20px;
+    width: 100%;
+    overflow-y: auto;
+}
+
+.page-title {
+    font-size: 1.8rem;
+    font-weight: bold;
+    text-align: center;
+    margin-top: 20px;
+    color: #333;
+    flex: 1;
+}
+
+.painting-card {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.32);
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.painting-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.48);
+}
+
+.painting-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.painting-title {
+    margin-top: 10px;
+    font-size: 1.1rem;
+    font-weight: bold;
+}

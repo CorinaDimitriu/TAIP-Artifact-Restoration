@@ -1,10 +1,11 @@
 
 .register-container {
+    background-image: url('../components/textures/login_page_bg.png');
+    background-position: center;background-size: cover;
     display: flex;
     justify-content: center;
     align-items: center;
     height: 100vh;
-    background: radial-gradient(circle, #2c2c2c, #1a1a1a);
   }
   
 
@@ -37,67 +38,68 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin-bottom: 20px;
+    margin: 20px 0;
   }
   
   .register-logo {
     width: 60px;
     margin-bottom: 10px;
   }
-  
-  h1 {
-    font-size: 24px;
-    color: #000;
+
+  .text-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
   }
-  
 
   .register-subtitle {
-    color: #555;
-    margin: 10px 0 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0 30px;
+    font-size: 1.1rem;
+    color: #424242;
   }
   
 
   .register-form {
     display: flex;
     flex-direction: column;
+    padding: 0 30px;
   }
   
   .register-input {
     border: 1px solid #ccc;
     border-radius: 5px;
-    padding: 10px;
-    margin-bottom: 15px;
-    font-size: 16px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
   }
-  
+
+  .register-btn-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
 
   .register-button {
-    background: #000;
+    background: #3E3E3E;
     color: white;
-    padding: 10px 16px;
+    padding: 8px 16px;
     border: none;
     border-radius: 20px;
     cursor: pointer;
     font-size: 14px;
     width: 150px;
-    margin: 0 auto;
+    margin-top: 20px;
+    transition: background-color 0.2s ease, color 0.2s ease;
   }
-  
-  .create-account-button {
-    margin-top: 50px;
-    border: 1px solid #000;
-    background: none;
-    color: #000;
-    padding: 6px 16px;
-    border-radius: 20px;
-    cursor: pointer;
-    font-size: 14px;
-    width: 150px;
-    margin: 0 auto;
+
+  .register-button:hover {
+    background: #575757;
   }
-  
-  
-  .error-message {
+
+  .error-register {
     color: red;
     font-size: 14px;
     margin-top: 10px;

@@ -64,7 +64,7 @@ const Home: React.FC<HomeProps> = ({ setUploadedImage }) => {
                         <img
                             src={monaLisa}
                             alt="Descriere imagine"
-                            style={{ width: "100%", height: "auto", borderRadius: "8px" }}
+                            style={{ width: "90%", height: "auto", borderRadius: "8px" }}
                         />
                     </div>
                 </div>

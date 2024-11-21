@@ -1,6 +1,5 @@
 import React from "react";
 import "../../styles/HeaderRestoration.css";
-import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from 'react-router-dom';
 import { IoArrowBackOutline } from "react-icons/io5";
 
@@ -31,7 +30,7 @@ const HeaderRestoration: React.FC<HeaderRestorationProps> = ({ onStartOver,onDon
     return (
         <header className="header-restoration">
             <div className="actions-rest">
-                <button className="action-button" onClick={() => handleActions("Back")}>
+                <button className="go-back-button" onClick={() => handleActions("Back")}>
                     <IoArrowBackOutline  style={{fontSize: "18px", marginRight: "6px"}}/>
                     Back
                 </button>

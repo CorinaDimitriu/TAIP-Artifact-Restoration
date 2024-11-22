@@ -1,7 +1,7 @@
 .drag-and-drop {
     border: 2px dashed green; /* Blue dashed border */
     border-radius: 8px; /* Rounded corners */
-    padding: 20px; /* Padding inside the box */
+    padding: 20px 30px; /* Padding inside the box */
     text-align: center; /* Centered text */
     background-color: #e9ecef; /* Light background color */
     cursor: pointer; /* Pointer cursor on hover */

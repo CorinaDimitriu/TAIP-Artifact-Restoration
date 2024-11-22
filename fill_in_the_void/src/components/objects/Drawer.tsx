@@ -24,11 +24,11 @@ import '../../styles/Drawer.css'; // Stilurile drawer-ului
 //                 <div className="drawer-content">
 //                 <div className="drawer-content">
 //                     <img src={painting.image} alt={painting.title} className="drawer-image" />
-                    
+
 //                     <div className="author">
 //                         <p><strong>Author:</strong> {painting.author}</p>
 //                     </div>
-                    
+
 //                     <div className="separator"></div> {/* Separator între autor și descriere */}
 
 //                     <div className="description">
@@ -72,12 +72,19 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, painting, onUpdatePain
     const handleSave = () => {
         const updatedPainting = { ...painting, title: editedTitle, author: editedAuthor, description: editedDescription };
         onUpdatePainting(updatedPainting);
-        setIsEditing(false); // Ieșim din modul de editare după salvare
-        onClose();
+        setIsEditing(false);
+        // onClose();
     };
 
     const handleEdit = () => {
         setIsEditing(true); // Activăm modul de editare
+    };
+
+    const handleCancel = () => {
+        setIsEditing(false);
+        setEditedTitle(painting.title);
+        setEditedAuthor(painting.author);
+        setEditedDescription(painting.description);
     };
 
     if (!isOpen || !painting) return null;
@@ -85,53 +92,64 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, painting, onUpdatePain
     return (
         <div className="drawer">
             <div className="drawer-header">
-                <h2>{isEditing ? 'Edit Painting' : 'Painting Details'}</h2>
                 <button className="close-btn" onClick={onClose}>✖</button>
+                <div className="text-paint-detail">{isEditing ? 'Edit Painting' : 'Painting Details'}</div>
             </div>
 
+
             <div className="drawer-content">
-                <img src={painting.image} alt={painting.title} className="drawer-image" />
+                    <img src={painting.image} alt={painting.title} className="drawer-image"/>
 
-                {/* Dacă suntem în modul de editare, afișăm câmpurile editabile */}
-                {isEditing ? (
-                    <div className="edit-form">
-                        <label htmlFor="title">Title</label>
-                        <input
-                            type="text"
-                            id="title"
-                            value={editedTitle}
-                            onChange={(e) => setEditedTitle(e.target.value)}
-                        />
+                    {isEditing ? (
+                        <div className="edit-form">
+                            <label htmlFor="title">Title:</label>
+                            <input
+                                type="text"
+                                id="title"
+                                placeholder={"Type.."}
+                                value={editedTitle}
+                                className="label-input-description"
+                                onChange={(e) => setEditedTitle(e.target.value)}
+                            />
 
-                        <label htmlFor="author">Author</label>
-                        <input
-                            type="text"
-                            id="author"
-                            value={editedAuthor}
-                            onChange={(e) => setEditedAuthor(e.target.value)}
-                        />
+                            <label htmlFor="author">Author:</label>
+                            <input
+                                type="text"
+                                id="author"
+                                placeholder={"Type.."}
+                                value={editedAuthor}
+                                className="label-input-description"
+                                onChange={(e) => setEditedAuthor(e.target.value)}
+                            />
 
-                        <label htmlFor="description">Description</label>
-                        <textarea
-                            id="description"
-                            value={editedDescription}
-                            onChange={(e) => setEditedDescription(e.target.value)}
-                        />
-                    </div>
-                ) : (
-                    // Dacă nu suntem în modul de editare, afișăm datele doar ca text
-                    <div className="view-form">
-                        <p><strong>Title:</strong> {editedTitle}</p>
-                        <p><strong>Author:</strong> {editedAuthor}</p>
-                        <p><strong>Description:</strong> {editedDescription}</p>
-                    </div>
-                )}
+                            <label htmlFor="description">Description:</label>
+                            <textarea
+                                id="description"
+                                value={editedDescription}
+                                placeholder={"Type.."}
+                                className="label-input-description"
+                                onChange={(e) => setEditedDescription(e.target.value)}
+                            />
+                        </div>
+                    ) : (
+                        // Dacă nu suntem în modul de editare, afișăm datele doar ca text
+                        <div className="view-form">
+                            <p className="text-info" style={{marginBottom:"8px"}}><strong>Title:</strong> {editedTitle}</p>
+                            <p className="text-info" style={{marginBottom:"8px"}}><strong>Author:</strong> {editedAuthor}</p>
+                            <p className="text-info"><strong>Description:</strong> {editedDescription}</p>
+                        </div>
+                    )}
 
-                {isEditing ? (
-                    <button className="save-btn" onClick={handleSave}>Save</button>
-                ) : (
-                    <button className="edit-btn" onClick={handleEdit}>Edit</button>
-                )}
+                    {isEditing ? (
+                        <div className="save-cancel-btns">
+                            <button className="save-btn" onClick={handleSave}>Save</button>
+                            <button className="save-btn" style={{backgroundColor:"red"}} onClick={handleCancel}>Cancel</button>
+                        </div>
+                        ) : (
+                        <>
+                            <button className="edit-btn" onClick={handleEdit}>Edit</button>
+                        </>
+                    )}
             </div>
         </div>
     );

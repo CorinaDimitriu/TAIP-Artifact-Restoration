@@ -26,15 +26,17 @@ const AllAlbums: React.FC = () => {
             <div className="content">
                 <Sidebar/>
 
-                <div className="page-title">
-                    Albums
+                <div className="page-header">
+                    <button className="add-painting-btn">Create album</button>
+                    <div className="page-title2">Albums</div>
                 </div>
 
                 <div style={{display: "flex", flex: 1}}>
                     <div className="album-container">
 
                         {albums.map((album, index) => (
-                            <div className="album-card" key={album.id} onClick={() => handleAlbumClick(album.id, album.title)}>
+                            <div className="album-card" key={album.id}
+                                 onClick={() => handleAlbumClick(album.id, album.title)}>
                                 <img src={album.image} alt={album.title} className="album-image"/>
                                 <div className="album-title">{album.title}</div>
                             </div>

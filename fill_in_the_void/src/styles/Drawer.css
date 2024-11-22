@@ -15,7 +15,7 @@
     position: fixed;
     top: 0;
     right: 0;
-    background-color: #ffffff;
+    background-color: #dddddd;
     width: 600px; /* Lățime mai mare */
     height: 195vh; /* 90% din înălțimea viewport-ului */
     max-height: 95vh; /* Maximizează la 90% din înălțimea viewport-ului */
@@ -30,7 +30,7 @@
 
 .drawer-image {
     width: 80%; /* Redimensionează imaginea pentru a fi mai mică */
-    max-width: 400px; /* Limitează lățimea imaginii la 400px */
+    max-width: 300px; /* Limitează lățimea imaginii la 400px */
     height: auto; /* Menține raportul de aspect al imaginii */
     display: block; /* Face imaginea un element de tip bloc */
     margin: 0 auto; /* Centrează imaginea pe orizontală */
@@ -40,15 +40,23 @@
 
 .drawer-header {
     display: flex;
-    justify-content: space-between; /* Asigură un spațiu între titlu și butonul de închidere */
-    width: 100%;
-    position: relative; /* Necesită pentru a poziționa absolut butonul */
+    margin-bottom: 30px;
+    justify-content: center;
+    /*position: relative; !* Necesită pentru a poziționa absolut butonul *!*/
+}
+
+.text-paint-detail{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    font-weight: bold;
 }
 
 .close-btn {
     position: absolute;
-    top: 10px; /* Poziționează butonul de închidere la 10px de sus */
-    right: 10px; /* Poziționează butonul de închidere la 10px de dreapta */
+    top: 15px; /* Poziționează butonul de închidere la 10px de sus */
+    left: 15px; /* Poziționează butonul de închidere la 10px de dreapta */
     background: none;
     border: none;
     font-size: 1.5rem;
@@ -61,13 +69,20 @@
     transform: scale(1.2);
 }
 
-p {
+.view-form{
+    padding: 20px 30px;
+}
+
+.text-info {
+    margin: 0;
     font-size: 1rem;
-    color: #555;
+    color: #333333;
     line-height: 1.6; /* Crește spațierea între linii pentru mai multă lizibilitate */
     text-align: left;
     width: 100%;
 }
+
+
 
 strong {
     font-weight: bold;
@@ -97,16 +112,26 @@ h2, .drawer-header h2, .drawer-content .author p, .drawer-content .description p
     margin: 10px 0;
 }
 
+.label-input-description{
+    padding: 10px 15px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    color: #333333;
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
 .edit-form {
+    margin: 30px 15px;
     display: flex;
     flex-direction: column;
-    gap: 20px;
-    width: 100%;
-    padding: 15px;
+    gap: 5px;
+    /*width: 100%;*/
+    padding: 20px;
     background-color: #f9f9f9;
     border-radius: 8px;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    margin-top: 20px;
+    /*margin-top: 20px;*/
 }
 
 .edit-form label {
@@ -130,35 +155,45 @@ h2, .drawer-header h2, .drawer-content .author p, .drawer-content .description p
     height: 120px;
 }
 
-.edit-buttons {
+.edit-btn {
     display: flex;
     gap: 15px;
     justify-content: center;
-}
-
-.save-btn, .cancel-btn {
-    padding: 10px 15px;
-    font-size: 1rem;
+    margin-left:25px;
+    background-color: green;
+    color: white;
+    padding: 10px 30px;
     border: none;
     border-radius: 4px;
+    font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
 }
 
+.edit-btn:hover {
+    background-color: #45a049;
+}
+
+.save-cancel-btns{
+    display: flex;
+
+}
+
 .save-btn {
-    background-color: #4CAF50;
+    display: flex;
+    gap: 15px;
+    justify-content: center;
+    margin-left:15px;
+    background-color: green;
     color: white;
+    padding: 10px 30px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: background-color 0.3s;
 }
 
 .save-btn:hover {
     background-color: #45a049;
-}
-
-.cancel-btn {
-    background-color: #f44336;
-    color: white;
-}
-
-.cancel-btn:hover {
-    background-color: #e53935;
 }

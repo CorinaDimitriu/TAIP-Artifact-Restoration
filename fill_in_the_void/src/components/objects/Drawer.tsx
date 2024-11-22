@@ -1,65 +1,18 @@
 import React, { useEffect, useState } from 'react';
-import '../../styles/Drawer.css'; // Stilurile drawer-ului
-
-// interface DrawerProps {
-//     isOpen: boolean;
-//     onClose: () => void;
-//     painting: any; // Sau poți să definești un tip mai specific
-// }
-
-// const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, painting }) => {
-//     if (!isOpen || !painting) return null; // Ascundem drawer-ul dacă nu e deschis sau nu există pictură selectată
-
-//     return (
-//         <div>
-//             <div className="drawer-backdrop" onClick={onClose}></div> {/* Fundalul semitransparent */}
-//             <div className="drawer">
-//                 <div className="drawer-header">
-//                     <h2>{painting.title}</h2>
-//                     <button className="close-btn" onClick={onClose}>
-//                         ✖
-//                     </button>
-//                 </div>
-
-//                 <div className="drawer-content">
-//                 <div className="drawer-content">
-//                     <img src={painting.image} alt={painting.title} className="drawer-image" />
-
-//                     <div className="author">
-//                         <p><strong>Author:</strong> {painting.author}</p>
-//                     </div>
-
-//                     <div className="separator"></div> {/* Separator între autor și descriere */}
-
-//                     <div className="description">
-//                         <p><strong>Description:</strong> {painting.description}</p>
-//                     </div>
-
-//                     <button className="edit-btn">Edit</button>
-//                 </div>
-
-//                 </div>
-//             </div>
-//         </div>
-//     );
-// };
-
-// export default Drawer;
-
-
+import '../../styles/Drawer.css';
 
 interface DrawerProps {
     isOpen: boolean;
     onClose: () => void;
-    painting: any; // Pictura selectată
-    onUpdatePainting: (updatedPainting: any) => void; // Funcția de actualizare a picturii
+    painting: any;
+    onUpdatePainting: (updatedPainting: any) => void;
 }
 
 const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, painting, onUpdatePainting }) => {
     const [editedTitle, setEditedTitle] = useState(painting?.title || '');
     const [editedAuthor, setEditedAuthor] = useState(painting?.author || '');
     const [editedDescription, setEditedDescription] = useState(painting?.description || '');
-    const [isEditing, setIsEditing] = useState(false); // Pentru a porni modului de editare
+    const [isEditing, setIsEditing] = useState(false);
 
     useEffect(() => {
         if (painting) {
@@ -77,7 +30,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, painting, onUpdatePain
     };
 
     const handleEdit = () => {
-        setIsEditing(true); // Activăm modul de editare
+        setIsEditing(true);
     };
 
     const handleCancel = () => {
@@ -132,7 +85,6 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, painting, onUpdatePain
                             />
                         </div>
                     ) : (
-                        // Dacă nu suntem în modul de editare, afișăm datele doar ca text
                         <div className="view-form">
                             <p className="text-info" style={{marginBottom:"8px"}}><strong>Title:</strong> {editedTitle}</p>
                             <p className="text-info" style={{marginBottom:"8px"}}><strong>Author:</strong> {editedAuthor}</p>

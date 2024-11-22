@@ -67,3 +67,45 @@
     font-size: 1.1rem;
     font-weight: bold;
 }
+
+
+.checkbox-container {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+.painting-card {
+    position: relative;
+}
+
+.painting-card.selected {
+    border: 3px solid #4caf50;
+    box-shadow: 0 8px 16px rgba(76, 175, 80, 0.5);
+}
+
+.make-album-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.make-album-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.make-album-btn:hover {
+    background-color: #0056b3;
+}

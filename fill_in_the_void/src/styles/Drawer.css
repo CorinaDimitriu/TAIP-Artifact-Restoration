@@ -4,11 +4,11 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.5); /* Fundal semitransparent */
+    background-color: rgba(0, 0, 0, 0.5);
     display: flex;
     justify-content: flex-end;
-    align-items: flex-start; /* Asigură-te că este aliniat la dreapta */
-    z-index: 1000; /* Asigură-te că are un z-index mare */
+    align-items: flex-start;
+    z-index: 1000;
 }
 
 .drawer {
@@ -16,9 +16,9 @@
     top: 0;
     right: 0;
     background-color: #dddddd;
-    width: 600px; /* Lățime mai mare */
-    height: 195vh; /* 90% din înălțimea viewport-ului */
-    max-height: 95vh; /* Maximizează la 90% din înălțimea viewport-ului */
+    width: 600px;
+    height: 195vh; 
+    max-height: 95vh;
     box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
     display: flex;
     flex-direction: column;
@@ -29,11 +29,11 @@
 }
 
 .drawer-image {
-    width: 80%; /* Redimensionează imaginea pentru a fi mai mică */
-    max-width: 300px; /* Limitează lățimea imaginii la 400px */
-    height: auto; /* Menține raportul de aspect al imaginii */
-    display: block; /* Face imaginea un element de tip bloc */
-    margin: 0 auto; /* Centrează imaginea pe orizontală */
+    width: 80%; 
+    max-width: 300px; 
+    height: auto; 
+    display: block; 
+    margin: 0 auto; 
     border-radius: 8px;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
 }
@@ -42,7 +42,7 @@
     display: flex;
     margin-bottom: 30px;
     justify-content: center;
-    /*position: relative; !* Necesită pentru a poziționa absolut butonul *!*/
+
 }
 
 .text-paint-detail{
@@ -55,8 +55,8 @@
 
 .close-btn {
     position: absolute;
-    top: 15px; /* Poziționează butonul de închidere la 10px de sus */
-    left: 15px; /* Poziționează butonul de închidere la 10px de dreapta */
+    top: 15px; 
+    left: 15px;
     background: none;
     border: none;
     font-size: 1.5rem;
@@ -77,7 +77,7 @@
     margin: 0;
     font-size: 1rem;
     color: #333333;
-    line-height: 1.6; /* Crește spațierea între linii pentru mai multă lizibilitate */
+    line-height: 1.6;
     text-align: left;
     width: 100%;
 }
@@ -86,15 +86,15 @@
 
 strong {
     font-weight: bold;
-    color: #333; /* Asigură un contrast mai bun pentru "Author" și "Description" */
+    color: #333; 
 }
 
 .drawer-content p {
-    word-wrap: break-word; /* Împiedică textul să depășească limita */
-    overflow-wrap: break-word; /* În cazul în care cuvintele sunt prea lungi, le va împărți */
-    text-overflow: ellipsis; /* Dacă textul este prea lung pentru un container, adaugă "..." la final */
-    white-space: normal; /* Permite ca textul să se împartă pe mai multe linii */
-    width: 100%; /* Asigură că textul se întinde pe toată lățimea */
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    text-overflow: ellipsis; 
+    white-space: normal; 
+    width: 100%; 
 }
 
 h2, .drawer-header h2, .drawer-content .author p, .drawer-content .description p {
@@ -105,7 +105,7 @@ h2, .drawer-header h2, .drawer-content .author p, .drawer-content .description p
     width: 100%;
 }
 
-/* Adăugarea unui separator între autor și descriere */
+
 .drawer-content .separator {
     height: 1px;
     background-color: #ddd;
@@ -143,11 +143,11 @@ h2, .drawer-header h2, .drawer-content .author p, .drawer-content .description p
 
 .edit-form input,
 .edit-form textarea {
-    width: 100%; /* Lățimea completă a câmpului de input/textarea */
-    box-sizing: border-box; /* Asigură că padding-ul nu iese în afară */
-    overflow-wrap: break-word; /* Previne depășirea textului */
-    text-overflow: ellipsis; /* Dacă textul este prea lung, adaugă "..." */
-    white-space: normal; /* Permite liniile multiple în textarea */
+    width: 100%; 
+    box-sizing: border-box; 
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: normal;
 }
 
 .edit-form textarea {
@@ -196,4 +196,87 @@ h2, .drawer-header h2, .drawer-content .author p, .drawer-content .description p
 
 .save-btn:hover {
     background-color: #45a049;
+}
+
+
+.albums-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 15px;
+    padding: 20px;
+}
+
+.album-card {
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.32);
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.album-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.48);
+}
+
+.album-image {
+    width: 100%;
+    height: auto;
+    border-radius: 8px;
+}
+
+.album-title {
+    margin-top: 2px;
+    font-size: 1rem;
+    font-weight: bold;
+    color: #333;
+}
+
+.album-item {
+    padding: 10px;
+    text-align: center;
+    cursor: pointer;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    margin: 5px;
+}
+
+.album-item.selected {
+    background-color: #e0ffe0; 
+    border-color: #4caf50;
+}
+
+.album-item:hover {
+    background-color: #f0f0f0;
+}
+
+.toast {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: #4caf50;
+    color: white;
+    padding: 10px 20px;
+    border-radius: 5px;
+    font-size: 16px;
+    z-index: 1000;
+    animation: fadeInOut 3s ease-in-out;
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
 }

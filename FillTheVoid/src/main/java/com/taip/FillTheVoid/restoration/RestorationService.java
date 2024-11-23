@@ -1,4 +1,5 @@
 package com.taip.FillTheVoid.restoration;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -29,12 +30,11 @@ public class RestorationService {
         System.out.println("Here use pythonic code to restore and obtain new restoredImage");
         System.out.println(corners);
 
-
         saveAsPng(image);
 
 //        run scipt
 
-        List<String> allLinesRestoration = runScriptRestoration();
+        List<String> allLinesRestoration = runScriptRestoration(corners);
         System.out.println(allLinesRestoration);
 
 
@@ -47,35 +47,6 @@ public class RestorationService {
 
 
         return newRestoredImage;
-    }
-
-    private void writeBase64ToFile(String base64Image) {
-        // Specify the path of the file where the Base64 string should be written
-        String filePath = "src/main/java/com/taip/FillTheVoid/restoration/output_image.txt";
-
-        // Create a new File object
-        File file = new File(filePath);
-
-        try {
-            // Check if the file exists, if not create it
-            if (!file.exists()) {
-                if (file.createNewFile()) {
-                    System.out.println("File created: " + filePath);
-                } else {
-                    System.err.println("Failed to create the file.");
-                    return;
-                }
-            }
-
-            // Write the Base64 string to the file
-            try (BufferedWriter writer = new BufferedWriter(new FileWriter(file))) {
-                writer.write(base64Image);
-                System.out.println("Base64 string written to " + filePath);
-            }
-        } catch (IOException e) {
-            System.err.println("Error writing to file: " + e.getMessage());
-        }
-
     }
 
     public void saveAsPng(byte[] image) {
@@ -113,12 +84,16 @@ public class RestorationService {
         return imageBytes;
     }
 
-    public List<String> runScriptRestoration() {
+    public List<String> runScriptRestoration(Corners corners) {
 
         String pythonExecutable = "myenv/bin/python";
         String pythonScriptPath = "src/main/java/com/taip/FillTheVoid/restoration/restoration.py";
 
-        String[] command = new String[]{pythonExecutable, pythonScriptPath};
+        String jsonCorners = convertCornersToJson(corners);
+
+        System.out.println(jsonCorners);
+
+        String[] command = new String[]{pythonExecutable, pythonScriptPath, jsonCorners};
 
         try {
             ProcessBuilder pb = new ProcessBuilder(command);
@@ -146,5 +121,22 @@ public class RestorationService {
         }
 
         return null;
+    }
+
+
+    public static String convertCornersToJson(Corners corners) {
+        try {
+            ObjectMapper objectMapper = new ObjectMapper();
+            String jsonString = objectMapper.writeValueAsString(corners);
+
+//            return objectMapper.writeValueAsString(corners);
+            jsonString = jsonString.replace("\"", "\\\"");
+
+            return "\"" + jsonString + "\"";
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
     }
 }

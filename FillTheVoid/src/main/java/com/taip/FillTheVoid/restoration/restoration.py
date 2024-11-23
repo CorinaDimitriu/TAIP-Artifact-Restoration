@@ -1,6 +1,37 @@
 import cv2
+import sys
+import json
 
 if __name__ == '__main__':
+
+    json_corners = sys.argv[1]
+
+    print(json_corners)
+
+
+    corners = json.loads(json_corners)
+
+    left_up_x = corners["leftUp"]["x"]
+    left_up_y = corners["leftUp"]["y"]
+
+    # Accesăm coordonatele 'RightUp'
+    right_up_x = corners["rightUp"]["x"]
+    right_up_y = corners["rightUp"]["y"]
+
+    # Accesăm coordonatele 'LeftDown'
+    left_down_x = corners["leftDown"]["x"]
+    left_down_y = corners["leftDown"]["y"]
+
+    # Accesăm coordonatele 'RightDown'
+    right_down_x = corners["rightDown"]["x"]
+    right_down_y = corners["rightDown"]["y"]
+
+    # Afișăm coordonatele
+#     print("LeftUp x:", left_up_x, ", y:", left_up_y)
+#     print("RightUp x:", right_up_x, ", y:", right_up_y)
+#     print("LeftDown x:", left_down_x, ", y:", left_down_y)
+#     print("RightDown x:", right_down_x, ", y:", right_down_y)
+
 
     file_path = "src/main/java/com/taip/FillTheVoid/restoration/restored_image.png"
 

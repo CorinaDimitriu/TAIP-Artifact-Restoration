@@ -1,0 +1,91 @@
+.drawer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 350px;
+    background-color: white;
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(100%);
+    z-index: 1000;
+}
+
+.drawer-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.drawer.open {
+    transform: translateX(0);
+}
+
+.drawer-content {
+    background-color: white;
+    width: 100%;
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+
+.image-preview {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.album-image-preview {
+    width: 100%;
+    max-width: 250px; 
+    height: auto;
+    border-radius: 8px;
+    margin-bottom: 10px;
+}
+
+.text-paint-detail {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    flex: 1;
+}
+
+.drawer-buttons {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+}
+
+.save-btn, .cancel-btn {
+    padding: 10px 15px;
+    background-color: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.close-btn {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+.save-btn:hover, .cancel-btn:hover {
+    opacity: 0.8;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-align: center;
+}

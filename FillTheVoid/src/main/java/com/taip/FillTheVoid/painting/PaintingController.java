@@ -56,6 +56,13 @@ public class PaintingController {
 
     }
 
+    @GetMapping("/findAllByOwner")
+    public ResponseEntity<List<PaintingProjection>> getAllPaintings(
+            @RequestParam("email-user") String emailUser) {
+
+        return ResponseEntity.ok(paintingService.findAllByOwner(emailUser));
+    }
+
     @PutMapping("/edit/{fileName}")
     public ResponseEntity<Integer> editPainting(
             @RequestParam("email-user") String emailUser,

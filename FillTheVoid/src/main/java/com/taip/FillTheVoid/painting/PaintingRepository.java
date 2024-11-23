@@ -18,6 +18,8 @@ public interface PaintingRepository extends JpaRepository<Painting, Integer> {
     @Query("SELECT p.paintingName AS paintingName, p.description AS description, p.imageType AS imageType, p.image AS image FROM Painting p WHERE p.owner = :owner AND p.gallery = :gallery")
     List<PaintingProjection> findAllByOwnerAndGallery(Owner owner, Gallery gallery);
 
+    @Query("SELECT p.paintingName AS paintingName, p.description AS description, p.imageType AS imageType, p.image AS image FROM Painting p WHERE p.owner = :owner")
+    List<PaintingProjection> findAllByOwner(Owner owner);
 
     @Transactional
     @Modifying
@@ -28,5 +30,6 @@ public interface PaintingRepository extends JpaRepository<Painting, Integer> {
     @Modifying
     @Query("DELETE FROM Painting p WHERE p = :painting")
     int deletePainting(Painting painting);
+
 
 }

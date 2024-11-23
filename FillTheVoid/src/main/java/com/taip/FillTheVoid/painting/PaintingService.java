@@ -112,4 +112,18 @@ public class PaintingService {
         return allPaintings;
 
     }
+
+    public List<PaintingProjection> findAllByOwner(String emailUser) {
+
+        User user = userService.getUserByEmail(emailUser);
+        Owner owner = (Owner) user;
+
+        List<PaintingProjection> allPaintings = paintingRepository.findAllByOwner(owner);
+
+        if (allPaintings == null) {
+            throw new IllegalStateException("Picturile nu au fost gasite corespunzator");
+        }
+
+        return allPaintings;
+    }
 }

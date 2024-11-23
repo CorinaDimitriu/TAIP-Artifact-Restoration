@@ -141,7 +141,7 @@ const AllPaintings: React.FC = () => {
 
                 {/* Buton Make Album apare doar dacă există selecții */}
                 {selectedPaintings.length > 0 && (
-                    <button className="edit-btn" onClick={handleOpenAlbumDrawer}>
+                    <button className="fixed-add-album-btn" onClick={handleOpenAlbumDrawer}>
                         Add to Album
                     </button>
                 )}

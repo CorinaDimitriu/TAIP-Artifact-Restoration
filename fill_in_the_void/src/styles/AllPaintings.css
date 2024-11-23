@@ -109,3 +109,25 @@
 .make-album-btn:hover {
     background-color: #0056b3;
 }
+
+.fixed-add-album-btn {
+    position: fixed;
+    bottom: 20px; /* Distanța față de partea de jos a ferestrei */
+    right: 20px; /* Distanța față de partea dreaptă a ferestrei */
+    background-color: #D10F0F;
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    z-index: 1000; /* Asigură-te că este deasupra altor elemente */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.fixed-add-album-btn:hover {
+    background-color: #f32a2a;
+    transform: scale(1.05);
+}

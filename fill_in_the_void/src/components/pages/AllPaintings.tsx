@@ -38,6 +38,7 @@ const AllPaintings: React.FC = () => {
     // Funcționalități pentru drawer-ul albumelor
     const handleOpenAlbumDrawer = () => {
         setIsAlbumDrawerOpen(true);
+        console.log(isAlbumDrawerOpen);
     };
 
     const handleCloseAlbumDrawer = () => {
@@ -54,7 +55,7 @@ const AllPaintings: React.FC = () => {
         setIsAlbumDrawerOpen(true); // Rămânem în drawer cu albumul selectat
     };
 
-    const handleSelectAlbum = (albumId: string) => {
+    const handleSelectAlbum = (albumId: string | null) => {
         console.log(`Selected album ID: ${albumId}`);
         setSelectedAlbumId(albumId);
     };
@@ -69,6 +70,7 @@ const AllPaintings: React.FC = () => {
     };
 
     const handleToggleSelectionMode = () => {
+        console.log("este"+isAlbumDrawerOpen);
         setIsSelectionMode(!isSelectionMode);
         setSelectedPaintings([]); // Resetăm selecția la ieșirea din modul de selecție
     };
@@ -102,7 +104,7 @@ const AllPaintings: React.FC = () => {
             <div className="content">
                 <Sidebar />
                 <div className="page-header">
-                    <button className="add-painting-btn" onClick={handleToggleSelectionMode}>
+                    <button className={`add-painting-btn ${isSelectionMode ? 'cancel' : 'select'}`}  onClick={handleToggleSelectionMode}>
                         {isSelectionMode ? "Cancel Selection" : "Select Images"}
                     </button>
                     <div className="page-title2">Paintings</div>

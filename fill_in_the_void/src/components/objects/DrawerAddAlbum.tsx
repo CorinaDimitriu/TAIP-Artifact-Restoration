@@ -30,13 +30,13 @@ const DrawerAddAlbum: React.FC<DrawerAddAlbumProps> = ({ isOpen, onClose, albums
     if (!isOpen) return null;
 
     return (
-        <div className={`drawer ${isOpen ? 'open' : ''}`}>
-            <div className="drawer-header">
+        <div className={`drawer2 ${isOpen ? 'open' : ''}`}>
+            <div className="drawer-header2">
                 <button className="close-btn" onClick={onClose}>✖</button>
                 <div className="text-paint-detail">Create New Album</div>
             </div>
 
-            <div className="drawer-content">
+            <div className="drawer-content2">
                 <div className="edit-form">
                     <label htmlFor="album-title">Album Title:</label>
                     <input
@@ -51,15 +51,19 @@ const DrawerAddAlbum: React.FC<DrawerAddAlbumProps> = ({ isOpen, onClose, albums
                     {error && <div className="error-message">{error}</div>}
 
                     <div className="drawer-buttons">
-                        <button className="save-btn" onClick={handleCreateAlbum}>
+                        <button className="save-btn2"
+                                onClick={handleCreateAlbum}
+                                disabled={newAlbumTitle.trim() === ''}
+                        >
                             Save
                         </button>
                         <button
-                            className="cancel-btn"
+                            className="cancel-btn2"
                             onClick={() => {
                                 setNewAlbumTitle('');
                                 setError('');
-                            }} 
+                            }}
+                            disabled={newAlbumTitle.trim() === ''}
                         >
                             Cancel
                         </button>

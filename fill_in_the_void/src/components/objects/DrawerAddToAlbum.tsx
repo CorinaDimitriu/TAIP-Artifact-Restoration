@@ -7,7 +7,7 @@ interface DrawerAddToAlbumProps {
     albums: { id: string; title: string }[]; 
     selectedAlbumId: string | null;  // Adăugăm acest câmp pentru a selecta un album
     onCreateAlbum: (title: string) => void;
-    onSelectAlbum: (albumId: string) => void;
+    onSelectAlbum: (albumId: string | null) => void;
 }
 
 const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
@@ -21,7 +21,6 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
     const [newAlbumTitle, setNewAlbumTitle] = useState('');
     const [isCreating, setIsCreating] = useState(false);
     const [toastMessage, setToastMessage] = useState<string | null>(null); // Mesajul pentru toast
-
     const handleCreateAlbum = () => {
         if (newAlbumTitle.trim() !== '') {
             onCreateAlbum(newAlbumTitle.trim());
@@ -31,6 +30,7 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
     };
 
     const handleAlbumSelect = (albumId: string) => {
+
         onSelectAlbum(albumId);
         // aici o sa bag si functia prin care adaug in album propriu-zis
         const selectedAlbum = albums.find(album => album.id === albumId);
@@ -44,8 +44,12 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
 
     return (
         <div className="drawer">
+
             <div className="drawer-header">
-                <button className="close-btn" onClick={onClose}>✖</button>
+                <button className="close-btn" onClick={() => {
+                    onClose();
+                    onSelectAlbum(null);
+                }}>✖</button>
                 <div className="text-paint-detail">{isCreating ? 'Create New Album' : 'Select an Album'}</div>
             </div>
 
@@ -59,7 +63,7 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
                             {albums.map((album) => (
                                 <div
                                     key={album.id}
-                                    className={`album-card ${selectedAlbumId === album.id ? 'selected' : ''}`}
+                                    className={`album-card ${selectedAlbumId === album.id ? 'selected' : ''}`} // Adaugă clasa `selected` dacă albumul este selectat
                                     onClick={() => handleAlbumSelect(album.id)}
                                 >
                                     <div className="album-title">{album.title}</div>
@@ -75,10 +79,14 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
                         )} */}
 
                         <button
-                            className="edit-btn"
+                            className="create-new-album-btn"
                             onClick={() => setIsCreating(true)}
                         >
                             Create New Album
+                        </button>
+
+                        <button className="save-select-album-btn">
+                            Save the selection
                         </button>
                     </>
                 ) : (

@@ -15,10 +15,15 @@ public interface PaintingRepository extends JpaRepository<Painting, Integer> {
     @Query("SELECT p FROM Painting p WHERE p.paintingName = :paintingName AND p.owner = :owner")
     Optional<Painting> findByNameAndOwner(String paintingName, Owner owner);
 
-    @Query("SELECT p.paintingName AS paintingName, p.description AS description, p.imageType AS imageType, p.image AS image FROM Painting p WHERE p.owner = :owner AND p.gallery = :gallery")
+    @Modifying
+    @Transactional
+    @Query("UPDATE Painting p SET p.gallery = :gallery WHERE p = :painting")
+    int updatePaintingGallery(Painting painting, Gallery gallery);
+
+    @Query("SELECT p.paintingName AS paintingName, p.description AS description, p.author AS author, p.imageType AS imageType, p.image AS image FROM Painting p WHERE p.owner = :owner AND p.gallery = :gallery")
     List<PaintingProjection> findAllByOwnerAndGallery(Owner owner, Gallery gallery);
 
-    @Query("SELECT p.paintingName AS paintingName, p.description AS description, p.imageType AS imageType, p.image AS image FROM Painting p WHERE p.owner = :owner")
+    @Query("SELECT p.paintingName AS paintingName, p.description AS description, p.author AS author, p.imageType AS imageType, p.image AS image FROM Painting p WHERE p.owner = :owner")
     List<PaintingProjection> findAllByOwner(Owner owner);
 
     @Transactional

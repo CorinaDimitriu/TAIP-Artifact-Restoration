@@ -82,6 +82,22 @@ public class PaintingService {
 
     }
 
+    public Integer updatePaintingGallery(String emailUser, String paintingName, String galleryName) {
+
+        User user = userService.getUserByEmail(emailUser);
+        Owner owner = (Owner) user;
+
+        Optional<Painting> painting =  paintingRepository.findByNameAndOwner(paintingName, owner);
+
+        if (painting.isEmpty()) {
+            throw new IllegalStateException("Pictura nu există cu acest nume");
+        }
+
+        Gallery gallery = galleryService.getGalleryByNameAndOwner(galleryName, owner);
+
+        return paintingRepository.updatePaintingGallery(painting.get(), gallery);
+    }
+
     public Integer deletePainting(String emailUser, String paintingName) {
 
         User user = userService.getUserByEmail(emailUser);

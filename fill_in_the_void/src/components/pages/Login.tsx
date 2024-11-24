@@ -39,7 +39,7 @@ const Login: React.FC = () => {
     return (
         <div className="login-container">
         <div className="login-card">
-            <button className="go-back-button" onClick={() => navigate(-1)}>
+            <button className="go-back-button2" onClick={() => navigate(-1)}>
                 <IoArrowBackOutline  style={{fontSize: "18px", marginRight: "6px"}}/>
                 Back
             </button>

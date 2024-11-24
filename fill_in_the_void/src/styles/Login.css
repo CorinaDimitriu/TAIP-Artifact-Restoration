@@ -21,9 +21,9 @@
     position: relative;
   }
 
-
-
-  .go-back-button {
+  .go-back-button2 {
+    background-color: white;
+    border: none;
     display: flex;
     align-items: center;
     vertical-align: middle;
@@ -35,7 +35,7 @@
     left: 20px;
   }
 
-  .go-back-button:hover {
+  .go-back-button2:hover {
       color: #777777;
   }
   

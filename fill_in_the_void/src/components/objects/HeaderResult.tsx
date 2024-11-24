@@ -1,9 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import "../../styles/Result.css";
-import {IoIosArrowRoundBack} from "react-icons/io";
-import {useNavigate} from "react-router-dom";
+import { IoIosArrowRoundBack } from "react-icons/io";
+import { useNavigate } from "react-router-dom";
 
-const HeaderResult: React.FC = () => {
+const HeaderResult: React.FC<{ onSaveClick: () => void }> = ({ onSaveClick }) => {
     const navigate = useNavigate();
 
     const handleActions = (type: string) => {
@@ -19,26 +19,25 @@ const HeaderResult: React.FC = () => {
         }
     };
 
+
     return (
         <header className="header-restoration">
             <div className="actions-rest">
                 <button className="action-button" onClick={() => handleActions("Back")}>
-                    <IoIosArrowRoundBack style={{fontSize: "25px", marginRight: "6px"}}/>
+                    <IoIosArrowRoundBack style={{ fontSize: "25px", marginRight: "6px" }} />
                     Back
                 </button>
             </div>
 
             <div>
-                <button className="download-button" style={{backgroundColor: "red"}}>
+                <button className="download-button" style={{ backgroundColor: "red" }}>
                     Download
                 </button>
 
-                <button className="download-button" style={{backgroundColor: "green", marginLeft:"10px"}}>
+                <button className="download-button" style={{ backgroundColor: "green", marginLeft: "10px" }} onClick={onSaveClick}>
                     Save
                 </button>
             </div>
-
-
         </header>
     );
 };

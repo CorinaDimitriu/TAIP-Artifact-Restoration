@@ -1,32 +1,92 @@
 import React, { useEffect, useState } from 'react';
 import '../../styles/Drawer.css';
+import {jwtDecode} from "jwt-decode";
+
+interface UserToken {
+    sub: string;
+    iat: number;
+    exp: number;
+}
 
 interface DrawerProps {
     isOpen: boolean;
     onClose: () => void;
-    painting: any;
+    painting: any; // Asigură-te că este Painting | null
     onUpdatePainting: (updatedPainting: any) => void;
 }
 
 const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, painting, onUpdatePainting }) => {
-    const [editedTitle, setEditedTitle] = useState(painting?.title || '');
+    const [editedTitle, setEditedTitle] = useState(painting?.paintingName || ''); // Asigură-te că folosești paintingName
     const [editedAuthor, setEditedAuthor] = useState(painting?.author || '');
     const [editedDescription, setEditedDescription] = useState(painting?.description || '');
     const [isEditing, setIsEditing] = useState(false);
+    const [email, setEmail] = useState('');
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        const updateLastNameFromToken = () => {
+            if (token) {
+                const decodedToken = jwtDecode(token) as UserToken;
+                const email = decodedToken.sub;
+                setEmail(email);
+            }
+        };
+
+        updateLastNameFromToken();
+
+        const handleStorageChange = () => {
+            updateLastNameFromToken();
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, []);
 
     useEffect(() => {
         if (painting) {
-            setEditedTitle(painting.title);
-            setEditedAuthor(painting.author);
-            setEditedDescription(painting.description);
+            setEditedTitle(painting.paintingName || ''); // Asigură-te că folosești paintingName
+            setEditedAuthor(painting.author || '');
+            setEditedDescription(painting.description || '');
         }
-    }, [painting]);
+    }, [painting]); // Reîmprospătează starea la schimbarea picturii
 
-    const handleSave = () => {
-        const updatedPainting = { ...painting, title: editedTitle, author: editedAuthor, description: editedDescription };
-        onUpdatePainting(updatedPainting);
-        setIsEditing(false);
-        // onClose();
+    const handleSave = async () => {
+        if (painting) {
+            const updatedPainting = {
+                ...painting,
+                paintingName: editedTitle,
+                author: editedAuthor,
+                description: editedDescription
+            };
+
+            try {
+                const response = await fetch(`http://localhost:8080/api/v1/painting/edit/${encodeURIComponent(painting.paintingName)}?email-user=${encodeURIComponent(email)}&painting-name=${encodeURIComponent(painting.paintingName)}&new-painting-name=${encodeURIComponent(editedTitle)}&new-painting-description=${encodeURIComponent(editedDescription)}&new-author=${encodeURIComponent(editedAuthor)}`, {
+                    method: 'PUT',
+                    headers: {
+                        'accept': '*/*',
+                        'Authorization': `Bearer ${localStorage.getItem("token")}`
+                    },
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error(`Error updating painting: ${errorData.message}`);
+                    return;
+                }
+
+                onUpdatePainting(updatedPainting);
+                painting.paintingName = editedTitle;
+                painting.author = editedAuthor;
+                painting.description = editedDescription;
+
+                setIsEditing(false);
+            } catch (error) {
+                console.error("Error saving painting:", error);
+            }
+        }
     };
 
     const handleEdit = () => {
@@ -34,10 +94,10 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, painting, onUpdatePain
     };
 
     const handleCancel = () => {
-        setIsEditing(false);
-        setEditedTitle(painting.title);
-        setEditedAuthor(painting.author);
-        setEditedDescription(painting.description);
+        setIsEditing(false); // Anulează editările
+        setEditedTitle(painting?.paintingName || '');
+        setEditedAuthor(painting?.author || '');
+        setEditedDescription(painting?.description || '');
     };
 
     if (!isOpen || !painting) return null;
@@ -49,59 +109,58 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, painting, onUpdatePain
                 <div className="text-paint-detail">{isEditing ? 'Edit Painting' : 'Painting Details'}</div>
             </div>
 
-
             <div className="drawer-content">
-                    <img src={painting.image} alt={painting.title} className="drawer-image"/>
+                <img src={painting.image} alt={painting.paintingName} className="drawer-image" /> {/* Folosește paintingName */}
 
-                    {isEditing ? (
-                        <div className="edit-form">
-                            <label htmlFor="title">Title:</label>
-                            <input
-                                type="text"
-                                id="title"
-                                placeholder={"Type.."}
-                                value={editedTitle}
-                                className="label-input-description"
-                                onChange={(e) => setEditedTitle(e.target.value)}
-                            />
+                {isEditing ? (
+                    <div className="edit-form">
+                        <label htmlFor="title">Title:</label>
+                        <input
+                            type="text"
+                            id="title"
+                            placeholder={"Type.."}
+                            value={editedTitle}
+                            className="label-input-description"
+                            onChange={(e) => setEditedTitle(e.target.value)}
+                        />
 
-                            <label htmlFor="author">Author:</label>
-                            <input
-                                type="text"
-                                id="author"
-                                placeholder={"Type.."}
-                                value={editedAuthor}
-                                className="label-input-description"
-                                onChange={(e) => setEditedAuthor(e.target.value)}
-                            />
+                        <label htmlFor="author">Author:</label>
+                        <input
+                            type="text"
+                            id="author"
+                            placeholder={"Type.."}
+                            value={editedAuthor}
+                            className="label-input-description"
+                            onChange={(e) => setEditedAuthor(e.target.value)}
+                        />
 
-                            <label htmlFor="description">Description:</label>
-                            <textarea
-                                id="description"
-                                value={editedDescription}
-                                placeholder={"Type.."}
-                                className="label-input-description"
-                                onChange={(e) => setEditedDescription(e.target.value)}
-                            />
-                        </div>
-                    ) : (
-                        <div className="view-form">
-                            <p className="text-info" style={{marginBottom:"8px"}}><strong>Title:</strong> {editedTitle}</p>
-                            <p className="text-info" style={{marginBottom:"8px"}}><strong>Author:</strong> {editedAuthor}</p>
-                            <p className="text-info"><strong>Description:</strong> {editedDescription}</p>
-                        </div>
-                    )}
+                        <label htmlFor="description">Description:</label>
+                        <textarea
+                            id="description"
+                            value={editedDescription}
+                            placeholder={"Type.."}
+                            className="label-input-description"
+                            onChange={(e) => setEditedDescription(e.target.value)}
+                        />
+                    </div>
+                ) : (
+                    <div className="view-form">
+                        <p className="text-info" style={{ marginBottom: "8px" }}><strong>Title:</strong> {editedTitle}</p>
+                        <p className="text-info" style={{ marginBottom: "8px" }}><strong>Author:</strong> {editedAuthor}</p>
+                        <p className="text-info"><strong>Description:</strong> {editedDescription}</p>
+                    </div>
+                )}
 
-                    {isEditing ? (
-                        <div className="save-cancel-btns">
-                            <button className="save-btn" onClick={handleSave}>Save</button>
-                            <button className="save-btn" style={{backgroundColor:"red"}} onClick={handleCancel}>Cancel</button>
-                        </div>
-                        ) : (
-                        <>
-                            <button className="edit-btn" onClick={handleEdit}>Edit</button>
-                        </>
-                    )}
+                {isEditing ? (
+                    <div className="save-cancel-btns">
+                        <button className="save-btn" onClick={handleSave}>Save</button>
+                        <button className="save-btn" style={{ backgroundColor: "red" }} onClick={handleCancel}>Cancel</button>
+                    </div>
+                ) : (
+                    <>
+                        <button className="edit-btn" onClick={handleEdit}>Edit</button>
+                    </>
+                )}
             </div>
         </div>
     );

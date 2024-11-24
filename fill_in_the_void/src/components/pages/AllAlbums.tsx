@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Header from "../objects/Header";
 import Navbar from "../objects/Navbar";
 import Sidebar from "../objects/Sidebar";
@@ -7,28 +7,81 @@ import "../../index.css";
 import monaLisa from "../images/mona-lisa.jpg";
 import {useNavigate} from "react-router-dom";
 import DrawerAddAlbum from "../objects/DrawerAddAlbum";
-const albumsData = [
-    { id: "1", title: "Vacation 2021", image: monaLisa },
-    { id: "2", title: "Family Memories", image: monaLisa },
-    { id: "3", title: "Graduation Day", image: monaLisa },
-    { id: "4", title: "Wedding Photos", image: monaLisa },
-];
+import {jwtDecode} from "jwt-decode";
+
+interface UserToken {
+    sub: string;
+    iat: number;
+    exp: number;
+}
+
+
+// const albumsData = [
+//     { id: "1", title: "Vacation 2021", image: monaLisa, description:"cel mai fain" },
+//     { id: "2", title: "Family Memories", image: monaLisa, description:"cel mai fain" },
+//     { id: "3", title: "Graduation Day", image: monaLisa, description:"cel mai fain" },
+//     { id: "4", title: "Wedding Photos", image: monaLisa, description:"cel mai fain" },
+// ];
+
+interface Album {
+    galleryName: string;
+    description: string;
+    image?: string;
+}
 
 const AllAlbums: React.FC = () => {
-    const [albums, setAlbums] = useState(albumsData);
+    const [email, setEmail] = useState('');
+    // const [albums, setAlbums] = useState(albumsData);
+    const [albums, setAlbums] = useState<Album[]>([]);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
-    const [newAlbumTitle, setNewAlbumTitle] = useState('');  
+    const [newAlbumTitle, setNewAlbumTitle] = useState('');
+    const [newAlbumDescription, setNewAlbumDescription] = useState('');
     const navigate = useNavigate();
 
-    const handleAlbumClick = (albumId: string, albumTitle: string) => {
-        navigate(`/album/${albumId}/${albumTitle}`);
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        const updateLastNameFromToken = () => {
+            if (token) {
+                const decodedToken = jwtDecode(token) as UserToken;
+                const email = decodedToken.sub;
+                setEmail(email);
+                fetchAlbums(email);
+                // fetchFirstName(decodedToken.sub);
+            }
+        };
+
+        updateLastNameFromToken();
+
+        const handleStorageChange = () => {
+            updateLastNameFromToken();
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, []);
+
+    const fetchAlbums = async (email: string) => {
+
+        const token = localStorage.getItem("token");
+        const headers = { 'Authorization': `Bearer ${token}` };
+        fetch(`http://localhost:8080/api/v1/gallery/findAllByOwner?email-user=${encodeURIComponent(email)}`, { headers })
+            .then(response => response.json())
+            .then(data => setAlbums(data));
     };
 
-    const handleCreateAlbum = (title: string) => {
+    const handleAlbumClick = (albumTitle: string) => {
+        navigate(`/album/${albumTitle}`);
+    };
+
+    const handleCreateAlbum = (title: string, description: string) => {
         const newAlbum = {
-            id: (albums.length + 1).toString(),
-            title,
-            image: monaLisa, // aici dau pe moment poza predefinita
+            galleryName: title,
+            description,
+            image: monaLisa,
         };
         setAlbums([...albums, newAlbum]);
     };
@@ -42,16 +95,19 @@ const AllAlbums: React.FC = () => {
                 <Sidebar />
 
                 <div className="page-header">
-                    <button className="add-painting-btn" onClick={() => setIsDrawerOpen(true)}>Create album</button>
+                    <button className="add-painting-btn select" onClick={() => setIsDrawerOpen(true)}>Create album</button>
                     <div className="page-title2">Albums</div>
                 </div>
 
                 <div style={{ display: "flex", flex: 1 }}>
                     <div className="album-container">
-                        {albums.map((album) => (
-                            <div className="album-card" key={album.id} onClick={() => handleAlbumClick(album.id, album.title)}>
-                                <img src={album.image} alt={album.title} className="album-image" />
-                                <div className="album-title">{album.title}</div>
+                        {albums.map((album, index) => (
+                            <div className="album-card" key={index} onClick={() => handleAlbumClick(album.galleryName)}>
+                                <img src={album.image || monaLisa} alt={album.galleryName} className="album-image" />
+                                <div className="album-title">{album.galleryName}</div>
+                                <div className="description-album">
+                                    {album.description}
+                                </div>
                             </div>
                         ))}
                     </div>
@@ -65,6 +121,8 @@ const AllAlbums: React.FC = () => {
                 onCreateAlbum={handleCreateAlbum}
                 newAlbumTitle={newAlbumTitle}
                 setNewAlbumTitle={setNewAlbumTitle}
+                newAlbumDescription={newAlbumDescription}
+                setNewAlbumDescription={setNewAlbumDescription}
             />
         </div>
     );

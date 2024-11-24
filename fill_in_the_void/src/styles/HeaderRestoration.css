@@ -29,9 +29,9 @@
     vertical-align: middle;
 }
 
-.action-button:hover {
-    color: #75e375;
-}
+/*.action-button:hover {*/
+/*    color: #75e375;*/
+/*}*/
 
 .download-button{
     padding: 8px 22px;

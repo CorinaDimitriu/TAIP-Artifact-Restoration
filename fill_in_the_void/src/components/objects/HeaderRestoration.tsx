@@ -30,7 +30,7 @@ const HeaderRestoration: React.FC<HeaderRestorationProps> = ({ onStartOver,onDon
     return (
         <header className="header-restoration">
             <div className="actions-rest">
-                <button className="go-back-button" onClick={() => handleActions("Back")}>
+                <button className="action-button" onClick={() => handleActions("Back")}>
                     <IoArrowBackOutline  style={{fontSize: "18px", marginRight: "6px"}}/>
                     Back
                 </button>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, {useEffect, useState} from "react";
 import Header from "../objects/Header";
 import Navbar from "../objects/Navbar";
 import Sidebar from "../objects/Sidebar";
@@ -6,36 +6,119 @@ import Drawer from "../objects/Drawer";
 import DrawerAddAlbum from "../objects/DrawerAddToAlbum";
 import "../../styles/AllPaintings.css";
 import "../../index.css";
+import {jwtDecode} from "jwt-decode";
 import monaLisa from "../images/mona-lisa.jpg";
 // import {useNavigate} from "react-router-dom";
 
+interface UserToken {
+    sub: string;
+    iat: number;
+    exp: number;
+}
 
-const paintingsData = [
-    {id: "1", title: "Mona Lisa", author: "Leonardo da Vinci", description: "asdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdsdThe Mona Lisa is a painting by Leonardo da Vinci.", image: monaLisa},
-    {id: "2", title: "The Persistence of Memory", author: "Salvador Dali", description: "The Persistence of Memory is a painting by Salvador Dali.", image: monaLisa},
-    {id: "3", title: "The Scream", author: "Edvard Munch", description: "The Scream is a painting by Edvard Munch.", image: monaLisa},
-    {id: "4", title: "The Kiss", author: "Salvador Dali", description: "The Kiss is a painting by Salvador Dali.", image: monaLisa},
-    {id: "5", title: "The Birth of Venus", author: "Leonardo da Vinci", description: "The Birth of Venus is a painting by Leonardo da Vinci.", image: monaLisa},
-    {id: "6", title: "Mona Lisa", author: "Leonardo da Vinci", description: "The Mona Lisa is a painting by Leonardo da Vinci.", image: monaLisa}
-]
+interface Paintings {
+    paintingName: string;
+    description: string;
+    author: string;
+    image?: string;
+    imageType?: string;
+}
 
 const AllPaintings: React.FC = () => {
-    const [paintings, setPaintings] = useState(paintingsData);
+    const [paintings, setPaintings] = useState<Paintings[]>([]);
     const [selectedPaintings, setSelectedPaintings] = useState<string[]>([]);
     const [isSelectionMode, setIsSelectionMode] = useState(false);
-    const [selectedPainting, setSelectedPainting] = useState<any>(null);
+    const [selectedPainting, setSelectedPainting] = useState<Paintings | null>(null);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [email, setEmail] = useState('');
 
     const [isAlbumDrawerOpen, setIsAlbumDrawerOpen] = useState(false);
-    const [albums, setAlbums] = useState([
-        { id: "1", title: "Vacation 2021" },
-        { id: "2", title: "Family Memories" },
-        { id: "3", title: "Graduation Day" },
-        { id: "4", title: "Wedding Photos" },
-    ]);
     const [selectedAlbumId, setSelectedAlbumId] = useState<string | null>(null);
 
-    // Funcționalități pentru drawer-ul albumelor
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        const updateLastNameFromToken = () => {
+            if (token) {
+                const decodedToken = jwtDecode(token) as UserToken;
+                const email = decodedToken.sub;
+                setEmail(email);
+            }
+        };
+
+        updateLastNameFromToken();
+
+        const handleStorageChange = () => {
+            updateLastNameFromToken();
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, []);
+
+    const uint8ArrayToBase64 = (uint8Array: Uint8Array): string => {
+        let binary = '';
+        for (let i = 0; i < uint8Array.length; i++) {
+            binary += String.fromCharCode(uint8Array[i]);
+        }
+        return btoa(binary);
+    };
+
+    const updateImages = (data: Paintings[]): Paintings[] => {
+        return data.map((painting) => {
+            if (painting.image) {
+                // Verificăm dacă avem date în câmpul `image` și le transformăm în Base64
+                const uint8Array = new Uint8Array(atob(painting.image).split('').map(char => char.charCodeAt(0)));
+                const base64String = uint8ArrayToBase64(uint8Array);
+                // Actualizăm câmpul `image` cu stringul Base64
+                painting.image = `data:image/png;base64,${base64String}`;
+            }
+            return painting;
+        });
+    };
+
+    useEffect(() => {
+        const fetchPaintings = async () => {
+            const token = localStorage.getItem("token");
+            if (!token || !email) {
+                console.error("Missing token or email.");
+                return;
+            }
+
+            const url = `http://localhost:8080/api/v1/painting/findAllByOwner?email-user=${encodeURIComponent(email)}`;
+
+            try {
+                const response = await fetch(url, {
+                    method: 'GET',
+                    headers: {
+                        'accept': '*/*',
+                        'Authorization': `Bearer ${token}`
+                    }
+                });
+
+                if (!response.ok) {
+                    const errorData = await response.json();
+                    console.error(`Error fetching paintings: ${errorData.message || response.statusText}`);
+                    return;
+                }
+
+                const data: Paintings[] = await response.json();
+                const updatedPaintings = updateImages(data);
+
+                setPaintings(updatedPaintings);
+            } catch (error) {
+                console.error("Error fetching paintings:", error);
+            }
+        };
+
+        if (email) {
+            fetchPaintings();
+        }
+    }, [email]);
+
     const handleOpenAlbumDrawer = () => {
         setIsAlbumDrawerOpen(true);
         console.log(isAlbumDrawerOpen);
@@ -46,12 +129,6 @@ const AllPaintings: React.FC = () => {
     };
 
     const handleCreateAlbum = (title: string) => {
-        const newAlbum = {
-            id: (albums.length + 1).toString(),
-            title,
-        };
-        setAlbums([...albums, newAlbum]);
-        setSelectedAlbumId(newAlbum.id); // Selectăm automat noul album
         setIsAlbumDrawerOpen(true); // Rămânem în drawer cu albumul selectat
     };
 
@@ -69,6 +146,10 @@ const AllPaintings: React.FC = () => {
         );
     };
 
+    const handleSaveSelection = (albumId: string, selectedPaintings: string[]) => {
+        console.log('Paintings added to album:', selectedPaintings);
+    };
+
     const handleToggleSelectionMode = () => {
         console.log("este"+isAlbumDrawerOpen);
         setIsSelectionMode(!isSelectionMode);
@@ -77,25 +158,29 @@ const AllPaintings: React.FC = () => {
 
     const handlePaintingClick = (painting: any) => {
         if (isSelectionMode) {
-            toggleSelectPainting(painting.id);
+            toggleSelectPainting(painting.paintingName);
         } else {
             setSelectedPainting(painting);
             setIsDrawerOpen(true);
         }
     };
 
+
     const closeDrawer = () => {
         setIsDrawerOpen(false);
         setSelectedPainting(null);
     };
 
-    const updatePainting = (updatedPainting: any) => {
+    const updatePainting = (updatedPainting: Paintings) => {
         setPaintings((prevPaintings) =>
             prevPaintings.map((painting) =>
-                painting.id === updatedPainting.id ? updatedPainting : painting
+                painting.paintingName === updatedPainting.paintingName
+                    ? { ...painting, ...updatedPainting }  // Actualizează pictura cu noile date
+                    : painting
             )
         );
     };
+
 
     return (
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
@@ -110,35 +195,38 @@ const AllPaintings: React.FC = () => {
                     <div className="page-title2">Paintings</div>
                 </div>
 
-                <div style={{ display: "flex", flex: 1 }}>
+                <div style={{display: "flex", flex: 1}}>
                     <div className="paintings-container">
                         {paintings.map((painting) => (
                             <div
-                                className={`painting-card ${selectedPaintings.includes(painting.id) ? "selected" : ""}`}
-                                key={painting.id}
+                                className={`painting-card ${selectedPaintings.includes(painting.paintingName) ? "selected" : ""}`}
+                                key={painting.paintingName}
                                 onClick={() => handlePaintingClick(painting)}
                             >
                                 {isSelectionMode && (
                                     <div
                                         className="checkbox-container"
                                         onClick={(e) => {
-                                            e.stopPropagation(); // Previne propagarea click-ului la card
-                                            toggleSelectPainting(painting.id);
+                                            e.stopPropagation();
+                                            toggleSelectPainting(painting.paintingName);
                                         }}
                                     >
                                         <input
                                             type="checkbox"
-                                            checked={selectedPaintings.includes(painting.id)}
+                                            checked={selectedPaintings.includes(painting.paintingName)}
                                             readOnly
                                             className="checkbox"
                                         />
                                     </div>
                                 )}
-                                <img src={painting.image} alt={painting.title} className="painting-image" />
-                                <div className="painting-title">{painting.title}</div>
+                                <img src={painting.image} alt={painting.paintingName} className="painting-image"/>
+                                <div className="painting-title">{painting.paintingName}</div>
+                                <div className="painting-author">{painting.author}</div>
+                                <div className="painting-description">{painting.description}</div>
                             </div>
                         ))}
                     </div>
+
                 </div>
 
                 {/* Buton Make Album apare doar dacă există selecții */}
@@ -152,10 +240,11 @@ const AllPaintings: React.FC = () => {
                 <DrawerAddAlbum
                     isOpen={isAlbumDrawerOpen}
                     onClose={handleCloseAlbumDrawer}
-                    albums={albums}
                     selectedAlbumId={selectedAlbumId}
+                    selectedPaintings={selectedPaintings}
                     onCreateAlbum={handleCreateAlbum}
                     onSelectAlbum={handleSelectAlbum}
+                    onSaveSelection={handleSaveSelection}
                 />
 
                 {/* Drawer pentru detalii pictură */}

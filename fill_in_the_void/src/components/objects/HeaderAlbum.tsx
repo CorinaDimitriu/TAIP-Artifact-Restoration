@@ -3,6 +3,7 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { FaRegEye } from "react-icons/fa";
 import { IoMenu } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
+import { IoIosAdd } from "react-icons/io";
 import "../../styles/Album.css";
 
 const HeaderAlbum: React.FC = () => {
@@ -21,10 +22,18 @@ const HeaderAlbum: React.FC = () => {
 
     return (
         <div className="header-container">
-            <button className="back-button" onClick={goBack}>
-                <IoArrowBackOutline style={{ fontSize: "18px", marginRight: "6px" }} />
-                Back to Albums
-            </button>
+
+            <div style={{display:"flex"}}>
+                <button className="back-button" onClick={goBack}>
+                    <IoArrowBackOutline style={{fontSize: "18px", marginRight: "6px"}}/>
+                    Back to Albums
+                </button>
+                <button className="back-button" style={{backgroundColor:"red"}}>
+                    <IoIosAdd style={{fontSize: "18px", marginRight: "6px"}}/>
+                    Add picture
+                </button>
+            </div>
+
 
             <div className="page-title2">
                 Album: {albumTitle}

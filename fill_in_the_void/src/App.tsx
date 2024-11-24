@@ -22,7 +22,7 @@ function App() {
                 <Route path="/result" element={<Result/>}/>
                 <Route path="/all-paintings" element={<AllPaintings/>}/>
                 <Route path="/all-albums" element={<AllAlbums/>}/>
-                <Route path="/album/:albumId/:albumTitle" element={<Album/>}></Route>
+                <Route path="/album/:albumTitle" element={<Album/>}></Route>
                 <Route path="/3d-view/:albumId" element={<CameraRoom />} />
                 <Route path="/login" element={<Login/>} />
                 <Route path="/register" element={<Register/>} />

@@ -86,7 +86,14 @@ public class RestorationService {
 
     public List<String> runScriptRestoration(Corners corners) {
 
-        String pythonExecutable = "myenv/bin/python";
+        String pythonExecutable;
+
+        if (System.getProperty("os.name").toLowerCase().contains("win")) {
+            pythonExecutable = "myenv/Scripts/python.exe";
+        } else {
+            pythonExecutable = "myenv/bin/python";
+        }
+
         String pythonScriptPath = "src/main/java/com/taip/FillTheVoid/restoration/restoration.py";
 
         String jsonCorners = convertCornersToJson(corners);
@@ -129,10 +136,14 @@ public class RestorationService {
             ObjectMapper objectMapper = new ObjectMapper();
             String jsonString = objectMapper.writeValueAsString(corners);
 
-//            return objectMapper.writeValueAsString(corners);
-            jsonString = jsonString.replace("\"", "\\\"");
+            if (System.getProperty("os.name").toLowerCase().contains("win")) {
 
-            return "\"" + jsonString + "\"";
+                jsonString = jsonString.replace("\"", "\\\"");
+                return "\"" + jsonString + "\"";
+            } else {
+                return objectMapper.writeValueAsString(corners);
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();

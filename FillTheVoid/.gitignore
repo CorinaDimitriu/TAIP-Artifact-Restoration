@@ -4,6 +4,7 @@ target/
 !**/src/main/**/target/
 !**/src/test/**/target/
 
+src/main/java/com/taip/FillTheVoid/restoration/restored_image.png
 myenv
 ### STS ###
 .apt_generated

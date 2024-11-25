@@ -1,0 +1,99 @@
+.drawer2 {
+    position: fixed;
+    top: 0;
+    right: 0;
+    height: 100%;
+    width: 500px;
+    background-color: #dddddd;
+    box-shadow: -4px 0 10px rgba(0, 0, 0, 0.2);
+    transition: transform 0.3s ease-in-out;
+    transform: translateX(100%);
+    z-index: 1000;
+}
+
+.drawer-header2 {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+}
+
+.drawer2.open {
+    transform: translateX(0);
+}
+
+.drawer-content2 {
+    /*background-color: white;*/
+    width: 92%;
+    padding: 20px;
+    /*margin-right: 10px;*/
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.text-paint-detail {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+    flex: 1;
+}
+
+.drawer-buttons {
+    display: flex;
+    gap: 10px;
+    /*justify-content: center;*/
+}
+
+.save-btn2{
+    padding: 10px 15px;
+    background-color: green;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.drawer-buttons .save-btn2:disabled {
+    background-color: #45a049;
+    cursor: default;
+}
+
+.save-btn2:hover {
+    background-color: #45a049;
+}
+
+.cancel-btn2 {
+    padding: 10px 15px;
+    background-color: #D10F0F;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.drawer-buttons .cancel-btn2:disabled {
+    background-color: rgba(243, 42, 42, 0.78);
+    cursor: default;
+}
+
+.cancel-btn2:hover {
+    background-color: #f32a2a;
+}
+
+.close-btn2 {
+    background: none;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+    color: #333;
+}
+
+.error-message {
+    color: red;
+    font-size: 0.9rem;
+    margin-top: 10px;
+    text-align: center;
+}

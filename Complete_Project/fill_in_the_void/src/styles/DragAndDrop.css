@@ -1,0 +1,14 @@
+.drag-and-drop {
+    border: 2px dashed green; /* Blue dashed border */
+    border-radius: 8px; /* Rounded corners */
+    padding: 20px 30px; /* Padding inside the box */
+    text-align: center; /* Centered text */
+    background-color: #e9ecef; /* Light background color */
+    cursor: pointer; /* Pointer cursor on hover */
+    margin-top: 20px; /* Space above the area */
+    transition: background-color 0.3s; /* Smooth transition for hover effect */
+}
+
+.drag-and-drop:hover {
+    background-color: #e5efe5; /* Slightly darker background on hover */
+}

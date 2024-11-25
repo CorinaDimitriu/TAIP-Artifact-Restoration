@@ -1,0 +1,65 @@
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent background */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal-container {
+    background-color: white;
+    padding: 20px;
+    border-radius: 8px;
+    width: 450px;
+    max-width: 100%;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.modal-actions {
+    display: flex;
+    justify-content: space-between;
+}
+
+.input-add-paint{
+    width: 100%;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+/*input, textarea {*/
+/*    width: 100%;*/
+/*    padding: 10px;*/
+/*    margin: 10px 0;*/
+/*    border: 1px solid #ccc;*/
+/*    border-radius: 4px;*/
+/*}*/
+
+textarea {
+    resize: vertical;
+    height: 100px;
+}
+
+/*button {*/
+/*    padding: 10px 20px;*/
+/*    border: none;*/
+/*    background-color: #4CAF50;*/
+/*    color: white;*/
+/*    border-radius: 4px;*/
+/*    cursor: pointer;*/
+/*}*/
+
+/*!*button:hover {*!*/
+/*!*    background-color: #45a049;*!*/
+/*!*}*!*/
+
+.error {
+    color: red;
+    margin-top: 10px;
+    font-size: 0.9em;
+}

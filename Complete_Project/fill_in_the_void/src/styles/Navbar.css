@@ -1,0 +1,28 @@
+.navbar {
+    position: sticky;
+    top: 61px;
+    background-color: #3E3E3E;
+    padding: 10px 20px;
+    z-index: 999;
+}
+
+.navbar-list {
+    display: flex;
+    justify-content: flex-end;
+    list-style-type: none;
+    padding: 0 5px;
+    margin: 0;
+}
+
+.navbar-item {
+    margin-left: 30px;
+    font-size: 0.9rem;
+    /*font-weight: 500;*/
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.navbar-item:hover {
+    color: #bcbcbc;
+}

@@ -1,0 +1,113 @@
+
+.register-container {
+    background-image: url('../components/textures/login_page_bg.png');
+    background-position: center;background-size: cover;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+  }
+  
+
+  .register-card {
+    background: white;
+    border-radius: 20px;
+    padding: 40px;
+    width: 90%;
+    max-width: 400px;
+    box-shadow: 0px 10px 30px rgba(0, 0, 0, 0.2);
+    text-align: center;
+    min-height: 500px;
+    position: relative;
+  }
+  
+
+  .go-back-button {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+    /*position: absolute;*/
+    top: 20px;
+    left: 20px;
+  }
+  
+
+  .register-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0;
+  }
+  
+  .register-logo {
+    width: 60px;
+    margin-bottom: 10px;
+  }
+
+  .text-logo {
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: #333;
+  }
+
+  .register-subtitle {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 0 30px;
+    font-size: 1.1rem;
+    color: #424242;
+  }
+  
+
+  .register-form {
+    display: flex;
+    flex-direction: column;
+    padding: 0 30px;
+  }
+  
+  .register-input {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    padding: 10px 15px;
+    font-size: 0.9rem;
+  }
+
+  .register-btn-container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: 10px;
+  }
+
+  .register-button {
+    background: #3E3E3E;
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 14px;
+    width: 150px;
+    margin-top: 20px;
+    transition: background-color 0.2s ease, color 0.2s ease;
+  }
+
+  .register-button:hover {
+    background: #575757;
+  }
+
+  .error-register {
+    color: red;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  
+  .success-message {
+    color: green;
+    font-size: 14px;
+    margin-top: 10px;
+  }
+  

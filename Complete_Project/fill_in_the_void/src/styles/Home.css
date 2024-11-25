@@ -1,0 +1,22 @@
+.text-main{
+    font-size: 1.1rem;
+    /*font-family: Roboto, sans-serif;*/
+    color: #333333;
+    padding-right: 16px;
+}
+
+.next-step-button{
+    font-size: 0.9rem;
+    margin-top: 30px;
+    padding: 10px 20px;
+    background-color: green;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.next-step-button:hover {
+    background-color: #32a852;
+}

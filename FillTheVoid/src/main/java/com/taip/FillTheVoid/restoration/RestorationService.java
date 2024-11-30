@@ -18,23 +18,23 @@ import java.util.List;
 @AllArgsConstructor
 public class RestorationService {
 
-    public RestoredImage getRestoredImage(Corners corners, String imageType, byte[] image) {
+    public RestoredImage getRestoredImage(String selectedModel, CornersList cornersList, String imageType, byte[] image) {
 
-        RestoredImage newRestoredImage = restorePythonCode(corners, imageType, image);
+        RestoredImage newRestoredImage = restorePythonCode(selectedModel, cornersList, imageType, image);
 
         return newRestoredImage;
     }
 
-    public RestoredImage restorePythonCode(Corners corners, String imageType, byte[] image) {
+    public RestoredImage restorePythonCode(String selectedModel, CornersList cornersList, String imageType, byte[] image) {
 
         System.out.println("Here use pythonic code to restore and obtain new restoredImage");
-        System.out.println(corners);
+        System.out.println(cornersList);
 
         saveAsPng(image);
 
 //        run scipt
 
-        List<String> allLinesRestoration = runScriptRestoration(corners);
+        List<String> allLinesRestoration = runScriptRestoration(selectedModel, cornersList);
         System.out.println(allLinesRestoration);
 
 
@@ -84,7 +84,7 @@ public class RestorationService {
         return imageBytes;
     }
 
-    public List<String> runScriptRestoration(Corners corners) {
+    public List<String> runScriptRestoration(String selectedModel, CornersList cornersList) {
 
         String pythonExecutable;
 
@@ -96,11 +96,11 @@ public class RestorationService {
 
         String pythonScriptPath = "src/main/java/com/taip/FillTheVoid/restoration/restoration.py";
 
-        String jsonCorners = convertCornersToJson(corners);
+        String jsonCorners = convertCornersToJson(cornersList);
 
         System.out.println(jsonCorners);
 
-        String[] command = new String[]{pythonExecutable, pythonScriptPath, jsonCorners};
+        String[] command = new String[]{pythonExecutable, pythonScriptPath, selectedModel, jsonCorners};
 
         try {
             ProcessBuilder pb = new ProcessBuilder(command);
@@ -131,17 +131,17 @@ public class RestorationService {
     }
 
 
-    public static String convertCornersToJson(Corners corners) {
+    public static String convertCornersToJson(CornersList cornersList) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            String jsonString = objectMapper.writeValueAsString(corners);
+            String jsonString = objectMapper.writeValueAsString(cornersList);
 
             if (System.getProperty("os.name").toLowerCase().contains("win")) {
 
                 jsonString = jsonString.replace("\"", "\\\"");
                 return "\"" + jsonString + "\"";
             } else {
-                return objectMapper.writeValueAsString(corners);
+                return objectMapper.writeValueAsString(cornersList);
             }
 
 

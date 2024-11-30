@@ -4,27 +4,52 @@ import json
 
 if __name__ == '__main__':
 
-    json_corners = sys.argv[1]
+    selected_model = sys.argv[1]
+    json_corners = sys.argv[2]
 
+    print(selected_model)
     print(json_corners)
 
 
-    corners = json.loads(json_corners)
+    corners_data = json.loads(json_corners)
 
-    left_up_x = corners["leftUp"]["x"]
-    left_up_y = corners["leftUp"]["y"]
+    # Extract the list of corners from the "corners" field
+    corners_list = corners_data.get("corners")
 
-    # Accesăm coordonatele 'RightUp'
-    right_up_x = corners["rightUp"]["x"]
-    right_up_y = corners["rightUp"]["y"]
+    if not corners_list:
+        print("The list of corners is empty or missing!")
+        sys.exit(1)
 
-    # Accesăm coordonatele 'LeftDown'
-    left_down_x = corners["leftDown"]["x"]
-    left_down_y = corners["leftDown"]["y"]
+    # Extract the first square (first item in the list)
+    first_square = corners_list[0]
 
-    # Accesăm coordonatele 'RightDown'
-    right_down_x = corners["rightDown"]["x"]
-    right_down_y = corners["rightDown"]["y"]
+    left_up_x = first_square["leftUp"]["x"]
+    left_up_y = first_square["leftUp"]["y"]
+
+    right_up_x = first_square["rightUp"]["x"]
+    right_up_y = first_square["rightUp"]["y"]
+
+    left_down_x = first_square["leftDown"]["x"]
+    left_down_y = first_square["leftDown"]["y"]
+
+    right_down_x = first_square["rightDown"]["x"]
+    right_down_y = first_square["rightDown"]["y"]
+
+
+    # left_up_x = corners["leftUp"]["x"]
+    # left_up_y = corners["leftUp"]["y"]
+    #
+    # # Accesăm coordonatele 'RightUp'
+    # right_up_x = corners["rightUp"]["x"]
+    # right_up_y = corners["rightUp"]["y"]
+    #
+    # # Accesăm coordonatele 'LeftDown'
+    # left_down_x = corners["leftDown"]["x"]
+    # left_down_y = corners["leftDown"]["y"]
+    #
+    # # Accesăm coordonatele 'RightDown'
+    # right_down_x = corners["rightDown"]["x"]
+    # right_down_y = corners["rightDown"]["y"]
 
     # Afișăm coordonatele
 #     print("LeftUp x:", left_up_x, ", y:", left_up_y)

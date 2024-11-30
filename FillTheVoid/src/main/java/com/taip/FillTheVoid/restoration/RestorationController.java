@@ -26,10 +26,11 @@ public class RestorationController {
     @RequestBody(content = @Content(encoding = @Encoding(name = "corners", contentType = "application/json")))
 
     public ResponseEntity<Resource> restorePainting(
-            @RequestPart("corners") Corners corners,
+            @RequestParam("selectedModel") String selectedModel,
+            @RequestPart("corners") CornersList cornersList,
             @RequestPart("image") MultipartFile image) throws Exception {
 
-        RestoredImage restoredImage = restorationService.getRestoredImage(corners, image.getContentType(), image.getBytes());
+        RestoredImage restoredImage = restorationService.getRestoredImage(selectedModel, cornersList, image.getContentType(), image.getBytes());
 
         var imageBytes = new ByteArrayResource(restoredImage.getImage());
 

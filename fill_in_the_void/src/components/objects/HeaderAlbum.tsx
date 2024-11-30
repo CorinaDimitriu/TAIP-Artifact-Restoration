@@ -8,7 +8,7 @@ import "../../styles/Album.css";
 
 const HeaderAlbum: React.FC = () => {
     const navigate = useNavigate();
-    const { albumId, albumTitle } = useParams();
+    const { albumTitle } = useParams();
 
 
     const goBack = () => {
@@ -17,7 +17,7 @@ const HeaderAlbum: React.FC = () => {
 
     const goTo3DView = () => {
         // Navigare către CameraRoom folosind doar albumId
-        navigate(`/3d-view/${albumId}`);
+        navigate(`/3d-view/${albumTitle}`);
     };
 
     return (

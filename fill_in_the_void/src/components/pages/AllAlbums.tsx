@@ -5,7 +5,7 @@ import Sidebar from "../objects/Sidebar";
 import "../../styles/AllAlbums.css";
 import "../../index.css";
 import monaLisa from "../images/mona-lisa.jpg";
-import {useNavigate} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import DrawerAddAlbum from "../objects/DrawerAddAlbum";
 import {jwtDecode} from "jwt-decode";
 
@@ -31,7 +31,7 @@ interface Album {
 
 const AllAlbums: React.FC = () => {
     const [email, setEmail] = useState('');
-    // const [albums, setAlbums] = useState(albumsData);
+
     const [albums, setAlbums] = useState<Album[]>([]);
     const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
     const [newAlbumTitle, setNewAlbumTitle] = useState('');
@@ -106,7 +106,7 @@ const AllAlbums: React.FC = () => {
                                 <img src={album.image || monaLisa} alt={album.galleryName} className="album-image" />
                                 <div className="album-title">{album.galleryName}</div>
                                 <div className="description-album">
-                                    {album.description}
+                                    <b>Description:</b>{album.description}
                                 </div>
                             </div>
                         ))}

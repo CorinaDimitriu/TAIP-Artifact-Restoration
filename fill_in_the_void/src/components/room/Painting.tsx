@@ -8,10 +8,12 @@ interface PaintingProps {
     rotation?: [number, number, number];
     textureUrl: string;
     title: string;
+    author: string;
+    description: string;
     onClick: (position: Vector3, angle: number) => void;
 }
 
-const Painting: React.FC<PaintingProps> = ({position, rotation = [0, 0, 0], textureUrl, title, onClick}) => {
+const Painting: React.FC<PaintingProps> = ({position, rotation = [0, 0, 0], textureUrl, title, author, description, onClick}) => {
     const texture = useTexture(textureUrl);
     const ref = useRef<Mesh>(null);
     const [aspectRatio, setAspectRatio] = useState(1);
@@ -55,16 +57,43 @@ const Painting: React.FC<PaintingProps> = ({position, rotation = [0, 0, 0], text
                 <meshStandardMaterial attach="material" map={texture} />
             </mesh>
             {!isTitleVisible && (
-                <Text
-                    position={[position[0], position[1] + 2.5, position[2]]}
-                    rotation={rotation}
-                    fontSize={0.2}
-                    color="white"
-                    anchorX="center"
-                    anchorY="middle"
-                >
-                    {title}
-                </Text>
+                <>
+                        <Text
+                        position={[position[0], position[1] + 2.5, position[2]]}
+                        rotation={rotation}
+                        fontSize={0.4}
+                        color="white"
+                        anchorX="center"
+                        anchorY="middle"
+                    >
+                        {title}
+                    </Text>
+
+                    <Text
+                        position={[position[0], position[1] - 2.4, position[2]]}
+                        rotation={rotation}
+                        fontSize={0.3}
+                        color="white"
+                        anchorX="center"
+                        anchorY="middle"
+                    >
+                        Author: {author}
+                    </Text>
+
+                    <Text
+                        position={[position[0], position[1] - 2.7, position[2]]}
+                        rotation={rotation}
+                        fontSize={0.3}
+                        color="white"
+                        anchorX="center"
+                        anchorY="middle"
+                    >
+                        Description: {description}
+                    </Text>
+
+                </>
+
+
             )}
         </>
     );

@@ -122,7 +122,8 @@ const Album: React.FC = () => {
                                     className="album-image2"
                                 />
                                 <div className="image-title">{painting.paintingName}</div>
-                                <div className="image-author">{painting.author}</div>
+                                <div className="image-author"><b>Author: </b>{painting.author}</div>
+                                <div className="image-description"><b>Description: </b>{painting.description}</div>
                             </div>
                         ))
                     )}

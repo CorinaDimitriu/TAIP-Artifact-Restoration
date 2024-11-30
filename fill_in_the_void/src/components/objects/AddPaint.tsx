@@ -80,7 +80,6 @@ const AddPaint: React.FC<{ show: boolean; onClose: () => void }> = ({ show, onCl
                 throw new Error("Failed to save the painting. Please try again.");
             }
 
-            alert("Painting saved successfully!");
             onClose();
             navigate('/all-paintings');
         } catch (error) {

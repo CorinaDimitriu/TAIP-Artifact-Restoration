@@ -221,8 +221,8 @@ const AllPaintings: React.FC = () => {
                                 )}
                                 <img src={painting.image} alt={painting.paintingName} className="painting-image"/>
                                 <div className="painting-title">{painting.paintingName}</div>
-                                <div className="painting-author">{painting.author}</div>
-                                <div className="painting-description">{painting.description}</div>
+                                <div className="painting-author"><b>Author:</b> {painting.author}</div>
+                                <div className="painting-description"><b>Description: </b>{painting.description}</div>
                             </div>
                         ))}
                     </div>

@@ -88,7 +88,7 @@ const Header: React.FC = () => {
             ) : (
                 <>
                     <button className="header-button" onClick={handleSignIn}>
-                        Sing In
+                        Sign In
                     </button>
                 </>
                 )

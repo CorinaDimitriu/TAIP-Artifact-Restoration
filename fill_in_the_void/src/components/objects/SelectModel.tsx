@@ -29,7 +29,7 @@ const SelectModel: React.FC<SelectModelProps> = ({ show, onClose, onSelect, sele
 
     return (
         <div className="modal-overlay">
-            <div className="modal-container">
+            <div className="modal-container2">
                 <h2>Select Model</h2>
                 <div className="model-options">
                     <div className="model-item">

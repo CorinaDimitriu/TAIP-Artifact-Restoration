@@ -129,7 +129,20 @@ const AddPaint: React.FC<{ show: boolean; onClose: () => void }> = ({ show, onCl
                             required
                         />
                     </label>
-                    {error && <p className="error">{error}</p>}
+                    {error === "Image or token not found. Please try again." ?
+                        (
+                            <p className="error">You must be logged in to save the image in the
+                                application. <b style={{textDecoration: "underline", cursor:"pointer"}}
+                                      onClick={() => navigate('/login')}
+                                >
+                                     Sign in
+                                </b>
+                            </p>
+
+                        ) : (
+                            <p className="error">{error}</p>
+                        )
+                    }
                     <div className="modal-actions">
                         <button type="submit">Save</button>
                         <button type="button" onClick={onClose}>Cancel</button>

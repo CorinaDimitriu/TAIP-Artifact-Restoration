@@ -1,13 +1,14 @@
 import React, {Suspense, useEffect, useState} from 'react';
 import { Canvas  } from '@react-three/fiber';
 import {  Vector3 } from 'three';
-
-import Loading from './Loading';
+import "../../styles/CameraRoom.css";
 import MuseumBackground from "./MuseumBackground";
 import Painting from "./Painting";
 import CameraController from './CameraController';
 import {jwtDecode} from "jwt-decode";
-import {useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
+import DropDownActionsRoom from "./DropDownActionsRoom";
+import {IoArrowBackOutline} from "react-icons/io5";
 
 interface UserToken {
     sub: string;
@@ -27,6 +28,8 @@ const CameraRoom: React.FC = () => {
     const { albumTitle } = useParams();
     const [paintings, setPaintings] = useState<Paintings[]>([]);
     const paintingUrls = paintings.map(painting => painting.image);
+
+    const [isLoading, setIsLoading] = useState(true);
 
     const dFloorPainting = -0.5;
     const roomSize = 30;
@@ -125,7 +128,12 @@ const CameraRoom: React.FC = () => {
             return painting;
         });
     };
-
+    useEffect(() => {
+        if (!sessionStorage.getItem("cameraRoomReloaded")) {
+            sessionStorage.setItem("cameraRoomReloaded", "true");
+            window.location.reload();
+        }
+    }, []);
 
     useEffect(() => {
         if (!email || !albumTitle) return;
@@ -150,7 +158,6 @@ const CameraRoom: React.FC = () => {
                 const data: Paintings[] = await response.json();
                 const updatedPaintings = updateImages(data);  // Actualizează imagini
                 setPaintings(updatedPaintings);  // Stochează imagini actualizate în stat
-
             } catch (error) {
                 console.error('Error fetching paintings:', error);
             }
@@ -159,42 +166,64 @@ const CameraRoom: React.FC = () => {
         fetchPaintings();
     }, [email, albumTitle]);
 
+    const navigate = useNavigate();
+
+    const [showDropdown, setShowDropdown] = useState(false);
+    const [isActive, setIsActive] = useState(false); // Stare pentru activarea butonului
+    const pressActionsButton = () => {
+        setShowDropdown(!showDropdown);
+        setIsActive(!isActive);  // Schimbă starea activă a butonului
+    };
+    const [selectedOption, setSelectedOption] = useState<string | null>(null);
+    const handleOptionSelect = (option: string) => {
+        setSelectedOption(option);
+        setShowDropdown(false);
+    };
 
     return (
-        <Canvas camera={{ position: [0, 0, 14], fov: 40 }} style={{ height: '100vh' }}>
-            <ambientLight intensity={2} />
-            <pointLight position={[10, 10, 10]} intensity={1} />
-            <MuseumBackground wallLength={roomResize} />
-            <CameraController roomBounds={roomBounds} />
+        <div style={{position: 'relative', height: '100vh'}}>
+            <button className={'back-to-app-button'}
+                onClick={() => navigate('/')} // Redirecționează utilizatorul la pagina principală
+            >
+                <IoArrowBackOutline style={{ fontSize: "18px", marginRight: "6px" }} />
+                Back to App
+            </button>
 
-            <Suspense fallback={<Loading />}>
-                {paintings.map((painting, index) => (
-                    <Painting
-                        key={index}
-                        position={positions[index]}
-                        rotation={rotations[index]}
-                        textureUrl={painting.image}
-                        title={painting.paintingName}
-                        author={painting.author}
-                        description={painting.description}
-                        onClick={(position, angle) => {
-                            setTargetPosition(position);
-                            setTargetAngle(angle);
-                        }}
-                    />
-                ))}
+            <Canvas camera={{position: [0, 0, 14], fov: 40}} style={{height: '100vh'}}>
+                <ambientLight intensity={2}/>
+                <pointLight position={[10, 10, 10]} intensity={1}/>
+                <MuseumBackground wallLength={roomResize}/>
+                <CameraController roomBounds={roomBounds}/>
+
+                <Suspense>
+                    {paintings.map((painting, index) => (
+                        <Painting
+                            key={index}
+                            position={positions[index]}
+                            rotation={rotations[index]}
+                            textureUrl={painting.image}
+                            title={painting.paintingName}
+                            author={painting.author}
+                            description={painting.description}
+                            onClick={(position, angle) => {
+                                setTargetPosition(position);
+                                setTargetAngle(angle);
+                            }}
+                        />
+                    ))}
             </Suspense>
+            </Canvas>
 
-            {/*<OrbitControls*/}
-            {/*    enablePan={true}*/}
-            {/*    enableZoom={true}*/}
-            {/*    zoomSpeed={4}*/}
-            {/*    maxPolarAngle={Math.PI  / 2}*/}
-            {/*    minPolarAngle={Math.PI / 2}*/}
-            {/*    // maxDistance={roomSize / 2 - 1}*/}
-            {/*    target={isDetailView ? targetPosition || new Vector3(0, dFloorPainting, 0) : new Vector3(0, dFloorPainting, 0)}*/}
-            {/*/>*/}
-        </Canvas>
+            <div className="dropdown-container2" style={{position: 'absolute', top: '10px', right: '10px', zIndex: 15}}>
+                <button
+                    className={`actions-room-button ${isActive ? 'active' : ''}`} // Adaugă clasa activă când butonul este apăsat
+                    onClick={pressActionsButton}
+                >
+                    Actions
+                </button>
+                {showDropdown && <DropDownActionsRoom onSelect={handleOptionSelect}/>}
+            </div>
+        </div>
     );
 };
 

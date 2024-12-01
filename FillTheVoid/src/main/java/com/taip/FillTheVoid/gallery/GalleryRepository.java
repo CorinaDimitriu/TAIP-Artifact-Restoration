@@ -14,6 +14,9 @@ public interface GalleryRepository extends JpaRepository<Gallery, Integer> {
     @Query("SELECT g FROM Gallery g WHERE g.galleryName = :galleryName AND g.owner = :owner")
     Optional<Gallery> findByNameAndOwner(String galleryName, Owner owner);
 
+    @Query("SELECT g FROM Gallery g WHERE g.galleryName IN :galleryNames AND g.owner = :owner")
+    List<Gallery> findByListNamesAndOwner(List<String> galleryNames, Owner owner);
+
     @Query("SELECT g.galleryName AS galleryName, g.description AS description FROM Gallery g WHERE g.owner = :owner")
     List<GalleryProjection> findAllByOwner(Owner owner);
 

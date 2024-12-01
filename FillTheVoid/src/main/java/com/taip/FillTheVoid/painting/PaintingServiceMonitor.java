@@ -37,19 +37,19 @@ public class PaintingServiceMonitor {
     public void paintingServiceMethods() {}
 
     // Observation mechanism: Log method details
-    @Before("execution(* com.taip.FillTheVoid.painting.PaintingService.addPainting(..)) && args(userEmail, galleriesNames, paintingName, description, author, imageType, image)")
-    public void logAddPaintingDetails(String userEmail, List<String> galleriesNames, String paintingName, String description, String author, String imageType, byte[] image) {
+    @Before("execution(* com.taip.FillTheVoid.painting.PaintingService.addPainting(..)) && args(userEmail, galleryName, paintingName, description, author, imageType, image)")
+    public void logAddPaintingDetails(String userEmail, String galleryName, String paintingName, String description, String author, String imageType, byte[] image) {
         logger.info("MOP: Apel la metoda addPainting");
         logger.info("MOP: Utilizator: " + userEmail);
-        logger.info("MOP: Galerii: " + galleriesNames);
+        logger.info("MOP: Galerie: " + galleryName);
         logger.info("MOP: Nume pictură: " + paintingName);
         logger.info("MOP: Descriere: " + (description != null ? description : "null"));
         logger.info("MOP: Autor: " + (author != null ? author : "null"));
     }
 
     // Verification and correction mechanism: Validate and correct the description
-    @Around("execution(* com.taip.FillTheVoid.painting.PaintingService.addPainting(..)) && args(userEmail, galleriesNames, paintingName, description, author, imageType, image)")
-    public Object validateAndCorrectDescription(ProceedingJoinPoint joinPoint, String userEmail, List<String> galleriesNames, String paintingName, String description, String author, String imageType, byte[] image) throws Throwable {
+    @Around("execution(* com.taip.FillTheVoid.painting.PaintingService.addPainting(..)) && args(userEmail, galleryName, paintingName, description, author, imageType, image)")
+    public Object validateAndCorrectDescription(ProceedingJoinPoint joinPoint, String userEmail, String galleryName, String paintingName, String description, String author, String imageType, byte[] image) throws Throwable {
 
         if (description == null || description.isBlank()) {
             logger.warn("MOP: Descrierea este null sau goală. Se va folosi valoarea implicită.");
@@ -72,7 +72,7 @@ public class PaintingServiceMonitor {
         }
 
         // Proceed with the modified argument
-        Object[] args = new Object[]{userEmail, galleriesNames, uniquePaintingName, description, author, imageType, image};
+        Object[] args = new Object[]{userEmail, galleryName, uniquePaintingName, description, author, imageType, image};
         return joinPoint.proceed(args);
     }
 

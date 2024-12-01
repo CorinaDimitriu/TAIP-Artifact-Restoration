@@ -30,7 +30,12 @@ public class Gallery {
     private Owner owner;
 
 
-    @OneToMany(mappedBy = "gallery", cascade = CascadeType.ALL, orphanRemoval = true)
+    @ManyToMany
+    @JoinTable(
+            name = "gallery_painting",
+            joinColumns = @JoinColumn(name = "gallery_id"),
+            inverseJoinColumns = @JoinColumn(name = "painting_id")
+    )
     private List<Painting> paintings = new ArrayList<>();
 
     public Gallery() {}
@@ -39,6 +44,11 @@ public class Gallery {
         this.owner = owner;
         this.galleryName = galleryName;
         this.description = description;
+    }
+
+    @Override
+    public String toString() {
+        return "Gallery{id=" + id + ", galleryName='" + galleryName + "'}";
     }
 
 }

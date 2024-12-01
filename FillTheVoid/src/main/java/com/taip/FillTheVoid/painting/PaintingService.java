@@ -89,7 +89,7 @@ public class PaintingService {
 
         Optional<Painting> alreadyPainting =  paintingRepository.findByNameAndOwner(newPaintingName, owner);
 
-        if (alreadyPainting.isPresent()) {
+        if (alreadyPainting.isPresent() && !Objects.equals(paintingName, newPaintingName)) {
             throw new IllegalStateException("Pictura cu noul nume există deja");
         }
 

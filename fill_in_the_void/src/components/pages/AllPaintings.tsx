@@ -8,6 +8,7 @@ import "../../styles/AllPaintings.css";
 import "../../index.css";
 import {jwtDecode} from "jwt-decode";
 import monaLisa from "../images/mona-lisa.jpg";
+import {MdDelete} from "react-icons/md";
 // import {useNavigate} from "react-router-dom";
 
 interface UserToken {
@@ -181,6 +182,37 @@ const AllPaintings: React.FC = () => {
         );
     };
 
+    const delelePicture = async (paintingName: string) => {
+        const token = localStorage.getItem("token");
+        if (!token || !email) {
+            console.error("Missing token or email.");
+            return;
+        }
+
+        const url = `http://localhost:8080/api/v1/painting/delete?email-user=${encodeURIComponent(email)}&painting-name=${encodeURIComponent(paintingName)}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'accept': '*/*',
+                    'Authorization': `Bearer ${token}`
+                }
+            });
+
+            if (!response.ok) {
+                const errorData = await response.json();
+                console.error(`Error deleting painting: ${errorData.message || response.statusText}`);
+                return;
+            }
+
+            const updatedPaintings = paintings.filter((painting) => painting.paintingName !== paintingName);
+            setPaintings(updatedPaintings);
+        } catch (error) {
+            console.error("Error deleting painting:", error);
+        }
+    };
+
 
     return (
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
@@ -223,13 +255,23 @@ const AllPaintings: React.FC = () => {
                                 <div className="painting-title">{painting.paintingName}</div>
                                 <div className="painting-author"><b>Author:</b> {painting.author}</div>
                                 <div className="painting-description"><b>Description: </b>{painting.description}</div>
+                                <div className="poz-btn-icon">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation(); // Previne propagarea click-ului
+                                            delelePicture(painting.paintingName);
+                                        }}
+                                        className="delete-album-btn">
+                                        <MdDelete style={{fontSize: "14px", marginRight: "8px"}}/>
+                                        Delete
+                                    </button>
+                                </div>
                             </div>
                         ))}
                     </div>
 
                 </div>
 
-                {/* Buton Make Album apare doar dacă există selecții */}
                 {selectedPaintings.length > 0 && (
                     <button className="fixed-add-album-btn" onClick={handleOpenAlbumDrawer}>
                         Add to Album

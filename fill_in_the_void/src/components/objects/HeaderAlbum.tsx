@@ -3,7 +3,6 @@ import { IoArrowBackOutline } from "react-icons/io5";
 import { FaRegEye } from "react-icons/fa";
 import { IoMenu } from "react-icons/io5";
 import { useNavigate, useParams } from "react-router-dom";
-import { IoIosAdd } from "react-icons/io";
 import "../../styles/Album.css";
 
 const HeaderAlbum: React.FC = () => {
@@ -16,7 +15,6 @@ const HeaderAlbum: React.FC = () => {
     };
 
     const goTo3DView = () => {
-        // Navigare către CameraRoom folosind doar albumId
         navigate(`/3d-view/${albumTitle}`);
     };
 
@@ -28,10 +26,10 @@ const HeaderAlbum: React.FC = () => {
                     <IoArrowBackOutline style={{fontSize: "18px", marginRight: "6px"}}/>
                     Back to Albums
                 </button>
-                <button className="back-button" style={{backgroundColor:"red"}}>
-                    <IoIosAdd style={{fontSize: "18px", marginRight: "6px"}}/>
-                    Add picture
-                </button>
+                {/*<button className="back-button" style={{backgroundColor:"red"}}>*/}
+                {/*    <IoIosAdd style={{fontSize: "18px", marginRight: "6px"}}/>*/}
+                {/*    Add picture*/}
+                {/*</button>*/}
             </div>
 
 

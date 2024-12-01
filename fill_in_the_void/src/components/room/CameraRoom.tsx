@@ -29,8 +29,6 @@ const CameraRoom: React.FC = () => {
     const [paintings, setPaintings] = useState<Paintings[]>([]);
     const paintingUrls = paintings.map(painting => painting.image);
 
-    const [isLoading, setIsLoading] = useState(true);
-
     const dFloorPainting = -0.5;
     const roomSize = 30;
 
@@ -183,7 +181,7 @@ const CameraRoom: React.FC = () => {
     return (
         <div style={{position: 'relative', height: '100vh'}}>
             <button className={'back-to-app-button'}
-                onClick={() => navigate('/all-albums')} 
+                onClick={() => navigate('/all-albums')}
             >
                 <IoArrowBackOutline style={{ fontSize: "18px", marginRight: "6px" }} />
                 Back to Albums

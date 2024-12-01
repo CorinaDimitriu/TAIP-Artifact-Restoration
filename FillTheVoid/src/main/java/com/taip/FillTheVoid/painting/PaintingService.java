@@ -138,6 +138,39 @@ public class PaintingService {
         return 1; // Indicate success
     }
 
+    public Integer removeFromGallery(String emailUser, String paintingName, String galleryName) {
+
+        User user = userService.getUserByEmail(emailUser);
+        Owner owner = (Owner) user;
+
+        Optional<Painting> paintingOptional = paintingRepository.findByNameAndOwner(paintingName, owner);
+        if (paintingOptional.isEmpty()) {
+            throw new IllegalStateException("Painting does not exist with this name.");
+        }
+        Painting painting = paintingOptional.get();
+
+        Gallery gallery = galleryService.getGalleryByNameAndOwner(galleryName, owner);
+
+        if (!gallery.getPaintings().contains(painting)) {
+            return 0;
+        }
+
+        List <Painting> galleryPaintings = gallery.getPaintings();
+        galleryPaintings.remove(painting);
+        gallery.setPaintings(galleryPaintings);
+
+        galleryRepository.save(gallery);
+
+        List<Gallery> paintingGalleries = painting.getGalleries();
+        paintingGalleries.remove(gallery);
+        painting.setGalleries(paintingGalleries);
+
+        paintingRepository.save(painting); // Save updated painting
+
+        return 1;
+    }
+
+
     public Integer deletePainting(String emailUser, String paintingName) {
 
         User user = userService.getUserByEmail(emailUser);

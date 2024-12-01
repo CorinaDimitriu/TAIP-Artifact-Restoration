@@ -88,6 +88,15 @@ public class PaintingController {
         return ResponseEntity.ok(paintingService.updatePaintingGallery(emailUser, paintingName, galleryName));
     }
 
+    @PutMapping("/removeFromGallery")
+    public ResponseEntity<Integer> removeFromGallery(
+            @RequestParam("email-user") String emailUser,
+            @RequestParam("painting-name") String paintingName,
+            @RequestParam("gallery-name") String galleryName) {
+
+        return ResponseEntity.ok(paintingService.removeFromGallery(emailUser, paintingName, galleryName));
+    }
+
     @DeleteMapping("/delete")
     public ResponseEntity<Integer> deletePainting(
 

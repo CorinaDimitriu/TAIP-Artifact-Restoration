@@ -1,12 +1,9 @@
 import React from 'react';
-import { VscAccount } from "react-icons/vsc";
-import { CgLogOut } from "react-icons/cg";
 import "../../styles/DropDownActionsRoom.css";
 import { MdAddPhotoAlternate } from "react-icons/md";
 import { TbReorder } from "react-icons/tb";
 import { RiDeleteBin5Line } from "react-icons/ri";
 import { RiShareBoxLine } from "react-icons/ri";
-
 
 import {useNavigate} from "react-router-dom";
 interface DropdownActionsProps {

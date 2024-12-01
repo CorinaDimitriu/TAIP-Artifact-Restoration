@@ -183,10 +183,10 @@ const CameraRoom: React.FC = () => {
     return (
         <div style={{position: 'relative', height: '100vh'}}>
             <button className={'back-to-app-button'}
-                onClick={() => navigate('/')} // Redirecționează utilizatorul la pagina principală
+                onClick={() => navigate('/all-albums')} 
             >
                 <IoArrowBackOutline style={{ fontSize: "18px", marginRight: "6px" }} />
-                Back to App
+                Back to Albums
             </button>
 
             <Canvas camera={{position: [0, 0, 14], fov: 40}} style={{height: '100vh'}}>

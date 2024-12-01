@@ -20,6 +20,8 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, painting, onUpdatePain
     const [editedAuthor, setEditedAuthor] = useState(painting?.author || '');
     const [editedDescription, setEditedDescription] = useState(painting?.description || '');
     const [isEditing, setIsEditing] = useState(false);
+    const [error, setError] = useState<string | null>(null);
+
     const [email, setEmail] = useState('');
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -72,8 +74,15 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, painting, onUpdatePain
                 });
 
                 if (!response.ok) {
-                    const errorData = await response.json();
-                    console.error(`Error updating painting: ${errorData.message}`);
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.includes("application/json")) {
+                        const errorData = await response.json();
+                        setError(errorData.message);
+                    } else {
+                        const errorText = await response.text();
+                        setError(errorText);
+                    }
+                    console.error("Error updating painting:", error);
                     return;
                 }
 
@@ -85,6 +94,7 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, painting, onUpdatePain
                 setIsEditing(false);
             } catch (error) {
                 console.error("Error saving painting:", error);
+                setError((error as Error).message);
             }
         }
     };
@@ -142,6 +152,9 @@ const Drawer: React.FC<DrawerProps> = ({ isOpen, onClose, painting, onUpdatePain
                             className="label-input-description"
                             onChange={(e) => setEditedDescription(e.target.value)}
                         />
+                        {error && (
+                            <p className="error">{error}</p>
+                        )}
                     </div>
                 ) : (
                     <div className="view-form">

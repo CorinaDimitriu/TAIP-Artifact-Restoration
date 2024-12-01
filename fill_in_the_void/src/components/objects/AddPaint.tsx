@@ -114,7 +114,7 @@ const AddPaint: React.FC<{ show: boolean; onClose: () => void }> = ({ show, onCl
                             placeholder="Enter description"
                             style={{width: "95%"}}
                             className={"input-add-paint"}
-                            required
+
                         />
                     </label>
                     <label>
@@ -126,7 +126,7 @@ const AddPaint: React.FC<{ show: boolean; onClose: () => void }> = ({ show, onCl
                             placeholder="Enter author name"
                             style={{width: "95%"}}
                             className={"input-add-paint"}
-                            required
+
                         />
                     </label>
                     {error === "Image or token not found. Please try again." ?

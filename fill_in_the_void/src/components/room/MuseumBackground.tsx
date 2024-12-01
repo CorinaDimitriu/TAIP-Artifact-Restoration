@@ -181,18 +181,21 @@ const MuseumBackground: React.FC<MuseumBackgroundProps> = ({ wallLength }) => {
                     Enter Right
                 </Text>
             )}
-
-            {leftAlbum ? (
-                <Text
-                    position={[-wallLength / 2 + 5.06, ceilingHeight - 2.9, 0]}
-                    rotation={[0, Math.PI / 2, 0]}
-                    fontSize={1}
-                    color="white"
-                    anchorX="center"
-                    anchorY="middle"
-                >
-                    {leftAlbum.galleryName}
-                </Text>
+            {albums.length > 1 ? (
+                <>
+                    {leftAlbum && (
+                        <Text
+                            position={[-wallLength / 2 + 5.06, ceilingHeight - 2.9, 0]}
+                            rotation={[0, Math.PI / 2, 0]}
+                            fontSize={1}
+                            color="white"
+                            anchorX="center"
+                            anchorY="middle"
+                        >
+                            {leftAlbum.galleryName}
+                        </Text>
+                    )}
+                </>
             ) : (
                 <Text
                     position={[-wallLength / 2 + 5.06, ceilingHeight - 2.9, 0]}
@@ -206,17 +209,21 @@ const MuseumBackground: React.FC<MuseumBackgroundProps> = ({ wallLength }) => {
                 </Text>
             )}
 
-            {rightAlbum ? (
-                <Text
-                    position={[wallLength / 2 - 5.06, ceilingHeight - 2.9, 0]}
-                    rotation={[0, -Math.PI / 2, 0]}
-                    fontSize={1}
-                    color="white"
-                    anchorX="center"
-                    anchorY="middle"
-                >
-                    {rightAlbum.galleryName}
-                </Text>
+            {albums.length > 1 ? (
+                <>
+                    {leftAlbum && (
+                        <Text
+                            position={[wallLength / 2 - 5.06, ceilingHeight - 2.9, 0]}
+                            rotation={[0, -Math.PI / 2, 0]}
+                            fontSize={1}
+                            color="white"
+                            anchorX="center"
+                            anchorY="middle"
+                        >
+                            {rightAlbum.galleryName}
+                        </Text>
+                    )}
+                </>
             ) : (
                 <Text
                     position={[wallLength / 2 - 5.06, ceilingHeight - 2.9, 0]}

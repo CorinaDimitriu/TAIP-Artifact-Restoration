@@ -23,7 +23,7 @@ public class PaintingServiceMonitor {
 
     // Define default values
     private static final String DEFAULT_DESCRIPTION = "A visually appealing image showcasing the specified subject " +
-            "with clarity and detail. Balanced lighting and colors make it suitable for versatile use.";
+            "with clarity and detail.";
     private static final String DEFAULT_AUTHOR = "Unknown";
 
 
@@ -47,9 +47,9 @@ public class PaintingServiceMonitor {
         logger.info("MOP: Autor: " + (author != null ? author : "null"));
     }
 
-    // Verification and correction mechanism: Validate and correct the description
+    // Verification and correction mechanism: Validate and correct
     @Around("execution(* com.taip.FillTheVoid.painting.PaintingService.addPainting(..)) && args(userEmail, galleryName, paintingName, description, author, imageType, image)")
-    public Object validateAndCorrectDescription(ProceedingJoinPoint joinPoint, String userEmail, String galleryName, String paintingName, String description, String author, String imageType, byte[] image) throws Throwable {
+    public Object validateAndCorrect(ProceedingJoinPoint joinPoint, String userEmail, String galleryName, String paintingName, String description, String author, String imageType, byte[] image) throws Throwable {
 
         if (description == null || description.isBlank()) {
             logger.warn("MOP: Descrierea este null sau goală. Se va folosi valoarea implicită.");

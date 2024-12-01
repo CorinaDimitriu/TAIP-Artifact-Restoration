@@ -87,6 +87,12 @@ public class PaintingService {
         User user = userService.getUserByEmail(emailUser);
         Owner owner = (Owner) user;
 
+        Optional<Painting> alreadyPainting =  paintingRepository.findByNameAndOwner(newPaintingName, owner);
+
+        if (alreadyPainting.isPresent()) {
+            throw new IllegalStateException("Pictura cu noul nume există deja");
+        }
+
         Optional<Painting> painting =  paintingRepository.findByNameAndOwner(paintingName, owner);
 
         if (painting.isEmpty()) {

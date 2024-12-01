@@ -6,8 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Component;
 
-@Aspect
-@Component
+//@Aspect
+//@Component
 public class PaintingServiceAspect {
 
     private final Logger logger = LoggerFactory.getLogger(PaintingServiceAspect.class);

@@ -43,3 +43,168 @@
     font-size: 1.1rem;
     font-weight: bold;
 }
+
+
+/* Stilizare generală pentru header și navbar */
+/* .page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+} */
+
+.page-title2 {
+    font-size: 24px;
+    font-weight: bold;
+}
+
+/* Stilizare pentru butoane */
+.add-painting-btn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.add-painting-btn:hover {
+    background-color: #45a049;
+}
+
+.add-painting-btn.select {
+    margin-right: 15px;
+}
+
+.add-painting-btn.create-album {
+    background-color: #008CBA;
+}
+
+.add-painting-btn.create-album:hover {
+    background-color: #007B9E;
+}
+
+/* Stilizare pentru butonul de delete */
+.delete-btn {
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+}
+
+.delete-btn:hover {
+    background-color: #d32f2f;
+}
+
+
+
+input[type="checkbox"] {
+    position: absolute;
+    top: 10px;
+    left: 10px;
+    z-index: 1;
+}
+
+.page-header {
+    display: flex;
+    justify-content: flex-start; /* Plasează butoanele la stânga */
+    align-items: center;
+    padding: 20px;
+    background-color: #f4f4f4;
+    margin-bottom: 20px;
+    flex-wrap: wrap; /* Permite ca butoanele să se împartă pe mai multe linii */
+}
+
+.add-painting-btn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s;
+    margin-right: 15px; /* Marginea dintre butoane */
+    display: inline-block; /* Asigură că butonul este vizibil și pe linie */
+    margin-bottom: 10px; /* Adaugă spațiu între butoane dacă se împart pe mai multe linii */
+}
+
+.add-painting-btn.select {
+    margin-right: 15px;
+}
+
+.add-painting-btn.create-album {
+    background-color: #008CBA;
+}
+
+.add-painting-btn.create-album:hover {
+    background-color: #007B9E;
+}
+
+
+
+.checkbox-container {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+
+.add-painting-btn {
+    padding: 10px 20px;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.delete-btn {
+    padding: 10px 20px;
+    background-color: #f44336;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+
+.album-card {
+    position: relative; /* Asigură că checkbox-ul este poziționat relativ față de card */
+    background-color: #f5f5f5;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.32);
+    text-align: center;
+    padding: 10px;
+    cursor: pointer;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.album-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.48);
+}
+
+.checkbox-container {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.checkbox {
+    top: 10px;
+    right: 10px;
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}

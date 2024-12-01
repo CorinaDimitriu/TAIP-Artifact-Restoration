@@ -19,7 +19,7 @@
     width: 100%;
     height: auto;
     border-radius: 8px;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    /* transition: transform 0.3s ease, box-shadow 0.3s ease; */
     z-index: 0;
 }
 
@@ -129,4 +129,126 @@
 .header-buttons {
     display: flex;
     align-items: center;
+}
+
+
+
+
+
+
+/* Stiluri pentru checkbox-ul de selecție */
+.checkbox-container {
+    position: absolute;
+    top: 15px;
+    right: 15px;
+}
+
+.checkbox {
+    width: 20px;
+    height: 20px;
+    cursor: pointer;
+}
+
+/* Stiluri pentru cardurile picturilor */
+.painting-card {
+    position: relative;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    cursor: pointer; /* Arată că întregul card este clicabil */
+    overflow: hidden; /* Asigură-te că imaginea nu depășește marginile cardului */
+}
+
+/* Stiluri pentru picturile selectate */
+.painting-card.selected {
+    border: 3px solid #4caf50; /* Border verde pentru picturile selectate */
+    box-shadow: 0 8px 16px rgba(76, 175, 80, 0.5); /* Umbră pentru picturile selectate */
+}
+
+/* Stiluri pentru butonul de selectare */
+.select-painting-btn, .delete-painting-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    margin: 10px;
+    transition: background-color 0.3s ease;
+}
+
+.select-painting-btn:hover, .delete-painting-btn:hover {
+    background-color: #0056b3; /* Culoare mai închisă la hover */
+}
+
+/* Stiluri pentru butonul de ștergere a picturilor selectate */
+.delete-painting-btn {
+    background-color: #d10f0f; /* Culoare roșie pentru butonul de ștergere */
+    font-weight: bold;
+}
+
+.delete-painting-btn:hover {
+    background-color: #f32a2a; /* Culoare mai deschisă la hover */
+    transform: scale(1.05); /* Mărire ușoară la hover */
+}
+
+/* Stiluri pentru butonul de creare album (pentru a păstra consistența) */
+.make-album-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+}
+
+.make-album-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+}
+
+.make-album-btn:hover {
+    background-color: #0056b3;
+}
+
+/* Butonul fix pentru adăugarea unui album */
+.fixed-add-album-btn {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background-color: #D10F0F;
+    color: white;
+    padding: 15px 25px;
+    border: none;
+    border-radius: 4px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
+    z-index: 1000;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.fixed-add-album-btn:hover {
+    background-color: #f32a2a;
+    transform: scale(1.05);
+}
+
+
+
+.edit-album-btn {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    margin-top: 10px;
+}
+
+.edit-album-btn:hover {
+    background-color: #0056b3; /* Culoare mai închisă la hover */
 }

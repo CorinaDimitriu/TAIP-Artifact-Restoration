@@ -36,7 +36,37 @@ const AllAlbums: React.FC = () => {
     const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
     const [newAlbumTitle, setNewAlbumTitle] = useState('');
     const [newAlbumDescription, setNewAlbumDescription] = useState('');
+
+
+
+    const [selectedAlbums, setSelectedAlbums] = useState<Set<string>>(new Set()); // Set pentru albumele selectate
+    const [isSelectMode, setIsSelectMode] = useState(false); // Mod pentru selecție
+
     const navigate = useNavigate();
+
+
+    const [defaultAlbums, setDefaultAlbums] = useState<Album[]>([
+        {
+            galleryName: "Vacation 2021",
+            description: "A trip to Italy with friends",
+            image: monaLisa,
+        },
+        {
+            galleryName: "Family Memories",
+            description: "A collection of family moments",
+            image: monaLisa,
+        },
+        {
+            galleryName: "Graduation Day",
+            description: "A celebration of academic success",
+            image: monaLisa,
+        },
+        {
+            galleryName: "Wedding Photos",
+            description: "The most beautiful day of our lives",
+            image: monaLisa,
+        },
+    ]);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -73,8 +103,10 @@ const AllAlbums: React.FC = () => {
             .then(data => setAlbums(data));
     };
 
-    const handleAlbumClick = (albumTitle: string) => {
-        navigate(`/album/${albumTitle}`);
+    const handleAlbumClick = (albumName: string) => {
+        if (!isSelectMode) {
+            navigate(`/album/${albumName}`);
+        }
     };
 
     const handleCreateAlbum = (title: string, description: string) => {
@@ -86,6 +118,30 @@ const AllAlbums: React.FC = () => {
         setAlbums([...albums, newAlbum]);
     };
 
+
+
+
+
+     // Toggling selectarea unui album
+     const toggleSelectAlbum = (albumName: string) => {
+        const newSelectedAlbums = new Set(selectedAlbums);
+        if (newSelectedAlbums.has(albumName)) {
+            newSelectedAlbums.delete(albumName);
+        } else {
+            newSelectedAlbums.add(albumName);
+        }
+        setSelectedAlbums(newSelectedAlbums);
+    };
+
+    // Ștergerea albumele selectate
+    const handleDeleteSelectedAlbums = () => {
+        const uppdatedDefaultAlbums = defaultAlbums.filter(
+            (album) => !selectedAlbums.has(album.galleryName)
+        )
+        setDefaultAlbums(uppdatedDefaultAlbums);
+        setSelectedAlbums(new Set()); // Resetăm selecțiile
+    };
+
     return (
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
             <Header />
@@ -95,11 +151,22 @@ const AllAlbums: React.FC = () => {
                 <Sidebar />
 
                 <div className="page-header">
-                    <button className="add-painting-btn select" onClick={() => setIsDrawerOpen(true)}>Create album</button>
+                    <button className="add-painting-btn select" onClick={() => setIsDrawerOpen(true)}>
+                        Create album
+                    </button>
+                    <button className="add-painting-btn select" onClick={() => setIsSelectMode(!isSelectMode)}>
+                        {isSelectMode ? 'Cancel Selection' : 'Select Albums'}
+                    </button>
+                    {isSelectMode && selectedAlbums.size > 0 && (
+                        <button className="delete-btn" onClick={handleDeleteSelectedAlbums}>
+                            Delete Selected
+                        </button>
+                    )}
+                    
                     <div className="page-title2">Albums</div>
                 </div>
 
-                <div style={{ display: "flex", flex: 1 }}>
+                {/* <div style={{ display: "flex", flex: 1 }}>
                     <div className="album-container">
                         {albums.map((album, index) => (
                             <div className="album-card" key={index} onClick={() => handleAlbumClick(album.galleryName)}>
@@ -107,6 +174,45 @@ const AllAlbums: React.FC = () => {
                                 <div className="album-title">{album.galleryName}</div>
                                 <div className="description-album">
                                     <b>Description:</b>{album.description}
+                                </div>
+                            </div>
+                        ))}
+                    </div>
+                </div> */}
+
+
+                <div style={{ display: "flex", flex: 1 }}>
+                    <div className="album-container">
+                        {/* Album predefinit */}
+                        {defaultAlbums.map((album) => (
+                    <div
+                        className="album-card"
+                        key={album.galleryName}
+                        onClick={() => handleAlbumClick(album.galleryName)}
+                    >
+                        <img src={album.image || monaLisa} alt={album.galleryName} className="album-image" />
+                        <div className="album-title">{album.galleryName}</div>
+                        <div className="description-album">
+                            <b>Description:</b> {album.description}
+                        </div>
+                        {isSelectMode && (
+                            <input
+                                type="checkbox"
+                                checked={selectedAlbums.has(album.galleryName)} // Verificăm dacă albumul este în setul de selecție
+                                onChange={() => toggleSelectAlbum(album.galleryName)} // Actualizăm selecția
+                                className="checkbox"
+                            />
+                        )}
+                    </div>
+                ))}
+
+                        {/* Albumele din starea `albums` */}
+                        {albums.map((album, index) => (
+                            <div className="album-card" key={index} onClick={() => handleAlbumClick(album.galleryName)}>
+                                <img src={album.image || monaLisa} alt={album.galleryName} className="album-image" />
+                                <div className="album-title">{album.galleryName}</div>
+                                <div className="description-album">
+                                    <b>Description:</b> {album.description}
                                 </div>
                             </div>
                         ))}

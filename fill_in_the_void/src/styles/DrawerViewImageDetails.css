@@ -1,0 +1,103 @@
+/* CSS pentru Drawer care vine din dreapta */
+.drawer {
+    position: fixed;
+    top: 0;
+    right: -600px; /* Inițial, Drawer-ul este ascuns afară din dreapta */
+    background-color: #dddddd;
+    width: 600px;
+    height: 195vh; 
+    max-height: 95vh;
+    box-shadow: -4px 0 8px rgba(0, 0, 0, 0.2);
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    border-radius: 8px 0 0 8px;
+    overflow-y: auto;
+    z-index: 1009;
+    transition: right 0.3s ease; /* Adăugăm o tranziție pentru mișcarea Drawer-ului */
+}
+
+/* Când Drawer-ul este deschis, îl poziționăm în interiorul ecranului */
+.drawer.open {
+    right: 0; /* Drawer-ul se va poziționa la marginea dreaptă */
+}
+
+.drawer-image {
+    width: 80%;
+    max-width: 300px;
+    height: auto;
+    display: block;
+    margin: 0 auto;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.drawer-header {
+    display: flex;
+    margin-bottom: 30px;
+    justify-content: center;
+}
+
+.text-paint-detail{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.4rem;
+    font-weight: bold;
+}
+
+.close-btn {
+    position: absolute;
+    top: 15px;
+    left: 15px;
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    cursor: pointer;
+    color: #333;
+    transition: transform 0.3s ease;
+}
+
+.close-btn:hover {
+    transform: scale(1.2);
+}
+
+.view-form{
+    padding: 20px 30px;
+}
+
+.text-info {
+    margin: 0;
+    font-size: 1rem;
+    color: #333333;
+    line-height: 1.6;
+    text-align: left;
+    width: 100%;
+}
+
+strong {
+    font-weight: bold;
+    color: #333; 
+}
+
+.drawer-content p {
+    word-wrap: break-word; 
+    overflow-wrap: break-word; 
+    text-overflow: ellipsis; 
+    white-space: normal; 
+    width: 100%; 
+}
+
+h2, .drawer-header h2, .drawer-content .author p, .drawer-content .description p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    text-overflow: ellipsis;
+    white-space: normal;
+    width: 100%;
+}
+
+.drawer-content .separator {
+    height: 1px;
+    background-color: #ddd;
+    margin: 10px 0;
+}

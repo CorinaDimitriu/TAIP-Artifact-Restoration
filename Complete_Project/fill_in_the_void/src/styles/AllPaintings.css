@@ -35,9 +35,13 @@
     color: white;
 }
 
-/* Stil pentru butonul de Cancel Selection (roșu) */
 .add-painting-btn.cancel {
-    background-color: #D10F0F; /* Roșu */
+    background-color: #D10F0F;
+    color: white;
+}
+
+.add-painting-btn.cancel2 {
+    background-color: #434343;
     color: white;
 }
 

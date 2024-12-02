@@ -28,8 +28,8 @@ public class PaintingController {
             @RequestParam("email-user") String emailUser,
             @RequestParam("gallery-name") String galleryName,
             @RequestParam("painting-name") String paintingName,
-            @RequestParam("painting-description") String description,
-            @RequestParam("author") String author,
+            @RequestParam(value = "painting-description", required = false) String description,
+            @RequestParam(value = "author", required = false) String author,
             @RequestPart("image") MultipartFile image)  throws Exception{
 
         System.out.println("+"+emailUser+"+");
@@ -86,6 +86,15 @@ public class PaintingController {
             @RequestParam("gallery-name") String galleryName) {
 
         return ResponseEntity.ok(paintingService.updatePaintingGallery(emailUser, paintingName, galleryName));
+    }
+
+    @PutMapping("/removeFromGallery")
+    public ResponseEntity<Integer> removeFromGallery(
+            @RequestParam("email-user") String emailUser,
+            @RequestParam("painting-name") String paintingName,
+            @RequestParam("gallery-name") String galleryName) {
+
+        return ResponseEntity.ok(paintingService.removeFromGallery(emailUser, paintingName, galleryName));
     }
 
     @DeleteMapping("/delete")

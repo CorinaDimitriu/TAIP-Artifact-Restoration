@@ -18,7 +18,7 @@ const CameraController: React.FC<CameraControllerProps> = ({ roomBounds }) => {
 
     const [rotation, setRotation] = useState({ x: 0, y: 0 });
     const [isRotating, setIsRotating] = useState(false);
-    const movementSpeed = 0.5;
+    const movementSpeed = 0.2;
     const rotationSpeed = 0.002;
 
     useEffect(() => {

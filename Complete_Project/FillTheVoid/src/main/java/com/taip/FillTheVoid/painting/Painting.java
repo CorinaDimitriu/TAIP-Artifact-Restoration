@@ -34,9 +34,8 @@ public class Painting {
     @ElementCollection
     private List<String> comments = new ArrayList<>();
 
-    @ManyToOne
-    @JoinColumn(name = "gallery_id")
-    private Gallery gallery;
+    @ManyToMany(mappedBy = "paintings")
+    private List<Gallery> galleries = new ArrayList<>();
 
     @ManyToOne
     @JoinColumn(name = "owner_id")
@@ -44,10 +43,10 @@ public class Painting {
 
     public Painting() {}
 
-    public Painting(Owner owner, Gallery gallery, String paintingName, String description, String author, int noVisualizations, LocalDateTime createdAt, String imageType, byte[] image, List<String> comments) {
+    public Painting(Owner owner, List<Gallery> galleries, String paintingName, String description, String author, int noVisualizations, LocalDateTime createdAt, String imageType, byte[] image, List<String> comments) {
 
         this.owner = owner;
-        this.gallery = gallery;
+        this.galleries = galleries;
         this.paintingName = paintingName;
         this.description = description;
         this.author = author;
@@ -76,6 +75,11 @@ public class Painting {
 
     public void deleteComment(String comment) {
         this.comments.remove(comment);
+    }
+
+    @Override
+    public String toString() {
+        return "Painting{id=" + id + ", paintingName='" + paintingName + "'}";
     }
 
 }

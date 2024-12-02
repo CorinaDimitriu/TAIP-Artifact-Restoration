@@ -10,44 +10,66 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
-import java.util.Base64;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 
 @Service
 @AllArgsConstructor
 public class RestorationService {
 
-    public RestoredImage getRestoredImage(Corners corners, String imageType, byte[] image) {
+    public RestoredImage getRestoredImage(String selectedModel, CornersList cornersList, String imageType, byte[] image) {
 
-        RestoredImage newRestoredImage = restorePythonCode(corners, imageType, image);
+        RestoredImage newRestoredImage = (RestoredImage) restorePythonCode(selectedModel, cornersList, imageType, image).get("newRestoredImage");
 
         return newRestoredImage;
     }
 
-    public RestoredImage restorePythonCode(Corners corners, String imageType, byte[] image) {
+    public Map<String, Object> restorePythonCodeCustom(String selectedModel, CornersList cornersList, String imageType, byte[] image,
+                                                       String modelVersion, String outputPath)
+    {
+        System.out.println("Here use pythonic code to restore and obtain new restoredImage");
+//        System.out.println(cornersList);
+
+        List<String> allLinesRestoration = runScriptRestoration(selectedModel, cornersList, modelVersion);
+        Double score = Double.valueOf(allLinesRestoration.getLast());
+//        System.out.println(score);
+
+        byte[] _restoredImage = readImage(outputPath);
+
+        RestoredImage newRestoredImage = new RestoredImage(imageType, _restoredImage);
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("score", score);
+        result.put("newRestoredImage", newRestoredImage);
+        return result;
+    }
+
+    public Map<String, Object> restorePythonCode(String selectedModel, CornersList cornersList, String imageType, byte[] image) {
 
         System.out.println("Here use pythonic code to restore and obtain new restoredImage");
-        System.out.println(corners);
+//        System.out.println(cornersList);
 
         saveAsPng(image);
 
-//        run scipt
+//        run script
 
-        List<String> allLinesRestoration = runScriptRestoration(corners);
-        System.out.println(allLinesRestoration);
+        String modelVersion = "python main.py config=main.yaml util_args.predict_only=False util_args.eval_mode=True data=celeb_256";
+        List<String> allLinesRestoration = runScriptRestoration(selectedModel, cornersList, modelVersion);
+        Double score = Double.valueOf(allLinesRestoration.getLast());
+//        System.out.println(allLinesRestoration);
+//        System.out.println("\n");
 
-
-
-        // TODO restoredImage should be changed (in this example is returned same image)
         byte[] _restoredImage = readImage("..\\GraphFill-main\\val_results\\celeb\\c2f_iter\\output.png");
-        byte[] restoredImage_ = readImage("..\\GraphFill-main\\val_results\\places\\c2f_iter\\output.png");
-
 
         RestoredImage newRestoredImage = new RestoredImage(imageType, _restoredImage);
 
 
-        return newRestoredImage;
+        Map<String, Object> result = new HashMap<>();
+        result.put("score", score);
+        result.put("newRestoredImage", newRestoredImage);
+        return result;
     }
 
     public void saveAsPng(byte[] image) {
@@ -90,7 +112,7 @@ public class RestorationService {
         return imageBytes;
     }
 
-    public List<String> runScriptRestoration(Corners corners) {
+    public List<String> runScriptRestoration(String selectedModel, CornersList cornersList, String modelVersion) {
 
         String pythonExecutable;
 
@@ -102,11 +124,11 @@ public class RestorationService {
 
         String pythonScriptPath = "src/main/java/com/taip/FillTheVoid/restoration/restoration.py";
 
-        String jsonCorners = convertCornersToJson(corners);
+        String jsonCorners = convertCornersToJson(cornersList);
 
-        System.out.println(jsonCorners);
+//        System.out.println(jsonCorners);
 
-        String[] command = new String[]{pythonExecutable, pythonScriptPath, jsonCorners};
+        String[] command = new String[]{pythonExecutable, pythonScriptPath, selectedModel, jsonCorners, modelVersion};
 
         try {
             ProcessBuilder pb = new ProcessBuilder(command);
@@ -120,7 +142,6 @@ public class RestorationService {
 
             while ((s = stdInput.readLine()) != null) {
                 allLines.add(s);
-
             }
 
             while ((s = stdError.readLine()) != null) {
@@ -137,17 +158,17 @@ public class RestorationService {
     }
 
 
-    public static String convertCornersToJson(Corners corners) {
+    public static String convertCornersToJson(CornersList cornersList) {
         try {
             ObjectMapper objectMapper = new ObjectMapper();
-            String jsonString = objectMapper.writeValueAsString(corners);
+            String jsonString = objectMapper.writeValueAsString(cornersList);
 
             if (System.getProperty("os.name").toLowerCase().contains("win")) {
 
                 jsonString = jsonString.replace("\"", "\\\"");
                 return "\"" + jsonString + "\"";
             } else {
-                return objectMapper.writeValueAsString(corners);
+                return objectMapper.writeValueAsString(cornersList);
             }
 
 

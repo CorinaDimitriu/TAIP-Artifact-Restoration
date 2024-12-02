@@ -30,7 +30,7 @@ public class GalleryService {
 
 //        TODO unique name and owner
 
-        return galleryName;
+        return "Gallery with name " + galleryName + " was added";
     }
 
     public Gallery getGalleryByNameAndOwner(String galleryName, Owner owner) {
@@ -42,6 +42,13 @@ public class GalleryService {
         }
 
         return gallery.get();
+    }
+
+    public List<Gallery> getGalleriesByNamesAndOwner(List<String> galleriesNames, Owner owner) {
+
+        List<Gallery> galleries = galleryRepository.findByListNamesAndOwner(galleriesNames, owner);
+
+        return galleries;
     }
 
     public List<GalleryProjection> findAllByOwner(String userEmail) {

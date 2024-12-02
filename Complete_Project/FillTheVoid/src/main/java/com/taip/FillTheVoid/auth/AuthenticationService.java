@@ -38,11 +38,11 @@ public class AuthenticationService {
                 .build();
 
         if (!isValidEmail(request.getEmail())) {
-            throw new IllegalArgumentException("Email is not valid");
+            throw new IllegalArgumentException("Email-ul nu este valid");
         }
 
         if (repository.findByEmail(request.getEmail()).isPresent()) {
-            throw new IllegalStateException("This user/email already exists in the database");
+            throw new IllegalStateException("Utilizatorul există deja cu acest email");
         }
 
 //        repository.save(user);
@@ -75,7 +75,7 @@ public class AuthenticationService {
                     )
             );
         } catch (BadCredentialsException ex) {
-            throw new BadCredentialsException("Incorrect email or password.");
+            throw new BadCredentialsException("Parola sau email-ul sunt incorecte.");
         }
 
 

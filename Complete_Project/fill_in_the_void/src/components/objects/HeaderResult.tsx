@@ -3,7 +3,7 @@ import "../../styles/Result.css";
 import { IoIosArrowRoundBack } from "react-icons/io";
 import { useNavigate } from "react-router-dom";
 
-const HeaderResult: React.FC<{ onSaveClick: () => void }> = ({ onSaveClick }) => {
+const HeaderResult: React.FC<{ onSaveClick: () => void; onDownloadClick: () => void }> = ({ onSaveClick, onDownloadClick }) => {
     const navigate = useNavigate();
 
     const handleActions = (type: string) => {
@@ -30,11 +30,12 @@ const HeaderResult: React.FC<{ onSaveClick: () => void }> = ({ onSaveClick }) =>
             </div>
 
             <div>
-                <button className="download-button" style={{ backgroundColor: "red" }}>
+                <button className="select-model-button" style={{backgroundColor: "red"}} onClick={onDownloadClick}>
                     Download
                 </button>
 
-                <button className="download-button" style={{ backgroundColor: "green", marginLeft: "10px" }} onClick={onSaveClick}>
+                <button className="download-button" style={{backgroundColor: "green", marginLeft: "10px"}}
+                        onClick={onSaveClick}>
                     Save
                 </button>
             </div>

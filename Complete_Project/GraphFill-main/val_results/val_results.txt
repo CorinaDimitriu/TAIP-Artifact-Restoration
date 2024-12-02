@@ -1,0 +1,16 @@
+val_ssim_total_mean : 0.9293351
+val_ssim_total_std : 0.0041354895
+val_ssim_10-20%_mean : 0.9342858
+val_ssim_10-20%_std : 0.0
+val_ssim_20-30%_mean : 0.92685974
+val_ssim_20-30%_std : 0.0026964843
+val_lpips_total_mean : 0.077688806
+val_lpips_total_std : 0.0076011736
+val_lpips_10-20%_mean : 0.06721471
+val_lpips_10-20%_std : 0.0
+val_lpips_20-30%_mean : 0.082925856
+val_lpips_20-30%_std : 0.0020944662
+val_fid_total_mean : 40.96591049494998
+val_fid_10-20%_mean : nan
+val_fid_20-30%_mean : 22.38593427792972
+val_ssim_fid100_f1_total_mean : 0.7215534676711848

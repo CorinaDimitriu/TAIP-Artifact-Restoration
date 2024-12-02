@@ -3,6 +3,7 @@ package com.taip.FillTheVoid.painting;
 
 import com.taip.FillTheVoid.gallery.Gallery;
 import com.taip.FillTheVoid.gallery.GalleryProjection;
+import com.taip.FillTheVoid.gallery.GalleryRepository;
 import com.taip.FillTheVoid.gallery.GalleryService;
 import com.taip.FillTheVoid.user.Owner.Owner;
 import com.taip.FillTheVoid.user.User;
@@ -22,6 +23,7 @@ public class PaintingService {
 
 
     private final PaintingRepository paintingRepository;
+    private final GalleryRepository galleryRepository;
     private final UserService userService;
     private final GalleryService galleryService;
 
@@ -38,18 +40,32 @@ public class PaintingService {
         if (Objects.equals(galleryName, "None")) {
 
             painting = new Painting(owner, null, paintingName, description, author, 0, currentDateTime, imageType, image, new ArrayList<>());
+            paintingRepository.save(painting);
         }
         else {
 
             Gallery gallery = galleryService.getGalleryByNameAndOwner(galleryName, owner);
-            painting = new Painting(owner, gallery, paintingName, description, author, 0, currentDateTime, imageType, image, new ArrayList<>());
+
+            painting = new Painting(owner, new ArrayList<>(), paintingName, description, author, 0, currentDateTime, imageType, image, new ArrayList<>());
+            paintingRepository.save(painting);
+
+            List <Painting> galleryPaintings = gallery.getPaintings();
+            galleryPaintings.add(painting);
+            gallery.setPaintings(galleryPaintings);
+
+            galleryRepository.save(gallery);
+
+            List<Gallery> paintingGalleries = painting.getGalleries();
+            paintingGalleries.add(gallery);
+            painting.setGalleries(paintingGalleries);
+
+            paintingRepository.save(painting);
+
+
+
         }
 
-//        TODO unique name and owner
-
-        paintingRepository.save(painting);
-
-        return paintingName;
+        return "Painting with name " + paintingName + " was added";
     }
 
     public Painting getPainting(String paintingName, String userEmail) {
@@ -60,7 +76,7 @@ public class PaintingService {
         Optional<Painting> painting =  paintingRepository.findByNameAndOwner(paintingName, owner);
 
         if (painting.isEmpty()) {
-            throw new IllegalStateException("There is no painting having this name");
+            throw new IllegalStateException("Pictura nu există cu acest nume");
         }
 
         return painting.get();
@@ -70,6 +86,12 @@ public class PaintingService {
 
         User user = userService.getUserByEmail(emailUser);
         Owner owner = (Owner) user;
+
+        Optional<Painting> alreadyPainting =  paintingRepository.findByNameAndOwner(newPaintingName, owner);
+
+        if (alreadyPainting.isPresent() && !Objects.equals(paintingName, newPaintingName)) {
+            throw new IllegalStateException("Pictura cu noul nume există deja");
+        }
 
         Optional<Painting> painting =  paintingRepository.findByNameAndOwner(paintingName, owner);
 
@@ -83,20 +105,71 @@ public class PaintingService {
     }
 
     public Integer updatePaintingGallery(String emailUser, String paintingName, String galleryName) {
+        // Fetch the user and ensure it's an Owner
+        User user = userService.getUserByEmail(emailUser);
+        Owner owner = (Owner) user;
+
+        // Fetch the painting by name and owner
+        Optional<Painting> paintingOptional = paintingRepository.findByNameAndOwner(paintingName, owner);
+        if (paintingOptional.isEmpty()) {
+            throw new IllegalStateException("Painting does not exist with this name.");
+        }
+        Painting painting = paintingOptional.get();
+
+        // Fetch the new galleries by names and owner
+        Gallery gallery = galleryService.getGalleryByNameAndOwner(galleryName, owner);
+
+        if (gallery.getPaintings().contains(painting)) {
+            return 0;
+        }
+
+        List <Painting> galleryPaintings = gallery.getPaintings();
+        galleryPaintings.add(painting);
+        gallery.setPaintings(galleryPaintings);
+
+        galleryRepository.save(gallery);
+
+        List<Gallery> paintingGalleries = painting.getGalleries();
+        paintingGalleries.add(gallery);
+        painting.setGalleries(paintingGalleries);
+
+        paintingRepository.save(painting); // Save updated painting
+
+        return 1; // Indicate success
+    }
+
+    public Integer removeFromGallery(String emailUser, String paintingName, String galleryName) {
 
         User user = userService.getUserByEmail(emailUser);
         Owner owner = (Owner) user;
 
-        Optional<Painting> painting =  paintingRepository.findByNameAndOwner(paintingName, owner);
-
-        if (painting.isEmpty()) {
-            throw new IllegalStateException("Pictura nu există cu acest nume");
+        Optional<Painting> paintingOptional = paintingRepository.findByNameAndOwner(paintingName, owner);
+        if (paintingOptional.isEmpty()) {
+            throw new IllegalStateException("Painting does not exist with this name.");
         }
+        Painting painting = paintingOptional.get();
 
         Gallery gallery = galleryService.getGalleryByNameAndOwner(galleryName, owner);
 
-        return paintingRepository.updatePaintingGallery(painting.get(), gallery);
+        if (!gallery.getPaintings().contains(painting)) {
+            return 0;
+        }
+
+        List <Painting> galleryPaintings = gallery.getPaintings();
+        galleryPaintings.remove(painting);
+        gallery.setPaintings(galleryPaintings);
+
+        galleryRepository.save(gallery);
+
+        List<Gallery> paintingGalleries = painting.getGalleries();
+        paintingGalleries.remove(gallery);
+        painting.setGalleries(paintingGalleries);
+
+        paintingRepository.save(painting); // Save updated painting
+
+        return 1;
     }
+
 
     public Integer deletePainting(String emailUser, String paintingName) {
 

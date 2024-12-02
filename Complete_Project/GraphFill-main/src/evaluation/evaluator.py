@@ -46,7 +46,7 @@ class InpaintingEvaluator():
         interval_names = []
         for idx_bin in range(self.bins):
             start_percent, end_percent = round(100 * bin_edges[idx_bin], num_digits), \
-                                         round(100 * bin_edges[idx_bin + 1], num_digits)
+                round(100 * bin_edges[idx_bin + 1], num_digits)
             start_percent = '{:.{n}f}'.format(start_percent, n=num_digits)
             end_percent = '{:.{n}f}'.format(end_percent, n=num_digits)
             interval_names.append("{0}-{1}%".format(start_percent, end_percent))
@@ -125,7 +125,6 @@ def lpips_fid100_f1(metrics, fid_scale=100):
     return f1
 
 
-
 class InpaintingEvaluatorOnline(nn.Module):
     def __init__(self, scores, bins=10, image_key='image', inpainted_key='inpainted',
                  integral_func=None, integral_title=None, clamp_image_range=None):
@@ -146,7 +145,7 @@ class InpaintingEvaluatorOnline(nn.Module):
         self.interval_names = []
         for idx_bin in range(self.bins_num):
             start_percent, end_percent = round(100 * self.bin_edges[idx_bin], num_digits), \
-                                         round(100 * self.bin_edges[idx_bin + 1], num_digits)
+                round(100 * self.bin_edges[idx_bin + 1], num_digits)
             start_percent = '{:.{n}f}'.format(start_percent, n=num_digits)
             end_percent = '{:.{n}f}'.format(end_percent, n=num_digits)
             self.interval_names.append("{0}-{1}%".format(start_percent, end_percent))

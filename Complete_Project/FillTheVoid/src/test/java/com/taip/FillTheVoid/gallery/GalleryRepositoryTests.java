@@ -60,7 +60,7 @@ public class GalleryRepositoryTests {
         painting.setCreatedAt(LocalDateTime.now());
         painting.setImage(null);
         painting.setComments(null);
-        painting.setGallery(null);
+        painting.setGalleries(null);
         painting.setOwner(owner);
 
         paintingRepository.save(painting);

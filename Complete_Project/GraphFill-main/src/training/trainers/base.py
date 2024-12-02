@@ -40,6 +40,7 @@ class BaseInpaintingModule(ptl.LightningModule):
 
         self.coarse_model= make_generator(**self.cfg.model.generator.coarse)
         self.refine_model= make_generator(**self.cfg.model.generator.refine)
+        self.outputs = []
         if self.cfg.util_args.predict_only==False:
             self.discriminator = make_discriminator(**self.cfg.model.discriminator)
             self.adversarial_loss = make_discrim_loss(**self.cfg.losses.adversarial)
@@ -111,43 +112,49 @@ class BaseInpaintingModule(ptl.LightningModule):
             mode = 'extra_val'
             extra_val_key = self.extra_val_titles[dataloader_idx - 1]
         self._is_training_step = False
-        return self._do_step(batch, batch_idx, mode=mode, extra_val_key=extra_val_key)
+        result = self._do_step(batch, batch_idx, mode=mode, extra_val_key=extra_val_key)
+
+        # Store outputs for use in on_validation_epoch_end
+        self.outputs.append(result)
+        return result
 
     def on_validation_epoch_end(self):
-        # if self.cfg.util_args.predict_only==False:
-        #     if len(outputs)==1:
-        #         outputs=[outputs]
-        #     outputs = [step_out for out_group in outputs for step_out in out_group]
-        #     averaged_logs = average_dicts(step_out['log_info'] for step_out in outputs)
-        #     self.log_dict({k: v.mean() for k, v in averaged_logs.items()})
-        #
-        #     pd.set_option('display.max_columns', 500)
-        #     pd.set_option('display.width', 1000)
-        #
-        #     # standard validation
-        #     val_evaluator_states = [s['val_evaluator_state'] for s in outputs if 'val_evaluator_state' in s]
-        #     val_evaluator_res = self.val_evaluator.evaluation_end(states=val_evaluator_states)
-        #     val_evaluator_res_df = pd.DataFrame(val_evaluator_res).stack(1).unstack(0)
-        #     val_evaluator_res_df.dropna(axis=1, how='all', inplace=True)
-        #     LOGGER.info(f'Validation metrics after epoch #{self.current_epoch}, '
-        #                 f'total {self.global_step} iterations:\n{val_evaluator_res_df}')
-        #
-        #     for k, v in flatten_dict(val_evaluator_res).items():
-        #         self.log(f'val_{k}', v)
-        #
-        #     # extra validations
-        #     if self.extra_evaluators:
-        #         for cur_eval_title, cur_evaluator in self.extra_evaluators.items():
-        #             cur_state_key = f'extra_val_{cur_eval_title}_evaluator_state'
-        #             cur_states = [s[cur_state_key] for s in outputs if cur_state_key in s]
-        #             cur_evaluator_res = cur_evaluator.evaluation_end(states=cur_states)
-        #             cur_evaluator_res_df = pd.DataFrame(cur_evaluator_res).stack(1).unstack(0)
-        #             cur_evaluator_res_df.dropna(axis=1, how='all', inplace=True)
-        #             LOGGER.info(f'Extra val {cur_eval_title} metrics after epoch #{self.current_epoch}, '
-        #                         f'total {self.global_step} iterations:\n{cur_evaluator_res_df}')
-        #             for k, v in flatten_dict(cur_evaluator_res).items():
-        #                 self.log(f'extra_val_{cur_eval_title}_{k}', v)
-        pass
+        if self.cfg.util_args.predict_only==False:
+            if len(self.outputs)==1:
+                self.outputs=[self.outputs]
+            outputs = [step_out for out_group in self.outputs for step_out in out_group]
+            # LOGGER.info(f"Outputs structure: {outputs[0]['val_evaluator_state']['fid'][0].shape}")
+            averaged_logs = average_dicts(step_out['log_info'] for step_out in outputs)
+            self.log_dict({k: v.mean() for k, v in averaged_logs.items()})
+
+            pd.set_option('display.max_columns', 500)
+            pd.set_option('display.width', 1000)
+
+            # standard validation
+            val_evaluator_states = [s['val_evaluator_state'] for s in outputs if 'val_evaluator_state' in s]
+            val_evaluator_res = self.val_evaluator.evaluation_end(states=val_evaluator_states)
+            val_evaluator_res_df = pd.DataFrame(val_evaluator_res).stack(1).unstack(0)
+            val_evaluator_res_df.dropna(axis=1, how='all', inplace=True)
+            LOGGER.info(f'Validation metrics after epoch #{self.current_epoch}, '
+                        f'total {self.global_step} iterations:\n{val_evaluator_res_df}')
+
+            with open('.\\val_results\\val_results.txt', 'w') as file:
+                for k, v in flatten_dict(val_evaluator_res).items():
+                    self.log(f'val_{k}', v)
+                    print(f'val_{k}', v, sep=' : ', file=file)
+
+            # extra validations
+            if self.extra_evaluators:
+                for cur_eval_title, cur_evaluator in self.extra_evaluators.items():
+                    cur_state_key = f'extra_val_{cur_eval_title}_evaluator_state'
+                    cur_states = [s[cur_state_key] for s in outputs if cur_state_key in s]
+                    cur_evaluator_res = cur_evaluator.evaluation_end(states=cur_states)
+                    cur_evaluator_res_df = pd.DataFrame(cur_evaluator_res).stack(1).unstack(0)
+                    cur_evaluator_res_df.dropna(axis=1, how='all', inplace=True)
+                    LOGGER.info(f'Extra val {cur_eval_title} metrics after epoch #{self.current_epoch}, '
+                                f'total {self.global_step} iterations:\n{cur_evaluator_res_df}')
+                    for k, v in flatten_dict(cur_evaluator_res).items():
+                        self.log(f'extra_val_{cur_eval_title}_{k}', v)
 
     def _do_step(self, batch, batch_idx, mode='train', optimizer_idx=None, extra_val_key=None):
         # pdb.set_trace()

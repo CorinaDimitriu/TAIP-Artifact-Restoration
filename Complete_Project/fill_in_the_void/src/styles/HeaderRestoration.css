@@ -33,6 +33,28 @@
 /*    color: #75e375;*/
 /*}*/
 
+.two-buttons{
+    display: flex;
+    gap: 15px;
+}
+
+.select-model-button{
+    padding: 8px 22px;
+    border: 2px solid #3E3E3E;
+    background-color: #ee1d1d;
+    color: #fff;
+    font-size: 0.9rem;
+    font-weight: bold;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+}
+
+.select-model-button:hover{
+    background-color: #ff3e3e;
+    border-color: #ff3e3e;
+}
+
 .download-button{
     padding: 8px 22px;
     border: 2px solid #3E3E3E;

@@ -43,3 +43,50 @@
     font-size: 1.1rem;
     font-weight: bold;
 }
+
+.poz-btn-icon{
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    gap: 5px;
+}
+
+.edit-album-btn{
+    background-color: #5e5e5e;
+    color: white;
+    padding: 10px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    transition: background-color 0.3s ease;
+}
+
+.edit-album-btn:hover{
+    background-color: #333333;
+}
+
+.delete-album-btn{
+    background-color: #D10F0F;
+    color: white;
+    padding: 10px 8px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    vertical-align: middle;
+    transition: background-color 0.3s ease;
+}
+
+.delete-album-btn:hover{
+    background-color: #f32a2a;
+}

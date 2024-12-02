@@ -7,6 +7,9 @@ import "../../index.css";
 import monaLisa from "../images/mona-lisa.jpg";
 import {useNavigate} from "react-router-dom";
 import DrawerAddAlbum from "../objects/DrawerAddAlbum";
+import DrawerEditAlbum from "../objects/DrawerEditAlbum";
+import { MdEdit } from "react-icons/md";
+import { MdDelete } from "react-icons/md";
 import {jwtDecode} from "jwt-decode";
 
 interface UserToken {
@@ -31,9 +34,11 @@ interface Album {
 
 const AllAlbums: React.FC = () => {
     const [email, setEmail] = useState('');
-    // const [albums, setAlbums] = useState(albumsData);
+
     const [albums, setAlbums] = useState<Album[]>([]);
-    const [isDrawerOpen, setIsDrawerOpen] = useState(false); 
+    const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+    const [isEditDrawerOpen, setIsEditDrawerOpen] = useState(false);
+    const [selectedAlbum, setSelectedAlbum] = useState<Album | null>(null);
     const [newAlbumTitle, setNewAlbumTitle] = useState('');
     const [newAlbumDescription, setNewAlbumDescription] = useState('');
     const navigate = useNavigate();
@@ -86,6 +91,77 @@ const AllAlbums: React.FC = () => {
         setAlbums([...albums, newAlbum]);
     };
 
+    const openEditAlbumDrawer = (album: Album) => {
+        setSelectedAlbum(album);
+        setIsEditDrawerOpen(true);
+    };
+
+    const closeEditAlbumDrawer = () => {
+        setIsEditDrawerOpen(false);
+        setSelectedAlbum(null);
+    };
+
+    const saveAlbumChanges = async (newTitle: string, newDescription: string) => {
+        if (!selectedAlbum) return;
+
+        const updatedAlbum = {
+            ...selectedAlbum,
+            galleryName: newTitle,
+            description: newDescription
+        };
+
+        // Update the album in the backend (example URL)
+        const url = `http://localhost:8080/api/v1/gallery/edit?email-user=${encodeURIComponent(email)}&gallery-name=${encodeURIComponent(selectedAlbum.galleryName)}&new-gallery-name=${encodeURIComponent(newTitle)}&new-gallery-description=${encodeURIComponent(newDescription)}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+
+            if (!response.ok) {
+                console.error('Error updating the album');
+                return;
+            }
+
+            const updatedAlbums = albums.map(album =>
+                album.galleryName === selectedAlbum.galleryName
+                    ? updatedAlbum
+                    : album
+            );
+
+            setAlbums(updatedAlbums);
+            closeEditAlbumDrawer(); // Close the drawer after saving changes
+        } catch (error) {
+            console.error('Error updating the album:', error);
+        }
+    };
+
+    const deleleAlbum = async (albumTitle: string) => {
+        const url = `http://localhost:8080/api/v1/gallery/delete?email-user=${encodeURIComponent(email)}&gallery-name=${encodeURIComponent(albumTitle)}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'DELETE',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+
+            if (!response.ok) {
+                console.error('Error deleting the album');
+                return;
+            }
+
+            const updatedAlbums = albums.filter(album => album.galleryName !== albumTitle);
+            setAlbums(updatedAlbums);
+        } catch (error) {
+            console.error('Error deleting the album:', error);
+        }
+    };
+
     return (
         <div style={{ display: "flex", flexDirection: "column", minHeight: "100vh" }}>
             <Header />
@@ -106,8 +182,30 @@ const AllAlbums: React.FC = () => {
                                 <img src={album.image || monaLisa} alt={album.galleryName} className="album-image" />
                                 <div className="album-title">{album.galleryName}</div>
                                 <div className="description-album">
-                                    {album.description}
+                                    <b>Description: </b>{album.description}
                                 </div>
+                                <div className="poz-btn-icon">
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation(); // Previne propagarea click-ului
+                                            openEditAlbumDrawer(album);
+                                        }}
+                                        className="edit-album-btn"
+                                    >
+                                        <MdEdit style={{fontSize: "14px", marginRight: "8px"}}/>
+                                        Edit Album
+                                    </button>
+                                    <button
+                                        onClick={(e) => {
+                                            e.stopPropagation(); // Previne propagarea click-ului
+                                            deleleAlbum(album.galleryName);
+                                        }}
+                                        className="delete-album-btn">
+                                        <MdDelete style={{fontSize: "14px", marginRight: "8px"}}/>
+                                        Delete Album
+                                    </button>
+                                </div>
+
                             </div>
                         ))}
                     </div>
@@ -123,6 +221,13 @@ const AllAlbums: React.FC = () => {
                 setNewAlbumTitle={setNewAlbumTitle}
                 newAlbumDescription={newAlbumDescription}
                 setNewAlbumDescription={setNewAlbumDescription}
+            />
+
+            <DrawerEditAlbum
+                isOpen={isEditDrawerOpen}
+                onClose={closeEditAlbumDrawer}
+                album={selectedAlbum}
+                onSave={saveAlbumChanges}
             />
         </div>
     );

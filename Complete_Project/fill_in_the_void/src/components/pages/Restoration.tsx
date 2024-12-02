@@ -3,12 +3,10 @@ import HeaderRestoration from "../objects/HeaderRestoration";
 import "../../styles/Restoration.css";
 import BrushAndZoomTool from "../objects/BrushAndZoomTool";
 import CursorFollowBox from "../objects/CursorFollowBox";
-import ProgressBar from "../objects/ProgressBar";
 import {useNavigate} from "react-router-dom";
 import axios from 'axios';
 import {ClipLoader} from "react-spinners";
 import { CSSProperties } from "react";
-
 
 
 interface RestorationProps {
@@ -36,11 +34,7 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
     const [isDragging, setIsDragging] = useState(false);
     const [lastMousePosition, setLastMousePosition] = useState<{ x: number; y: number } | null>(null);
     const [activeTool, setActiveTool] = useState<'brush' | 'zoom'>('brush');
-    const [showProgressBar, setShowProgressBar] = useState(false);
-    const [progressPercentage, setProgressPercentage] = useState(0);
-
     const [loading, setLoading] = useState(false)
-
 
     const canvasRef = useRef<HTMLCanvasElement>(null);
     const isDrawing = useRef(false);
@@ -112,7 +106,6 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
             setLastMousePosition({ x: event.clientX, y: event.clientY }); // Update the last position
         }
 
-        // Handle drawing with the brush
         if (isDrawing.current && activeTool === 'brush') {
             drawSquare(event.clientX, event.clientY);
         }
@@ -123,7 +116,7 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
         const imageElement = document.querySelector(".image") as HTMLImageElement;
 
         if (!canvas || !imageElement || !imageElement.complete) {
-            return; // Ieși dacă imaginea nu este încărcată complet
+            return;
         }
 
         if (activeTool === 'brush') {
@@ -256,15 +249,10 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
                     }));
                 }
 
-                console.log(`Coordonate reale: (${realX}, ${realY})`);
+                // console.log(`Coordonate reale: (${realX}, ${realY})`);
             }
         }
     };
-
-
-
-
-
 
     const handleShowBoundingBox = () => {
         console.log("Bounding Box:", boundingBox);
@@ -287,7 +275,6 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
             }
         }
 
-        // Reset the bounding box to initial values
         setBoundingBox({
             leftUp: { x: Infinity, y: Infinity },
             rightUp: { x: -Infinity, y: Infinity },
@@ -298,10 +285,91 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
         console.log("Canvas cleared, Bounding Box reset.");
     };
 
+    type Point = { x: number; y: number };
+    type Rectangle = {
+        leftUp: Point;
+        rightUp: Point;
+        leftDown: Point;
+        rightDown: Point;
+    };
 
-    const handleDoneClick = async () => {
+    const getRectanglesFromCanvas = (canvas: HTMLCanvasElement): Rectangle[] => {
+        const ctx = canvas.getContext("2d");
+        const width = canvas.width;
+        const height = canvas.height;
+
+        if (!ctx) return [];
+
+        const imageData = ctx.getImageData(0, 0, width, height);
+        const data = imageData.data;
+
+        // Matrice pentru a marca pixelii vizitați
+        const visited = Array.from({ length: height }, () => Array<boolean>(width).fill(false));
+
+        // Lista dreptunghiurilor găsite
+        const rectangles: Rectangle[] = [];
+
+        const floodFill = (x: number, y: number): { minX: number; minY: number; maxX: number; maxY: number } => {
+            const queue: [number, number][] = [[x, y]];
+            let minX = x, minY = y, maxX = x, maxY = y;
+
+            while (queue.length > 0) {
+                const [cx, cy] = queue.shift()!;
+                // Verificăm limitele și dacă pixelul a fost deja vizitat
+                if (cx < 0 || cx >= width || cy < 0 || cy >= height || visited[cy][cx]) continue;
+
+                const offset = (cy * width + cx) * 4;
+                const alpha = data[offset + 3]; // Canalul alpha
+
+                if (alpha > 0) {
+                    // Marcam pixelul ca vizitat
+                    visited[cy][cx] = true;
+
+                    // Actualizăm limitele dreptunghiului
+                    minX = Math.min(minX, cx);
+                    minY = Math.min(minY, cy);
+                    maxX = Math.max(maxX, cx);
+                    maxY = Math.max(maxY, cy);
+
+                    // Adăugăm pixelii vecini în coadă
+                    queue.push([cx + 1, cy], [cx - 1, cy], [cx, cy + 1], [cx, cy - 1]);
+                }
+            }
+
+            return { minX, minY, maxX, maxY };
+        };
+
+        // Parcurgem fiecare pixel al canvas-ului
+        for (let y = 0; y < height; y++) {
+            for (let x = 0; x < width; x++) {
+                if (!visited[y][x]) {
+                    const offset = (y * width + x) * 4;
+                    const alpha = data[offset + 3]; // Canalul alpha
+
+                    if (alpha > 0) {
+                        // Am găsit o zonă nouă desenată, aplicăm Flood Fill
+                        const { minX, minY, maxX, maxY } = floodFill(x, y);
+
+                        // Adăugăm dreptunghiul găsit în listă
+                        rectangles.push({
+                            leftUp: { x: minX, y: minY },
+                            rightUp: { x: maxX, y: minY },
+                            leftDown: { x: minX, y: maxY },
+                            rightDown: { x: maxX, y: maxY },
+                        });
+                    }
+                }
+            }
+        }
+
+        return rectangles;
+    };
+
+    const [selectedModel, setSelectedModel] = useState<string | null>(null);
+
+    const handleDoneClick = async (model: string | null) => {
         setLoading(true);
-
+        setSelectedModel(model);
         const uploadedImage = localStorage.getItem('restorationImage');
 
         if (uploadedImage && boundingBox) {
@@ -312,17 +380,27 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
                 const response = await fetch(uploadedImage);
                 const file = await response.blob(); // Convert to Blob
 
-                // formData.append("corners", JSON.stringify(corners));
-
-                formData.append('corners', new Blob([JSON.stringify({
-                    leftUp: { x: boundingBox.leftUp.x, y: boundingBox.leftUp.y },
-                    rightUp: { x: boundingBox.rightUp.x, y: boundingBox.rightUp.y },
-                    leftDown: { x: boundingBox.leftDown.x, y: boundingBox.leftDown.y },
-                    rightDown: { x: boundingBox.rightDown.x, y: boundingBox.rightDown.y }
-                })], {
-                    type: "application/json"
-                }));
-
+                const canvas = canvasRef.current;
+                if (!canvas) {
+                    console.error("Canvas-ul nu este disponibil.");
+                    return;
+                }
+                const rectangles = getRectanglesFromCanvas(canvas);
+                if (rectangles.length === 0) {
+                    setLoading(false);
+                    alert("Select at least one region to be restored!");
+                    return;
+                }
+                const cornersPayload = {
+                    corners: rectangles.map(rect => ({
+                        leftUp: rect.leftUp,
+                        rightUp: rect.rightUp,
+                        leftDown: rect.leftDown,
+                        rightDown: rect.rightDown,
+                    })),
+                };
+                formData.append('selectedModel', model || 'Contemporary');
+                formData.append('corners', new Blob([JSON.stringify(cornersPayload)], { type: "application/json" }));
                 formData.append("image", file, 'test.png');
 
                 try {
@@ -333,13 +411,6 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
                         responseType: 'arraybuffer',
                         maxContentLength: Infinity,
                         maxBodyLength: Infinity,
-                        onUploadProgress: (progressEvent) => {
-                            if (progressEvent.total) {
-                                const progress = Math.round((progressEvent.loaded / progressEvent.total) * 100);
-                                console.log(`Progress: ${progress}%`);
-                                setProgressPercentage(progress);
-                            }
-                        }
                     });
                     console.log("response-->");
                     console.log(response.data)
@@ -359,7 +430,6 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
                 }
 
             } catch (error) {
-                // Handle any network or other errors
                 console.error("Error while sending request:", error);
             }
         } else {
@@ -426,9 +496,35 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
                 />
             </div>
 
-            <button onClick={handleShowBoundingBox} style={{marginTop: '20px'}}>
-                Show Bounding Box
-            </button>
+            {/*<button onClick={handleShowBoundingBox} style={{marginTop: '20px'}}>*/}
+            {/*    Show Bounding Box*/}
+            {/*</button>*/}
+            {/*<button*/}
+            {/*    onClick={() => {*/}
+            {/*        const canvas = canvasRef.current;*/}
+            {/*        if (!canvas) {*/}
+            {/*            console.error("Canvas-ul nu este disponibil.");*/}
+            {/*            return;*/}
+            {/*        }*/}
+            {/*        const rectangles = getRectanglesFromCanvas(canvas);*/}
+            {/*        console.log("Dreptunghiurile detectate:", rectangles);*/}
+            {/*        const rectanglesInfo = rectangles*/}
+            {/*            .map(*/}
+            {/*                (rect, index) =>*/}
+            {/*                    `Dreptunghi ${index + 1}:\n` +*/}
+            {/*                    `  LeftUp: (${rect.leftUp.x}, ${rect.leftUp.y})\n` +*/}
+            {/*                    `  RightUp: (${rect.rightUp.x}, ${rect.rightUp.y})\n` +*/}
+            {/*                    `  LeftDown: (${rect.leftDown.x}, ${rect.leftDown.y})\n` +*/}
+            {/*                    `  RightDown: (${rect.rightDown.x}, ${rect.rightDown.y})`*/}
+            {/*            )*/}
+            {/*            .join("\n\n");*/}
+
+            {/*        alert(`Dreptunghiurile detectate:\n\n${rectanglesInfo}`);*/}
+            {/*    }}*/}
+            {/*>*/}
+            {/*    Detectează dreptunghiuri*/}
+            {/*</button>*/}
+
 
             {/*{showProgressBar && <ProgressBar percentage={progressPercentage}/>}*/}
 
@@ -440,11 +536,11 @@ const Restoration: React.FC<RestorationProps> = ({ uploadedImage }) => {
                         left: 0,
                         width: "100vw",
                         height: "100vh",
-                        backgroundColor: "rgba(0, 0, 0, 0.5)", // Semi-transparent black background
+                        backgroundColor: "rgba(0, 0, 0, 0.5)",
                         display: "flex",
                         justifyContent: "center",
                         alignItems: "center",
-                        zIndex: 1000, // Ensure it appears above all other elements
+                        zIndex: 1000,
                     }}
                 >
                     <ClipLoader

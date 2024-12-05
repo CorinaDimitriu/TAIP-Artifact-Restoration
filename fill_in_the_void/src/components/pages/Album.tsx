@@ -137,10 +137,8 @@ const Album: React.FC = () => {
     const updateImages = (data: Paintings[]): Paintings[] => {
         return data.map((painting) => {
             if (painting.image) {
-                // Verificăm dacă avem date în câmpul `image` și le transformăm în Base64
                 const uint8Array = new Uint8Array(atob(painting.image).split('').map(char => char.charCodeAt(0)));
                 const base64String = uint8ArrayToBase64(uint8Array);
-                // Actualizăm câmpul `image` cu stringul Base64
                 painting.image = `data:image/png;base64,${base64String}`;
             }
             return painting;

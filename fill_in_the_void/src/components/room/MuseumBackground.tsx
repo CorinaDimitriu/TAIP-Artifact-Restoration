@@ -126,11 +126,17 @@ const MuseumBackground: React.FC<MuseumBackgroundProps> = ({ wallLength }) => {
 
     const navigate = useNavigate();
     const handleButtonClickLeft = () => {
-        navigate(`/3d-view/${leftAlbum.galleryName}`);
+        if (albums.length <= 1)
+            navigate('/all-albums');
+        else
+            navigate(`/3d-view/${leftAlbum.galleryName}`);
     };
 
     const handleButtonClickRight = () => {
-        navigate(`/3d-view/${rightAlbum.galleryName}`);
+        if (albums.length <= 1)
+            navigate('/all-albums');
+        else
+            navigate(`/3d-view/${rightAlbum.galleryName}`);
     };
 
     return (
@@ -201,11 +207,12 @@ const MuseumBackground: React.FC<MuseumBackgroundProps> = ({ wallLength }) => {
                     position={[-wallLength / 2 + 5.06, ceilingHeight - 2.9, 0]}
                     rotation={[0, Math.PI / 2, 0]}
                     fontSize={1}
-                    color="white"
+                    color="red"
+                    fontWeight="bold"
                     anchorX="center"
                     anchorY="middle"
                 >
-                    Album nedefinit
+                    Exit
                 </Text>
             )}
 
@@ -229,11 +236,12 @@ const MuseumBackground: React.FC<MuseumBackgroundProps> = ({ wallLength }) => {
                     position={[wallLength / 2 - 5.06, ceilingHeight - 2.9, 0]}
                     rotation={[0, -Math.PI / 2, 0]}
                     fontSize={1}
-                    color="white"
+                    color="red"
+                    fontWeight="bold"
                     anchorX="center"
                     anchorY="middle"
                 >
-                    Album nedefinit
+                    Exit
                 </Text>
             )}
 

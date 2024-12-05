@@ -1,3 +1,22 @@
+.remove-mode {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    left: 43%;
+    padding: 10px 60px;
+    z-index: 10;
+    background-color: red;
+    font-size: 1rem;
+    color: white;
+    cursor: pointer;
+    transition: background-color 0.3s ease, color 0.3s ease;
+
+    /* Formă de trapez întors */
+    clip-path: polygon(0% 0, 100% 0, 90% 100%, 10% 100%);
+}
+
+
 .back-to-app-button{
     position: absolute;
     display: flex;

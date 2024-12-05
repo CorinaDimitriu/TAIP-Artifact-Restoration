@@ -243,7 +243,8 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
                                 Create New Album
                         </button>
 
-                        <button className="save-select-album-btn" onClick={() => selectedAlbumId && handleSaveSelection(selectedAlbumId)}
+                        <button className="save-select-album-btn"
+                                onClick={() => selectedAlbumId && handleSaveSelection(selectedAlbumId)}
                         >
                             Save the selection
                         </button>

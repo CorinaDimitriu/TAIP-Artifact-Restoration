@@ -9,6 +9,8 @@ import {jwtDecode} from "jwt-decode";
 import {useNavigate, useParams} from "react-router-dom";
 import DropDownActionsRoom from "./DropDownActionsRoom";
 import {IoArrowBackOutline} from "react-icons/io5";
+import Drawer from "../objects/Drawer";
+import DrawerAddPaintings from "./DrawerAddPaintings";
 
 interface UserToken {
     sub: string;
@@ -28,6 +30,10 @@ const CameraRoom: React.FC = () => {
     const { albumTitle } = useParams();
     const [paintings, setPaintings] = useState<Paintings[]>([]);
     const paintingUrls = paintings.map(painting => painting.image);
+    const [isDrawerAddPaintOpen, setIsDrawerAddPaintOpen] = useState(false);
+    const [removePaintingMode, setRemovePaintingMode] = useState(false);
+    const [isDrawerReloadPainting, setIsDrawerReloadPainting] = useState(false);
+
 
     const dFloorPainting = -0.5;
     const roomSize = 30;
@@ -134,35 +140,42 @@ const CameraRoom: React.FC = () => {
     }, []);
 
     useEffect(() => {
-        if (!email || !albumTitle) return;
-
-        const fetchPaintings = async () => {
-            const url = `http://localhost:8080/api/v1/painting/findAllByOwnerAndGallery?email-user=${encodeURIComponent(email)}&gallery-name=${encodeURIComponent(albumTitle)}`;
-
-            try {
-                const response = await fetch(url, {
-                    method: 'GET',
-                    headers: {
-                        'accept': '*/*',
-                        'Authorization': `Bearer ${localStorage.getItem("token")}`,
-                    },
-                });
-
-                if (!response.ok) {
-                    console.error('Error fetching paintings');
-                    return;
-                }
-
-                const data: Paintings[] = await response.json();
-                const updatedPaintings = updateImages(data);  // Actualizează imagini
-                setPaintings(updatedPaintings);  // Stochează imagini actualizate în stat
-            } catch (error) {
-                console.error('Error fetching paintings:', error);
-            }
-        };
-
         fetchPaintings();
     }, [email, albumTitle]);
+
+    const fetchPaintings = async () => {
+        if (!email || !albumTitle) return;
+        const url = `http://localhost:8080/api/v1/painting/findAllByOwnerAndGallery?email-user=${encodeURIComponent(email)}&gallery-name=${encodeURIComponent(albumTitle)}`;
+
+        try {
+            const response = await fetch(url, {
+                method: 'GET',
+                headers: {
+                    'accept': '*/*',
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                },
+            });
+
+            if (!response.ok) {
+                console.error('Error fetching paintings');
+                return;
+            }
+
+            const data: Paintings[] = await response.json();
+            const updatedPaintings = updateImages(data);
+            setPaintings(updatedPaintings);
+        } catch (error) {
+            console.error('Error fetching paintings:', error);
+        }
+    };
+
+    useEffect(() => {
+        if (isDrawerReloadPainting) {
+            fetchPaintings();  // Trigger a re-fetch of paintings
+            setIsDrawerReloadPainting(false);  // Reset the flag
+        }
+    }, [isDrawerReloadPainting]);
+
 
     const navigate = useNavigate();
 
@@ -178,6 +191,46 @@ const CameraRoom: React.FC = () => {
         setShowDropdown(false);
     };
 
+    const closeDrawer = () => {
+        setIsDrawerAddPaintOpen(false);
+    };
+
+    const handleCloseDeleteMode = () => {
+        setRemovePaintingMode(false);
+        setShowDropdown(false);
+    };
+
+    const handleDeletePainting = async (paintingName: string) => {
+        try {
+            if (!paintingName || !email || !albumTitle) {
+                console.error('Missing title, email or albumTitle');
+                return;
+            }
+
+            const url = `http://localhost:8080/api/v1/painting/removeFromGallery?email-user=${encodeURIComponent(email)}&painting-name=${encodeURIComponent(paintingName)}&gallery-name=${encodeURIComponent(albumTitle)}`;
+
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (!response.ok) {
+                throw new Error(`Failed to delete painting: ${paintingName}`);
+            }
+
+            setIsDrawerReloadPainting(true);
+
+        }catch (error) {
+            console.error('Error deleting painting:', error);
+        }
+        setPaintings((prevPaintings) =>
+            prevPaintings.filter(painting => painting.paintingName !== paintingName)
+        );
+    };
+
     return (
         <div style={{position: 'relative', height: '100vh'}}>
             <button className={'back-to-app-button'}
@@ -186,6 +239,13 @@ const CameraRoom: React.FC = () => {
                 <IoArrowBackOutline style={{ fontSize: "18px", marginRight: "6px" }} />
                 Back to Albums
             </button>
+
+            {removePaintingMode && (
+                <div className={'remove-mode'} onClick={handleCloseDeleteMode}>
+                    Close painting removal mode
+                </div>
+            )}
+
 
             <Canvas camera={{position: [0, 0, 14], fov: 40}} style={{height: '100vh'}}>
                 <ambientLight intensity={2}/>
@@ -207,6 +267,8 @@ const CameraRoom: React.FC = () => {
                                 setTargetPosition(position);
                                 setTargetAngle(angle);
                             }}
+                            displayDeleteButton={removePaintingMode}
+                            onDelete={() => handleDeletePainting(painting.paintingName)}
                         />
                     ))}
             </Suspense>
@@ -214,13 +276,21 @@ const CameraRoom: React.FC = () => {
 
             <div className="dropdown-container2" style={{position: 'absolute', top: '10px', right: '10px', zIndex: 15}}>
                 <button
-                    className={`actions-room-button ${isActive ? 'active' : ''}`} // Adaugă clasa activă când butonul este apăsat
+                    className={`actions-room-button ${showDropdown ? 'active' : ''}`} // Adaugă clasa activă când butonul este apăsat
                     onClick={pressActionsButton}
                 >
                     Actions
                 </button>
-                {showDropdown && <DropDownActionsRoom onSelect={handleOptionSelect}/>}
+                {showDropdown && <DropDownActionsRoom showDropdown={showDropdown} setShowDropdown={setShowDropdown} onSelect={handleOptionSelect} isDrawerAddPaintOpen={isDrawerAddPaintOpen} setIsDrawerAddPaintOpen={setIsDrawerAddPaintOpen} removePaintingMode={removePaintingMode} setRemovePaintingMode={setRemovePaintingMode}/>}
             </div>
+
+            <DrawerAddPaintings
+                isOpen={isDrawerAddPaintOpen}
+                onClose={closeDrawer}
+                isDrawerReloadPainting={isDrawerReloadPainting}
+                setIsDrawerReloadPainting={setIsDrawerReloadPainting}
+            />
+
         </div>
     );
 };

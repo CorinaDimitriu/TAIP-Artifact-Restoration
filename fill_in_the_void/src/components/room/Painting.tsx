@@ -1,7 +1,16 @@
 import React, { useRef, useState, useEffect } from 'react';
 import { useTexture, Text } from '@react-three/drei';
-import { Mesh, Vector3 } from 'three';
-import { useFrame, useThree } from '@react-three/fiber';
+import {Mesh, TextureLoader, Vector3} from 'three';
+import {useFrame, useLoader, useThree} from '@react-three/fiber';
+import trashImg from '../images/trash.png';
+import {jwtDecode} from "jwt-decode";
+import {useParams} from "react-router-dom";
+
+interface UserToken {
+    sub: string;
+    iat: number;
+    exp: number;
+}
 
 interface PaintingProps {
     position: [number, number, number];
@@ -11,16 +20,44 @@ interface PaintingProps {
     author: string;
     description: string;
     onClick: (position: Vector3, angle: number) => void;
+    displayDeleteButton: boolean;
+    onDelete: () => void;
 }
 
-const Painting: React.FC<PaintingProps> = ({position, rotation = [0, 0, 0], textureUrl, title, author, description, onClick}) => {
+const Painting: React.FC<PaintingProps> = ({position, rotation = [0, 0, 0], textureUrl, title, author, description, onClick,displayDeleteButton,onDelete}) => {
+    const [email, setEmail] = useState('');
+    const { albumTitle } = useParams();
     const texture = useTexture(textureUrl);
     const ref = useRef<Mesh>(null);
     const [aspectRatio, setAspectRatio] = useState(1);
     const [isTitleVisible, setIsTitleVisible] = useState(true);
     const [isDescriptionVisible, setIsDescriptionVisible] = useState(false);
-
+    const textureTrash = useTexture(trashImg);
+    const [isHovered, setIsHovered] = useState(false);
     const { camera } = useThree();
+    useEffect(() => {
+        const token = localStorage.getItem("token");
+
+        const updateLastNameFromToken = () => {
+            if (token) {
+                const decodedToken = jwtDecode(token) as UserToken;
+                const email = decodedToken.sub;
+                setEmail(email);
+            }
+        };
+
+        updateLastNameFromToken();
+
+        const handleStorageChange = () => {
+            updateLastNameFromToken();
+        };
+
+        window.addEventListener('storage', handleStorageChange);
+
+        return () => {
+            window.removeEventListener('storage', handleStorageChange);
+        };
+    }, []);
 
     useEffect(() => {
         const img = new Image();
@@ -52,6 +89,16 @@ const Painting: React.FC<PaintingProps> = ({position, rotation = [0, 0, 0], text
         }
     });
 
+    const handlePointerOver = () => {
+        setIsHovered(true);
+        document.body.style.cursor = 'pointer';  // Schimbă cursorul la pointer
+    };
+
+    const handlePointerOut = () => {
+        setIsHovered(false);
+        document.body.style.cursor = 'auto';  // Revenire la cursorul default
+    };
+
     const [hoverPaint, setHoverPaint] = useState<boolean>(false);
     const [showButtonPaint, setShowButtonPaint] = useState<boolean>(false);
 
@@ -66,9 +113,14 @@ const Painting: React.FC<PaintingProps> = ({position, rotation = [0, 0, 0], text
         setShowButtonPaint(false);
     };
 
+    const handleDeletePainting = async () => {
+            onDelete();
+    }
+
     const handleReadMoreClick = () => {
         setIsDescriptionVisible(true);
     };
+
     const splitTextIntoLines = (text: string, maxLength: number) => {
         const words = text.split(' ');
         const lines: string[] = [];
@@ -103,9 +155,34 @@ const Painting: React.FC<PaintingProps> = ({position, rotation = [0, 0, 0], text
                 <meshStandardMaterial attach="material" map={texture} />
             </mesh>
 
-            {hoverPaint && showButtonPaint && !isDescriptionVisible && (
+            {displayDeleteButton && (
+                <mesh
+                    position={
+                        position[2] < 0
+                            ? [position[0] + planeWidth / 2 - 0.5,
+                                position[1] + planeHeight / 2 - 0.5,
+                                position[2] + 0.01]
+                            : [position[0] - planeWidth / 2 + 0.5,
+                                position[1] + planeHeight / 2 - 0.5,
+                                position[2] - 0.01]
+                    }
+                    rotation={[rotation[0], rotation[1], rotation[2]]}
+                    onClick={handleDeletePainting}
+                    onPointerOver={handlePointerOver}  // Când cursorul intră pe obiect
+                    onPointerOut={handlePointerOut}
+
+                >
+                    <planeGeometry attach="geometry" args={[1, 1]}/>
+                    <meshStandardMaterial attach="material"
+                                          map={textureTrash}
+                                          transparent={true}
+                    />
+                </mesh>
+            )}
+
+            {hoverPaint && showButtonPaint && !isDescriptionVisible && !displayDeleteButton && (
                 <>
-                    {/* Fundal semi-transparent */}
+                {/* Fundal semi-transparent */}
                     <mesh
                         position={
                             position[2] < 0

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useRef, useState} from "react";
 import "../../styles/HeaderRestoration.css";
 import HeaderResult from "../objects/HeaderResult";
 import AddPaint from "../objects/AddPaint";
@@ -41,6 +41,27 @@ const Result: React.FC = () => {
         }
     };
 
+    const beforeImgRef = useRef<HTMLImageElement>(null);
+    const afterImgRef = useRef<HTMLImageElement>(null);
+
+    const adjustImageSize = (imgRef: React.RefObject<HTMLImageElement>) => {
+        if (imgRef.current) {
+            const img = imgRef.current;
+            if (img.naturalWidth > 1000 || img.naturalHeight > 1000) {
+                img.style.maxWidth = "90%";
+                img.style.maxHeight = "400px";
+            } else if (img.naturalWidth < 400 || img.naturalHeight < 400) {
+                img.style.minWidth = "300px";
+                img.style.minHeight = "300px";
+            }
+        }
+    };
+
+    useEffect(() => {
+        adjustImageSize(beforeImgRef);
+        adjustImageSize(afterImgRef);
+    }, [beforeImage, afterImage]);
+
     return (
         <>
             <HeaderResult onSaveClick={handleSaveClick} onDownloadClick={handleDownloadClick} />
@@ -48,7 +69,7 @@ const Result: React.FC = () => {
                 <div className="image-section">
                     <h2>Before</h2>
                     {beforeImage ? (
-                        <img src={beforeImage} alt="Before" className="result-image" />
+                        <img ref={beforeImgRef} src={beforeImage} alt="Before" className="result-image" />
                     ) : (
                         <p>No image available</p>
                     )}
@@ -56,7 +77,7 @@ const Result: React.FC = () => {
                 <div className="image-section">
                     <h2>After</h2>
                     {afterImage ? (
-                        <img src={afterImage} alt="After" className="result-image" />
+                        <img ref={afterImgRef} src={afterImage} alt="After" className="result-image" />
                     ) : (
                         <p>No image available</p>
                     )}

@@ -18,7 +18,7 @@ public class GalleryController {
     public ResponseEntity<String> addGallery(
             @RequestParam("email-user") String emailUser,
             @RequestParam("gallery-name") String galleryName,
-            @RequestParam("gallery-description") String description) {
+            @RequestParam(value = "gallery-description", required = false) String description) {
 
         return ResponseEntity.ok(galleryService.addGallery(emailUser, galleryName, description));
     }

@@ -8,7 +8,7 @@ baze de date relaționale.
 
 Clasa testată: [GalleryRepository.java](../../../../FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryRepository.java)
 
-Testul creat: [GalleryRepositoryTests.java](../../../FillTheVoid/src/test/java/com/taip/FillTheVoid/gallery/GalleryRepositoryTests.java)
+Testul creat: [GalleryRepositoryTests.java](../../FillTheVoid/src/test/java/com/taip/FillTheVoid/gallery/GalleryRepositoryTests.java)
 
 Ele acoperă operațiuni de bază cum ar fi salvarea, gestionarea erorilor și căutarea, \
 asigurându-se că interacțiunile cu baza de date sunt conforme cu așteptările. Prin testarea acestor \

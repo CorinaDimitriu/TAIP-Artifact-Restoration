@@ -6,7 +6,7 @@ baze de date relaționale.
 
 ## Verificarea repository-ului (gestionarea accesului la date) asociat cu entitatea Gallery
 
-Clasa testată: [GalleryRepository.java](../../../FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryRepository.java)
+Clasa testată: [GalleryRepository.java](../../../../FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryRepository.java)
 
 Testul creat: [GalleryRepositoryTests.java](../../../FillTheVoid/src/test/java/com/taip/FillTheVoid/gallery/GalleryRepositoryTests.java)
 

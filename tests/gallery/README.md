@@ -16,9 +16,9 @@ metode, se garantează că aplicația se comportă corect la nivelul cel mai apr
 
 ## Verificarea serviciului asociat cu entitatea Gallery
 
-Clasa testată: [GalleryService.java](../../../FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryService.java)
+Clasa testată: [GalleryService.java](../../FillTheVoid/src/main/java/com/taip/FillTheVoid/gallery/GalleryService.java)
 
-Testul creat: [GalleryServiceTests.java](../../../FillTheVoid/src/test/java/com/taip/FillTheVoid/gallery/GalleryServiceTests.java)
+Testul creat: [GalleryServiceTests.java](../../FillTheVoid/src/test/java/com/taip/FillTheVoid/gallery/GalleryServiceTests.java)
 
 Aceste teste acoperă operațiuni esențiale ale serviciului GalleryService, cum ar fi adăugarea, obținerea, actualizarea și \
 ștergerea galeriilor, asigurându-se că interacțiunile cu serviciile și componentele aplicației se realizează conform așteptărilor. \

@@ -78,8 +78,12 @@ public class GalleryRepositoryTests {
                 .paintings(paintings)
                 .build();
 
+        Gallery gallery2 = new Gallery(owner, "Classic paintings 2", "Old paintings from 1600s");
+
         // Act
         Gallery savedGallery = galleryRepository.save(gallery);
+        Gallery savedGallery2 = galleryRepository.save(gallery2);
+
 
         // Assert
         Assertions.assertThat(savedGallery).isNotNull();
@@ -88,6 +92,13 @@ public class GalleryRepositoryTests {
         Assertions.assertThat(savedGallery.getOwner()).isEqualTo(owner);
         Assertions.assertThat(new ArrayList<>(savedGallery.getPaintings())).isEqualTo(new ArrayList<>(paintings));
         Assertions.assertThat(savedGallery.getId()).isGreaterThan(0);
+
+        Assertions.assertThat(savedGallery2).isNotNull();
+        Assertions.assertThat(savedGallery2.getGalleryName()).isEqualTo("Classic paintings 2");
+        Assertions.assertThat(savedGallery2.getDescription()).isEqualTo("Old paintings from 1600s");
+        Assertions.assertThat(savedGallery2.getOwner()).isEqualTo(owner);
+        Assertions.assertThat(new ArrayList<>(savedGallery2.getPaintings())).isEqualTo(new ArrayList<>());
+        Assertions.assertThat(savedGallery2.getId()).isGreaterThan(0);
     }
 
     @Test
@@ -213,5 +224,19 @@ public class GalleryRepositoryTests {
         Assertions.assertThat(deletedGallery).isNull();
     }
 
+    @Test
+    void testToString() {
+        // Arrange
+        Gallery gallery = new Gallery();
+        gallery.setId(1); // Assuming there's a setter for 'id'
+        gallery.setGalleryName("Art of the World"); // Assuming there's a setter for 'galleryName'
+
+        // Act
+        String result = gallery.toString();
+
+        // Assert
+        String expected = "Gallery{id=1, galleryName='Art of the World'}";
+        Assertions.assertThat(result).isEqualTo(expected);
+    }
 
 }

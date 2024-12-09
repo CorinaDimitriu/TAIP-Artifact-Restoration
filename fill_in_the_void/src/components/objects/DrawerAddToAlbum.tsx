@@ -94,7 +94,7 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
 
 
     const handleCreateAlbum = async () => {
-        if (newAlbumTitle.trim() !== '' && newAlbumDescription.trim() !== '') {
+        if (newAlbumTitle.trim() !== '') {
             // Pregătim datele de trimitere
             const albumData = {
                 emailUser: email,
@@ -139,7 +139,7 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
             }
         } else {
             // Dacă titlul sau descrierea sunt goale
-            setToastMessage('Please provide both title and description');
+            // setToastMessage('Please provide both title and description');
             setTimeout(() => setToastMessage(null), 3000);
         }
     };

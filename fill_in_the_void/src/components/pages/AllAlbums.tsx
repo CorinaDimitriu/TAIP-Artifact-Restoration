@@ -78,17 +78,19 @@ const AllAlbums: React.FC = () => {
             .then(data => setAlbums(data));
     };
 
+
     const handleAlbumClick = (albumTitle: string) => {
         navigate(`/album/${albumTitle}`);
     };
 
-    const handleCreateAlbum = (title: string, description: string) => {
+    const handleCreateAlbum = async (title: string, description: string) => {
         const newAlbum = {
             galleryName: title,
             description,
             image: monaLisa,
         };
         setAlbums([...albums, newAlbum]);
+        await fetchAlbums(email);
     };
 
     const openEditAlbumDrawer = (album: Album) => {

@@ -55,15 +55,15 @@ const DrawerAddAlbum: React.FC<DrawerAddAlbumProps> = ({ isOpen, onClose, albums
     }, []);
 
     const handleCreateAlbum = async () => {
-        if (
-            albums.some(
-                (album) =>
-                    album.galleryName.toLowerCase() === newAlbumTitle.trim().toLowerCase() // Use `galleryName` here
-            )
-        ) {
-            setError("An album with this title already exists. Please choose another title.");
-            return;
-        }
+        // if (
+        //     albums.some(
+        //         (album) =>
+        //             album.galleryName.toLowerCase() === newAlbumTitle.trim().toLowerCase() // Use `galleryName` here
+        //     )
+        // ) {
+        //     setError("An album with this title already exists. Please choose another title.");
+        //     return;
+        // }
 
         if (newAlbumTitle.trim() !== "") {
             try {

@@ -33,7 +33,7 @@ const CameraRoom: React.FC = () => {
     const [isDrawerAddPaintOpen, setIsDrawerAddPaintOpen] = useState(false);
     const [removePaintingMode, setRemovePaintingMode] = useState(false);
     const [isDrawerReloadPainting, setIsDrawerReloadPainting] = useState(false);
-
+    const [isCameraLocked, setIsCameraLocked] = useState(false);
 
     const dFloorPainting = -0.5;
     const roomSize = 30;
@@ -193,6 +193,7 @@ const CameraRoom: React.FC = () => {
 
     const closeDrawer = () => {
         setIsDrawerAddPaintOpen(false);
+        setIsCameraLocked(false);
     };
 
     const handleCloseDeleteMode = () => {
@@ -231,6 +232,52 @@ const CameraRoom: React.FC = () => {
         );
     };
 
+    const handleDrop = (e: React.DragEvent) => {
+        e.preventDefault();
+        const paintingName = e.dataTransfer.getData("paintingName");
+
+        if (!paintingName || !albumTitle || !email) {
+            console.error("Invalid painting name or missing data");
+            return;
+        }
+
+        // Send the drop data to your backend API
+        addPaintingToAlbum(paintingName);
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        e.dataTransfer.dropEffect = 'move';
+    };
+
+    const addPaintingToAlbum = async (paintingName: string) => {
+        if (!paintingName || !albumTitle || !email) {
+            console.error("Invalid painting name or missing data");
+            return;
+        }
+        try {
+            const url = `http://localhost:8080/api/v1/painting/editGallery?email-user=${encodeURIComponent(email)}&painting-name=${encodeURIComponent(paintingName)}&gallery-name=${encodeURIComponent(albumTitle)}`;
+            const response = await fetch(url, {
+                method: 'PUT',
+                headers: {
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`,
+                    'Content-Type': 'application/json',
+                },
+            });
+
+            if (response.ok) {
+                console.log('Painting added successfully!');
+                // Trigger re-fetch of paintings after adding to the album
+                setIsDrawerReloadPainting(true);
+            } else {
+                console.error(`Failed to add painting: ${paintingName}`);
+            }
+        } catch (error) {
+            console.error('Error adding painting:', error);
+        }
+    };
+
+
     return (
         <div style={{position: 'relative', height: '100vh'}}>
             <button className={'back-to-app-button'}
@@ -247,11 +294,12 @@ const CameraRoom: React.FC = () => {
             )}
 
 
-            <Canvas camera={{position: [0, 0, 14], fov: 40}} style={{height: '100vh'}}>
+            <Canvas camera={{position: [0, 0, 14], fov: 40}} style={{height: '100vh'}} onDrop={handleDrop}
+                    onDragOver={handleDragOver}>
                 <ambientLight intensity={2}/>
                 <pointLight position={[10, 10, 10]} intensity={1}/>
                 <MuseumBackground wallLength={roomResize}/>
-                <CameraController roomBounds={roomBounds}/>
+                <CameraController roomBounds={roomBounds} isCameraLocked={isCameraLocked} />
 
                 <Suspense>
                     {paintings.map((painting, index) => (
@@ -289,6 +337,12 @@ const CameraRoom: React.FC = () => {
                 onClose={closeDrawer}
                 isDrawerReloadPainting={isDrawerReloadPainting}
                 setIsDrawerReloadPainting={setIsDrawerReloadPainting}
+                onMouseEnter={() =>{
+                    setIsCameraLocked(true);
+                }}
+                onMouseLeave={() => {
+                    setIsCameraLocked(false);
+                }}
             />
 
         </div>

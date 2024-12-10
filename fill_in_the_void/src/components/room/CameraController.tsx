@@ -3,11 +3,11 @@ import { useFrame, useThree } from '@react-three/fiber';
 import { Vector3, Euler } from 'three';
 
 interface CameraControllerProps {
-    roomBounds: { minX: number; maxX: number; minZ: number; maxZ: number }; // Adăugăm limitele
-
+    roomBounds: { minX: number; maxX: number; minZ: number; maxZ: number };
+    isCameraLocked: boolean;
 }
 
-const CameraController: React.FC<CameraControllerProps> = ({ roomBounds }) => {
+const CameraController: React.FC<CameraControllerProps> = ({ roomBounds, isCameraLocked }) => {
     const { camera } = useThree();
     const [movementDirection, setMovementDirection] = useState({
         forward: false,
@@ -23,6 +23,8 @@ const CameraController: React.FC<CameraControllerProps> = ({ roomBounds }) => {
 
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
+            if (isCameraLocked) return; // Nu mai procesa input-ul dacă camera este blocată
+
             switch (event.key) {
                 case 'w':
                     setMovementDirection((dir) => ({ ...dir, forward: true }));
@@ -42,6 +44,8 @@ const CameraController: React.FC<CameraControllerProps> = ({ roomBounds }) => {
         };
 
         const handleKeyUp = (event: KeyboardEvent) => {
+            if (isCameraLocked) return; // Nu mai procesa input-ul dacă camera este blocată
+
             switch (event.key) {
                 case 'w':
                     setMovementDirection((dir) => ({ ...dir, forward: false }));
@@ -60,11 +64,15 @@ const CameraController: React.FC<CameraControllerProps> = ({ roomBounds }) => {
             }
         };
 
-        const handleMouseDown = () => setIsRotating(true);
+        const handleMouseDown = () => {
+            if (isCameraLocked) return; // Nu permite rotația dacă camera este blocată
+            setIsRotating(true);
+        };
+
         const handleMouseUp = () => setIsRotating(false);
 
         const handleMouseMove = (event: MouseEvent) => {
-            if (!isRotating) return;
+            if (!isRotating || isCameraLocked) return; // Nu permite rotația dacă camera este blocată
 
             setRotation((rot) => ({
                 x: rot.x - event.movementY * rotationSpeed,
@@ -85,9 +93,11 @@ const CameraController: React.FC<CameraControllerProps> = ({ roomBounds }) => {
             window.removeEventListener('mouseup', handleMouseUp);
             window.removeEventListener('mousemove', handleMouseMove);
         };
-    }, [isRotating]);
+    }, [isRotating, isCameraLocked]);
 
     useFrame(() => {
+        if (isCameraLocked) return; // Nu actualiza camera dacă este blocată
+
         const direction = new Vector3();
 
         if (movementDirection.forward) direction.z -= movementSpeed;
@@ -108,6 +118,5 @@ const CameraController: React.FC<CameraControllerProps> = ({ roomBounds }) => {
 
     return null;
 };
-
 
 export default CameraController;

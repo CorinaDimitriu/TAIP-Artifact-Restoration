@@ -22,13 +22,16 @@ interface DrawerAddPaintingsProps {
     onClose: () => void;
     isDrawerReloadPainting: boolean;
     setIsDrawerReloadPainting: (isDrawerReloadPainting: boolean) => void;
+    onMouseEnter: () => void;
+    onMouseLeave: () => void;
 }
 
-const DrawerAddPaintings: React.FC<DrawerAddPaintingsProps> = ({ isOpen, onClose, isDrawerReloadPainting,setIsDrawerReloadPainting}) => {
+const DrawerAddPaintings: React.FC<DrawerAddPaintingsProps> = ({ isOpen, onClose, isDrawerReloadPainting,setIsDrawerReloadPainting,onMouseEnter, onMouseLeave}) => {
     const [error, setError] = useState<string | null>(null);
     const navigate = useNavigate();
     const [paintings, setPaintings] = useState<Paintings[]>([]);
-    const [selectedCard, setSelectedCard] = useState<number | null>(null);
+    const [draggedPainting, setDraggedPainting] = useState<string | null>(null);
+    const [selectedCards, setSelectedCards] = useState<number[]>([]);
     const [selectedPaintings, setSelectedPaintings] = useState<string[]>([]);
     const [isSelectionMode, setIsSelectionMode] = useState(false);
     const { albumTitle } = useParams();
@@ -161,6 +164,7 @@ const DrawerAddPaintings: React.FC<DrawerAddPaintingsProps> = ({ isOpen, onClose
     const handleToggleSelectionMode = () => {
         setIsSelectionMode(!isSelectionMode);
         setSelectedPaintings([]);
+        setSelectedCards([]);
     };
 
     const toggleSelectPainting = (id: string) => {
@@ -172,10 +176,18 @@ const DrawerAddPaintings: React.FC<DrawerAddPaintingsProps> = ({ isOpen, onClose
     };
 
     const handleCardClick = (painting: Paintings, index: number) => {
+        if (dragging) {
+            return;
+        }
+
         if (isSelectionMode) {
             toggleSelectPainting(painting.paintingName);
         } else {
-            setSelectedCard(selectedCard === index ? null : index);
+            setSelectedCards((prevSelectedCards) =>
+                prevSelectedCards.includes(index)
+                    ? prevSelectedCards.filter((cardIndex) => cardIndex !== index)
+                    : [...prevSelectedCards, index]
+            );
         }
     };
     const handleAddSelectedPaintings = async () => {
@@ -222,12 +234,43 @@ const DrawerAddPaintings: React.FC<DrawerAddPaintingsProps> = ({ isOpen, onClose
         }
     };
 
+
+
+    const handleDrawerClose = () => {
+        onClose();
+        setIsSelectionMode(false);
+        setSelectedPaintings([]);
+        setSelectedCards([]);
+    };
+    const [dragging, setDragging] = useState(false);
+    const handleDragStart = (e: React.DragEvent, painting: Paintings) => {
+        setDragging(true);
+        setDraggedPainting(painting.paintingName);
+        e.dataTransfer.setData("paintingName", painting.paintingName);
+        document.body.style.cursor = 'move';
+    };
+
+    const handleDragEnd = (e: React.DragEvent) => {
+        setDragging(false);
+        setDraggedPainting(null);
+        document.body.style.cursor = 'default';
+    };
+
+    const handleDragOver = (e: React.DragEvent) => {
+        e.preventDefault();
+        document.body.style.cursor = 'default';
+    };
+
     if (!isOpen) return null;
 
+
     return (
-        <div className={`drawer3 ${isOpen ? 'open' : ''}`}>
+        <div className={`drawer3 ${isOpen ? 'open' : ''}`}
+             onMouseEnter={onMouseEnter}
+             onMouseLeave={onMouseLeave}
+        >
             <div className="drawer-header3">
-                <button className="close-btn" onClick={onClose}>✖</button>
+                <button className="close-btn" onClick={handleDrawerClose}>✖</button>
                 <div className="text-paint-detail2">Add paintings</div>
             </div>
 
@@ -243,14 +286,20 @@ const DrawerAddPaintings: React.FC<DrawerAddPaintingsProps> = ({ isOpen, onClose
 
             </div>
 
-            <div className="drawer-content3">
+            <div className="drawer-content3" onDragOver={handleDragOver}>
 
                 {paintings.map((painting, index) => (
                     <div
                         key={index}
                         className={`painting-card2 ${selectedPaintings.includes(painting.paintingName) ? "selected2" : ""}`}
-
                         onClick={() => handleCardClick(painting, index)}
+                        draggable
+                        onDragStart={(e) => handleDragStart(e, painting)}  // Set the drag start handler here
+                        onDragEnd={(e) => handleDragEnd(e)}
+                        style={{
+                            opacity: draggedPainting === painting.paintingName && dragging ? 0.5 : 1, // Aplicăm opacitatea doar cardului tras
+                            transition: 'opacity 0.2s ease'
+                        }}
                     >
                         {isSelectionMode && (
                             <div
@@ -273,7 +322,7 @@ const DrawerAddPaintings: React.FC<DrawerAddPaintingsProps> = ({ isOpen, onClose
                             alt={painting.paintingName}
                             className="painting-card-image"
                         />
-                        {selectedCard === index ? (
+                        {selectedCards.includes(index) ? (
                             <div className="painting-card-overlay">
                                 <p className="painting-card-description">{painting.description}</p>
                             </div>

@@ -62,7 +62,6 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
 
     useEffect(() => {
         if (email) {
-            // Obținem albumele din API
             fetchAlbums();
         }
     }, [email]);
@@ -95,17 +94,10 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
 
     const handleCreateAlbum = async () => {
         if (newAlbumTitle.trim() !== '') {
-            // Pregătim datele de trimitere
-            const albumData = {
-                emailUser: email,
-                galleryName: newAlbumTitle.trim(),
-                galleryDescription: newAlbumDescription.trim(),
-            };
 
             const token = localStorage.getItem("token");
 
             try {
-                // Facem cererea POST pentru a crea un album nou
                 const response = await fetch(`http://localhost:8080/api/v1/gallery/add?email-user=${encodeURIComponent(email)}&gallery-name=${encodeURIComponent(newAlbumTitle.trim())}&gallery-description=${encodeURIComponent(newAlbumDescription.trim())}`, {
                     method: 'POST',
                     headers: {
@@ -115,19 +107,15 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
                 });
 
                 if (response.ok) {
-                    // Poți adăuga logica de succes, cum ar fi afisarea unui toast cu mesajul de succes
                     setToastMessage('Album created successfully');
                     setTimeout(() => setToastMessage(null), 3000);
 
-                    // Reîncarcă albumele
                     await fetchAlbums();
 
-                    // Resetăm câmpurile
                     setNewAlbumTitle('');
                     setNewAlbumDescription('');
                     setIsCreating(false);
                 } else {
-                    // Dacă cererea nu este OK, afișăm un mesaj de eroare
                     const errorData = await response.json();
                     setToastMessage(`Error: ${errorData.message}`);
                     setTimeout(() => setToastMessage(null), 3000);
@@ -138,7 +126,6 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
                 setTimeout(() => setToastMessage(null), 3000);
             }
         } else {
-            // Dacă titlul sau descrierea sunt goale
             // setToastMessage('Please provide both title and description');
             setTimeout(() => setToastMessage(null), 3000);
         }
@@ -157,7 +144,7 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
                             'Authorization': `Bearer ${localStorage.getItem("token")}`,
                             'Content-Type': 'application/json',
                         },
-                        body: JSON.stringify({ paintings: [paintingName] }),  // Trimite fiecare pictură pe rând
+                        body: JSON.stringify({ paintings: [paintingName] }),
                     });
 
                     if (!response.ok) {
@@ -166,11 +153,10 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
 
                 }
 
-                // Dacă am ajuns aici, toate cererile au fost succes
                 setToastMessage('Selection saved successfully!');
                 setTimeout(() => setToastMessage(null), 3000);
                 onSaveSelection(selectedAlbumId, selectedPaintings);
-                onClose(); // Close the drawer
+                onClose();
                 navigate(`/album/${albumId}`);
 
             } catch (error) {
@@ -208,7 +194,6 @@ const DrawerAddToAlbum: React.FC<DrawerAddToAlbumProps> = ({
             </div>
 
             <div className="drawer-content">
-                {/* Afișează toast-ul dacă există un mesaj */}
                 {toastMessage && <div className="toast">{toastMessage}</div>}
 
                 {!isCreating ? (

@@ -83,7 +83,7 @@ public class GalleryServiceMonitor {
         String uniqueName = baseName;
         int counter = 1;
 
-        while (galleryRepository.findByNameAndOwner(uniqueName, owner).isPresent()) {
+        while (galleryRepository.findByNameAndOwnerWithLock(uniqueName, owner).isPresent()) {
             uniqueName = baseName + "(" + counter + ")";
             counter++;
         }

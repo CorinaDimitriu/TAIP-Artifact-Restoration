@@ -65,7 +65,7 @@ public class PaintingController {
         return ResponseEntity.ok(paintingService.findAllByOwner(emailUser));
     }
 
-    @PutMapping("/edit/{fileName}")
+    @PutMapping("/edit")
     public ResponseEntity<Integer> editPainting(
             @RequestParam("email-user") String emailUser,
             @RequestParam("painting-name") String paintingName,

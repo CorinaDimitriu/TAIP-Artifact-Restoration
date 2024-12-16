@@ -18,7 +18,7 @@ public class UserService {
         Optional<User> user = repository.findByEmail(email);
 
         if (user.isEmpty()) {
-            throw new IllegalStateException("Utilizatorul nu există cu acest email");
+            throw new IllegalStateException("Utilizatorul nu există cu acest email: "+email);
         }
 
         return user.get();

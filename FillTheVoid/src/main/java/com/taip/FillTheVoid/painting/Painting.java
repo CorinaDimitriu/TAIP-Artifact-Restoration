@@ -14,6 +14,9 @@ import java.util.List;
 
 @Data
 @Entity
+@Table(
+        uniqueConstraints = @UniqueConstraint(columnNames = {"painting_name", "owner_id"})
+)
 public class Painting {
 
     @Id

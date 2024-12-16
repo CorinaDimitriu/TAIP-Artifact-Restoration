@@ -38,7 +38,7 @@ public class GalleryService {
         Optional<Gallery> gallery = galleryRepository.findByNameAndOwner(galleryName, owner);
 
         if (gallery.isEmpty()) {
-            throw new IllegalStateException("Galeria nu există cu acest nume");
+            throw new IllegalStateException("Galeria nu există cu acest nume: "+galleryName);
         }
 
         return gallery.get();

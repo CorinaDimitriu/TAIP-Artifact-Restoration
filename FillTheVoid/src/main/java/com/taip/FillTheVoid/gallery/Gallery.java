@@ -15,6 +15,9 @@ import java.util.List;
 @Entity
 @Builder
 @AllArgsConstructor
+@Table(
+        uniqueConstraints = @UniqueConstraint(columnNames = {"gallery_name", "owner_id"})
+)
 public class Gallery {
 
     @Id

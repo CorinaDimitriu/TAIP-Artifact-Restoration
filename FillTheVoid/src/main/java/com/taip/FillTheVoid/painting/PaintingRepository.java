@@ -2,7 +2,9 @@ package com.taip.FillTheVoid.painting;
 
 import com.taip.FillTheVoid.gallery.Gallery;
 import com.taip.FillTheVoid.user.Owner.Owner;
+import jakarta.persistence.LockModeType;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Lock;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.transaction.annotation.Transactional;
@@ -15,6 +17,10 @@ public interface PaintingRepository extends JpaRepository<Painting, Integer> {
     @Query("SELECT p FROM Painting p WHERE p.paintingName = :paintingName AND p.owner = :owner")
     Optional<Painting> findByNameAndOwner(String paintingName, Owner owner);
 
+    @Transactional
+    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Query("SELECT p FROM Painting p WHERE p.paintingName = :paintingName AND p.owner = :owner")
+    Optional<Painting> findByNameAndOwnerWithLock(String paintingName, Owner owner);
 
 //    @Modifying
 //    @Transactional

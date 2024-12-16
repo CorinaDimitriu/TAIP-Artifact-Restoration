@@ -94,7 +94,7 @@ public class PaintingServiceMonitor {
         String uniqueName = baseName;
         int counter = 1;
 
-        while (paintingRepository.findByNameAndOwner(uniqueName, owner).isPresent()) {
+        while (paintingRepository.findByNameAndOwnerWithLock(uniqueName, owner).isPresent()) {
             uniqueName = baseName + "(" + counter + ")";
             counter++;
         }
